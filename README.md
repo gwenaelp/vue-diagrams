@@ -26,12 +26,12 @@ When in non-modular environment, vue-diagrams will register all the components t
 //
 // You can register a component manually
 //
-import { HelloWorld } from 'vue-diagrams';
+import { Diagram } from 'vue-diagrams';
 
 export default {
   ...
   components: {
-    HelloWorld
+    Diagram
   },
   ...
 };
@@ -56,7 +56,7 @@ var ModuleLibrary = require('vue-diagrams');
 var YourComponent = Vue.extend({
   ...
   components: {
-    'hello-world': ModuleLibrary.HelloWorld
+    'diagram': ModuleLibrary.Diagram
   },
   ...
 });
@@ -82,7 +82,7 @@ Vue.use(ModuleLibrary);
 ### After that, you can use it in your templates:
 
 ```html
-<hello-world></hello-world>
+<diagram></diagram>
 ```
 
 ## Changelog
