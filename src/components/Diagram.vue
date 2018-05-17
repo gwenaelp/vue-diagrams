@@ -43,7 +43,7 @@
           :points="link.points"
           :id="link.id"
           :index="index"
-          v-for="(link, index) in links"
+          v-for="(link, index) in model._model.links"
           @onStartDrag="startDragPoint"
           @onCreatePoint="createPoint"
         />
@@ -57,7 +57,7 @@
         />
         <DiagramNode
           :ref="'node-' + nodeIndex"
-          :title="node.title + links.length"
+          :title="node.title"
           :x="node.x"
           :y="node.y"
           :width="node.width"
@@ -65,7 +65,7 @@
           :ports="node.ports"
           :selected="selectedItem.type === 'nodes' && selectedItem.index === nodeIndex"
           :index="nodeIndex"
-          v-for="(node, nodeIndex) in nodes"
+          v-for="(node, nodeIndex) in model._model.nodes"
           @onStartDrag="startDragItem"
         >
           <DiagramPort
@@ -89,6 +89,7 @@
 <script>
 import SvgPanZoom from "vue-svg-pan-zoom";
 
+import DiagramModel from "./../DiagramModel";
 import DiagramNode from "./DiagramNode";
 import DiagramLink from "./DiagramLink";
 import DiagramPort from "./DiagramPort";
@@ -111,16 +112,38 @@ function snapToGrip(val, gridSize) {
   return gridSize * Math.round(val / gridSize);
 }
 
+var diagramModel = new DiagramModel();
+
+//,
+//        {
+//          title: "test2",
+//          x: 300,
+//          y: 200,
+//          width: 144,
+//          height: 80,
+//          ports: [
+//            {
+//              id: 3,
+//              type: "in",
+//              name: "testIn"
+//            },
+//            {
+//              id: 4,
+//              type: "out",
+//              name: "testOut"
+//            }
+//          ]
+//        }
+
 export default {
   name: "Diagram",
 
-  props: ["nodes", "links"],
+  props: ["model"],
 
   data() {
     this.updateLinksPositions();
 
     return {
-      console,
       document,
       zoomEnabled: true,
       panEnabled: true,
@@ -163,7 +186,7 @@ export default {
       if (this.links[linkIndex].points === undefined)
         this.links[linkIndex].points = [];
 
-      var points = this.links[linkIndex].points;
+      var points = this.model._model.links[linkIndex].points;
       points.splice(pointIndex, 0, coords);
       this.links[linkIndex].points = points;
     },
@@ -173,14 +196,18 @@ export default {
     },
 
     updateLinksPositions() {
+      var links = [];
+
+      if (this.model && this.model._model) links = this.model._model.links;
+
       this.$nextTick(() => {
         setTimeout(() => {
-          for (var i = 0; i < this.links.length; i++) {
+          for (var i = 0; i < links.length; i++) {
             var coords;
-            coords = this.getPortHandlePosition(this.links[i].from);
-            this.links[i].positionFrom = { x: coords.x, y: coords.y };
-            coords = this.getPortHandlePosition(this.links[i].to);
-            this.links[i].positionTo = { x: coords.x, y: coords.y };
+            coords = this.getPortHandlePosition(links[i].from);
+            links[i].positionFrom = { x: coords.x, y: coords.y };
+            coords = this.getPortHandlePosition(links[i].to);
+            links[i].positionTo = { x: coords.x, y: coords.y };
           }
         }, 100);
       });
@@ -217,6 +244,7 @@ export default {
     },
 
     mouseMove(pos) {
+      var links = this.model._model.links;
       this.mouseX = pos.x;
       this.mouseY = pos.y;
       if (this.draggedItem) {
@@ -224,11 +252,11 @@ export default {
         var type = this.draggedItem.type;
         if (type === "points") {
           let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
-          this.links[this.draggedItem.linkIndex].points[
+          links[this.draggedItem.linkIndex].points[
             this.draggedItem.pointIndex
           ].x =
             coords.x;
-          this.links[this.draggedItem.linkIndex].points[
+          links[this.draggedItem.linkIndex].points[
             this.draggedItem.pointIndex
           ].y =
             coords.y;
@@ -236,8 +264,8 @@ export default {
         } else {
           let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
 
-          this[type][index].x = coords.x - 30;
-          this[type][index].y = coords.y - 30;
+          this.model._model[type][index].x = coords.x - 30;
+          this.model._model[type][index].y = coords.y - 30;
           this.updateLinksPositions();
         }
       }
@@ -249,6 +277,8 @@ export default {
     },
 
     mouseUpPort(portId) {
+      var links = this.model._model.links;
+
       if (this.draggedItem && this.draggedItem.type === "points") {
         console.log(this.draggedItem);
         var pointIndex = this.draggedItem.pointIndex;
@@ -256,12 +286,12 @@ export default {
 
         if (this.$refs["port-" + portId][0].type === "in") {
           var l = this.links[linkIndex].points.length;
-          this.links[linkIndex].points.splice(
+          links[linkIndex].points.splice(
             pointIndex,
             l - this.draggedItem.pointIndex
           );
         } else {
-          this.links[linkIndex].points.splice(0, pointIndex + 1);
+          links[linkIndex].points.splice(0, pointIndex + 1);
         }
         this.updateLinksPositions();
       }
@@ -272,7 +302,6 @@ export default {
 
         var port1 = this.$refs["port-" + port1Id][0];
         var port2 = this.$refs["port-" + port2Id][0];
-        var links = this.links;
 
         if (port1.type === "in" && port2.type === "out") {
           links.push({

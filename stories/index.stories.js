@@ -1,92 +1,27 @@
 import { storiesOf } from "@storybook/vue";
+import DiagramModel from "../src/DiagramModel";
 
 // Add more stories here to live develop your components
 storiesOf("Diagram", module).add("story as a template", () => ({
   data() {
+    let diagramModel = new DiagramModel();
+
+    let node1 = diagramModel.addNode("test2", 300, 200);
+    let inPort = node1.addInPort("test");
+
+    let node2 = diagramModel.addNode("test", 10, 300, 144, 80);
+    let node2OutPort = node2.addOutPort("testOut");
+    node2.addOutPort("testOut2");
+
+    let node3 = diagramModel.addNode("test3", 10, 100, 72, 100);
+    let node3OutPort = node3.addOutPort("testOut3");
+
+    diagramModel.addLink(node2OutPort, inPort);
+    diagramModel.addLink(node3OutPort, inPort);
+
     return {
-      nodes: [
-        {
-          title: "test",
-          x: 10,
-          y: 100,
-          width: 72,
-          height: 100,
-          ports: [
-            {
-              id: 1,
-              type: "out",
-              name: "testOut1"
-            },
-            {
-              id: 2,
-              type: "out",
-              name: "testOut2"
-            },
-            {
-              id: 7,
-              type: "out",
-              name: "testOut3"
-            }
-          ]
-        },
-        {
-          title: "test",
-          x: 10,
-          y: 300,
-          width: 144,
-          height: 80,
-          ports: [
-            {
-              id: 5,
-              type: "in",
-              name: "testIn"
-            },
-            {
-              id: 6,
-              type: "out",
-              name: "testOut"
-            }
-          ]
-        },
-        {
-          title: "test2",
-          x: 300,
-          y: 200,
-          width: 144,
-          height: 80,
-          ports: [
-            {
-              id: 3,
-              type: "in",
-              name: "testIn"
-            },
-            {
-              id: 4,
-              type: "out",
-              name: "testOut"
-            }
-          ]
-        }
-      ],
-      links: [
-        {
-          id: 1,
-          from: 2,
-          to: 3,
-          positionFrom: {},
-          positionTo: {},
-          points: []
-        },
-        {
-          id: 2,
-          from: 6,
-          to: 3,
-          positionFrom: {},
-          positionTo: {},
-          points: []
-        }
-      ]
+      model: diagramModel
     };
   },
-  template: `<diagram :nodes="nodes" :links="links"></diagram>`
+  template: `<diagram :model="model"></diagram>`
 }));
