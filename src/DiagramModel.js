@@ -12,7 +12,7 @@ class DiagramModel {
     };
   }
 
-  addNode(title, x, y, width = 72, height = 100) {
+  addNode(title, x, y, width, height) {
     let newNode = new DiagramNode(title, x, y, width, height);
     this._model.nodes.push(newNode);
     return newNode;

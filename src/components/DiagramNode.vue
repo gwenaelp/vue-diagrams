@@ -1,7 +1,7 @@
 <template>
   <svg :x="x" :y="y">
     <rect
-      fill="#66cc00"
+      :fill="color"
       stroke="#000000"
       :stroke-width="selected ? 2 : 0"
       x="5" y="25"
@@ -39,7 +39,34 @@
 export default {
   name: "DiagramNode",
 
-  props: ["title", "index", "ports", "x", "y", "width", "height", "selected"],
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    index: Number,
+    ports: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    },
+    x: Number,
+    y: Number,
+    width: {
+      type: Number,
+      default: 72
+    },
+    height: {
+      type: Number,
+      default: 100
+    },
+    color: {
+      type: String,
+      default: "#66cc00"
+    },
+    selected: Boolean
+  },
 
   data() {
     return {

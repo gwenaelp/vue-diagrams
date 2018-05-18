@@ -10,21 +10,21 @@
       :fit="false"
       :center="true"
       viewportSelector="#svgroot2"
-      :beforePan="beforePan"
-    >
+      :preventMouseEventsDefault="false"
+      :beforePan="beforePan">
     <svg
-    id="svgroot2"
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 500 500"
-    width="500"
-    height="500"
-    preserveAspectRatio="xMinYMin meet"
-    class="svg-content"
-    ref="dragramRoot"
-    @mousemove="mouseMove"
-    @mouseup="mouseUp" >
-     <defs>
+      id="svgroot2"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 500 500"
+      width="500"
+      height="500"
+      preserveAspectRatio="xMinYMin meet"
+      class="svg-content"
+      ref="dragramRoot"
+      @mousemove="mouseMove"
+      @mouseup="mouseUp">
+      <defs>
         <pattern id="smallGrid" width="16" height="16" patternUnits="userSpaceOnUse">
           <path d="M 16 0 L 0 0 0 16" fill="none" stroke="gray" stroke-width="0.5"/>
         </pattern>
@@ -62,6 +62,7 @@
           :y="node.y"
           :width="node.width"
           :height="node.height"
+          :color="node.color"
           :ports="node.ports"
           :selected="selectedItem.type === 'nodes' && selectedItem.index === nodeIndex"
           :index="nodeIndex"
@@ -114,27 +115,6 @@ function snapToGrip(val, gridSize) {
 
 var diagramModel = new DiagramModel();
 
-//,
-//        {
-//          title: "test2",
-//          x: 300,
-//          y: 200,
-//          width: 144,
-//          height: 80,
-//          ports: [
-//            {
-//              id: 3,
-//              type: "in",
-//              name: "testIn"
-//            },
-//            {
-//              id: 4,
-//              type: "out",
-//              name: "testOut"
-//            }
-//          ]
-//        }
-
 export default {
   name: "Diagram",
 
@@ -181,14 +161,14 @@ export default {
     },
     createPoint(x, y, linkIndex, pointIndex) {
       let coords = this.convertXYtoViewPort(x, y);
+      let links = this.model._model.links;
 
       //FIXME works well only on links created at startup
-      if (this.links[linkIndex].points === undefined)
-        this.links[linkIndex].points = [];
+      if (links[linkIndex].points === undefined) links[linkIndex].points = [];
 
-      var points = this.model._model.links[linkIndex].points;
+      var points = links[linkIndex].points;
       points.splice(pointIndex, 0, coords);
-      this.links[linkIndex].points = points;
+      links[linkIndex].points = points;
     },
 
     clearSelection() {
@@ -285,7 +265,7 @@ export default {
         var linkIndex = this.draggedItem.linkIndex;
 
         if (this.$refs["port-" + portId][0].type === "in") {
-          var l = this.links[linkIndex].points.length;
+          var l = links[linkIndex].points.length;
           links[linkIndex].points.splice(
             pointIndex,
             l - this.draggedItem.pointIndex
@@ -325,7 +305,7 @@ export default {
           console.warn("You must link one out port and one in port");
         }
 
-        this.links = links;
+        this.model._model.links = links;
 
         this.updateLinksPositions();
       }
