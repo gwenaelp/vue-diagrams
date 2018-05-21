@@ -115,10 +115,9 @@ function snapToGrip(val, gridSize) {
   return gridSize * Math.round(val / gridSize);
 }
 
-var diagramModel = new DiagramModel();
-
 export default {
   name: "Diagram",
+  Model: DiagramModel,
 
   props: {
     model: {

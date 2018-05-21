@@ -1,4 +1,5 @@
 import Diagram from "./components/Diagram";
+import DiagramModel from "./DiagramModel";
 
 const LibraryModule = {
   Diagram,
@@ -14,3 +15,4 @@ export default LibraryModule;
 
 // Export components
 export { Diagram };
+export { DiagramModel };

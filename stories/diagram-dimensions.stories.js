@@ -1,10 +1,10 @@
 import { storiesOf } from "@storybook/vue";
-import DiagramModel from "../src/DiagramModel";
+import Diagram from "../src/components/Diagram";
 
 // Add more stories here to live develop your components
 storiesOf("Diagram", module).add("Diagram dimensions", () => ({
   data() {
-    const diagramModel = new DiagramModel();
+    const diagramModel = new Diagram.Model();
 
     diagramModel.addNode("test2", 0, 0);
 
