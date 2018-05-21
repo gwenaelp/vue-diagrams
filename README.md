@@ -47,9 +47,11 @@ export default {
 </template>
 <script>
 <script>
+import { Diagram } from 'vue-diagrams';
+
 export default {
   data() {
-    const diagramModel = new DiagramModel();
+    const diagramModel = new Diagram.Model();
 
     const node1 = diagramModel.addNode("test2", 300, 200);
     const inPort = node1.addInPort("test");
@@ -69,7 +71,11 @@ export default {
     return {
       model: diagramModel
     };
-  }
+  },
+
+  components: {
+    Diagram
+  },
 };
 </script>
 ```
