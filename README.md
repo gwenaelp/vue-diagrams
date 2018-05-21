@@ -23,29 +23,12 @@ vue-diagrams can be used as a module in both CommonJS and ES modular environment
 
 When in non-modular environment, vue-diagrams will register all the components to vue by itself.</p>
 
-### ES6
-```js
-//
-// You can register a component manually
-//
-import { Diagram } from 'vue-diagrams';
-
-export default {
-  ...
-  components: {
-    Diagram
-  },
-  ...
-};
-```
-
 ### After that, you can use it in your Vue components:
 
 ```html
 <template>
   <diagram :model="model"></diagram>
 </template>
-<script>
 <script>
 import { Diagram } from 'vue-diagrams';
 
