@@ -1,7 +1,7 @@
 <template>
   <div>
    <SvgPanZoom
-      style="width: 500px; height: 500px; border:1px solid black;"
+      :style="{ width: width + 'px', height: height + 'px', border:'1px solid black'}"
       xmlns="http://www.w3.org/2000/svg"
       :zoomEnabled="zoomEnabled"
       id="svgroot"
@@ -16,9 +16,9 @@
       id="svgroot2"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 500 500"
-      width="500"
-      height="500"
+      :viewBox="'0 0 ' + width + ' ' + height"
+      :width="width"
+      :height="height"
       preserveAspectRatio="xMinYMin meet"
       class="svg-content"
       ref="dragramRoot"
@@ -118,7 +118,17 @@ var diagramModel = new DiagramModel();
 export default {
   name: "Diagram",
 
-  props: ["model"],
+  props: {
+    model: {
+      required: true
+    },
+    width: {
+      default: 500
+    },
+    height: {
+      default: 500
+    }
+  },
 
   data() {
     this.updateLinksPositions();
