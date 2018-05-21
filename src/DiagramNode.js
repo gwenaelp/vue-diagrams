@@ -2,7 +2,18 @@ var generateId = function() {
   return Math.trunc(Math.random() * 1000);
 };
 
+/**
+ * @class DiagramNode
+ */
 class DiagramNode {
+  /**
+   *  This should not be called directly. Use the "addNode" method from the DiagramModel class
+   * @param  {String} title  [description]
+   * @param  {Integer} x      [description]
+   * @param  {Integer} y      [description]
+   * @param  {Integer} width  [description]
+   * @param  {Integer} height [description]
+   */
   constructor(title, x, y, width, height) {
     this.title = title;
     this.x = x;
@@ -12,6 +23,11 @@ class DiagramNode {
     this.ports = [];
   }
 
+  /**
+   * Adds a new "in" port into the node.
+   * @param {String} name
+   * @return {Integer} The port id
+   */
   addInPort(name) {
     let newPort = {
       id: generateId(),
@@ -24,6 +40,11 @@ class DiagramNode {
     return newPort.id;
   }
 
+  /**
+   * Adds a new "out" port into the node.
+   * @param {String} name
+   * @return {Integer} The port id
+   */
   addOutPort(name) {
     let newPort = {
       id: generateId(),

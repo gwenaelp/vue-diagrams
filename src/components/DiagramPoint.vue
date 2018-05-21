@@ -9,8 +9,6 @@
     fill="black" />
 </template>
 <script>
-import Vue from "vue";
-
 export default {
   name: "DiagramPoint",
   props: ["x", "y"],
