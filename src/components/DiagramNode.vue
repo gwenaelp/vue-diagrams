@@ -23,7 +23,29 @@
         class="node-dark-background"
         >
       </rect>
-      <text :x="15" :y="40" font-size="14" font-weight="bold" fill="#000000">{{title}}</text>
+      <text :x="10" :y="40" font-size="14" font-weight="bold" fill="#000000">{{title}}</text>
+      <g v-if="deletable" @click="deleteNode">
+        <rect
+          :x="width - 12"
+          y="28"
+          width="14"
+          height="14"
+          rx="2" ry="2"
+          fill="#ffffff"
+          :fill-opacity="0.25"/>
+        <line
+          :x1="width" :y1="30"
+          :x2="width - 10" :y2="40"
+          style="stroke:rgb(0,0,0);"
+          stroke-width="2"
+        />
+        <line
+          :x1="width - 10" :y1="30"
+          :x2="width" :y2="40"
+          style="stroke:rgb(0,0,0);"
+          stroke-width="2"
+        />
+      </g>
     </svg>
     <rect
       fill="#ffffff"
@@ -65,6 +87,10 @@ export default {
       type: String,
       default: "#66cc00"
     },
+    deletable: {
+      type: Boolean,
+      default: true
+    },
     selected: Boolean
   },
 
@@ -76,6 +102,10 @@ export default {
   },
 
   methods: {
+    deleteNode: function() {
+      this.$emit("delete");
+    },
+
     mouseDown: function(event) {
       this.$emit(
         "onStartDrag",

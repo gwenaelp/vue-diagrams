@@ -27,9 +27,34 @@ class DiagramModel {
    * @return {Node} The node created
    */
   addNode(title, x, y, width, height) {
-    let newNode = new DiagramNode(title, x, y, width, height);
+    const newNode = new DiagramNode(generateId(), title, x, y, width, height);
     this._model.nodes.push(newNode);
     return newNode;
+  }
+
+  deleteNode(node) {
+    const index = this._model.nodes.indexOf(node);
+    for (var j = 0; j < this._model.links.length; j++) {
+      const currentLink = this._model.links[j];
+
+      for (var i = 0; i < node.ports.length; i++) {
+        const currentPort = node.ports[i];
+
+        if (
+          currentLink.from === currentPort.id ||
+          currentLink.to === currentPort.id
+        ) {
+          this.deleteLink(currentLink);
+          j--;
+        }
+      }
+    }
+    this._model.nodes.splice(index, 1);
+  }
+
+  deleteLink(link) {
+    const index = this._model.links.indexOf(link);
+    this._model.links.splice(index, 1);
   }
 
   /**

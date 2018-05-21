@@ -17,6 +17,7 @@ storiesOf("Diagram", module).add("Simple diagram", () => ({
     const node3 = diagramModel.addNode("test3", 10, 100, 72, 100);
     const node3OutPort = node3.addOutPort("testOut3");
     node3.color = "#cc6600";
+    node3.deletable = false;
 
     diagramModel.addLink(node2OutPort, inPort);
     diagramModel.addLink(node3OutPort, inPort);

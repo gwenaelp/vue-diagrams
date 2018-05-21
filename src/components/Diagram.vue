@@ -63,11 +63,13 @@
           :width="node.width"
           :height="node.height"
           :color="node.color"
+          :deletable="node.deletable"
           :ports="node.ports"
           :selected="selectedItem.type === 'nodes' && selectedItem.index === nodeIndex"
           :index="nodeIndex"
           v-for="(node, nodeIndex) in model._model.nodes"
           @onStartDrag="startDragItem"
+          @delete="model.deleteNode(node)"
         >
           <DiagramPort
             v-for="(port, portIndex) in node.ports"
