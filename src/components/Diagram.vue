@@ -129,6 +129,9 @@ export default {
     },
     height: {
       default: 500
+    },
+    gridSnap: {
+      default: 1
     }
   },
 
@@ -245,6 +248,10 @@ export default {
         var type = this.draggedItem.type;
         if (type === "points") {
           let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
+
+          coords.x = snapToGrip(coords.x, this.gridSnap) - this.gridSnap / 2;
+          coords.y = snapToGrip(coords.y, this.gridSnap);
+
           links[this.draggedItem.linkIndex].points[
             this.draggedItem.pointIndex
           ].x =
@@ -256,6 +263,9 @@ export default {
           this.updateLinksPositions();
         } else {
           let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
+
+          coords.x = snapToGrip(coords.x, this.gridSnap) - this.gridSnap / 2;
+          coords.y = snapToGrip(coords.y, this.gridSnap);
 
           this.model._model[type][index].x = coords.x - 30;
           this.model._model[type][index].y = coords.y - 30;

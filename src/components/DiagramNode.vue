@@ -4,7 +4,7 @@
       :fill="color"
       stroke="#000000"
       :stroke-width="selected ? 2 : 0"
-      x="5" y="25"
+      x="5" y="15"
       rx="3" ry="3"
       :width="width" :height="height"
       class="node-dark-background">
@@ -17,31 +17,31 @@
       <rect
         fill="#000000"
         :fill-opacity="titleFillOpacity"
-        x="7" y="27"
+        x="7" y="17"
         rx="3" ry="3"
         :width="width-4" height="16"
         class="node-dark-background"
         >
       </rect>
-      <text :x="10" :y="40" font-size="14" font-weight="bold" fill="#000000">{{title}}</text>
+      <text :x="10" :y="30" font-size="14" font-weight="bold" fill="#000000">{{title}}</text>
       <g v-if="deletable" @click="deleteNode">
         <rect
           :x="width - 12"
-          y="28"
+          y="18"
           width="14"
           height="14"
           rx="2" ry="2"
           fill="#ffffff"
           :fill-opacity="0.25"/>
         <line
-          :x1="width" :y1="30"
-          :x2="width - 10" :y2="40"
+          :x1="width" :y1="20"
+          :x2="width - 10" :y2="30"
           style="stroke:rgb(0,0,0);"
           stroke-width="2"
         />
         <line
-          :x1="width - 10" :y1="30"
-          :x2="width" :y2="40"
+          :x1="width - 10" :y1="20"
+          :x2="width" :y2="30"
           style="stroke:rgb(0,0,0);"
           stroke-width="2"
         />
@@ -49,7 +49,7 @@
     </svg>
     <rect
       fill="#ffffff"
-      x="7" y="45"
+      x="7" y="35"
       rx="3" ry="3"
       :width="width-4" :height="height - 22"
       class="node-light-background">
