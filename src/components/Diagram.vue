@@ -159,6 +159,7 @@ export default {
         return false;
       else return true;
     },
+
     createPoint(x, y, linkIndex, pointIndex) {
       let coords = this.convertXYtoViewPort(x, y);
       let links = this.model._model.links;
@@ -327,6 +328,12 @@ export default {
   computed: {
     querySelector: function() {
       return document.querySelector("#viewport");
+    }
+  },
+
+  watch: {
+    "model._model.links": function() {
+      this.updateLinksPositions();
     }
   }
 };
