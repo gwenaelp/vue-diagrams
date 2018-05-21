@@ -11,6 +11,8 @@
 
 > Diagram component for vue.js, inspired by react-diagrams
 
+![](./images/example1.png)
+
 > Generated using [vue-cli-template-library](https://github.com/julon/vue-cli-template-library).
 
 ## Installation

@@ -26,5 +26,5 @@ storiesOf("Diagram", module).add("Simple diagram", () => ({
       model: diagramModel
     };
   },
-  template: `<diagram :model="model"></diagram>`
+  template: `<diagram :model="model" height="300"></diagram>`
 }));
