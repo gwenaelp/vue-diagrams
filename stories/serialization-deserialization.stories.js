@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/vue";
 import DiagramModel from "../src/DiagramModel";
 
 // Add more stories here to live develop your components
-storiesOf("Diagram", module).add("Simple diagram", () => ({
+storiesOf("Diagram", module).add("serialization/deserialization", () => ({
   data() {
     let diagramModel = new DiagramModel();
 
@@ -22,8 +22,14 @@ storiesOf("Diagram", module).add("Simple diagram", () => ({
     diagramModel.addLink(node3OutPort, inPort);
 
     return {
+      console,
+      serializedModel: diagramModel.serialize(),
       model: diagramModel
     };
   },
-  template: `<diagram :model="model"></diagram>`
+  template: `<div>
+    <diagram :model="model"></diagram>
+    <button @click="console.log(model.serialize())">serialize</button>
+    <button @click="model.deserialize(serializedModel)">deserialize</button>
+  </div>`
 }));

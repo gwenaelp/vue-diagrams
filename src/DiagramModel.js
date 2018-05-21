@@ -28,6 +28,14 @@ class DiagramModel {
       points
     });
   }
+
+  serialize() {
+    return JSON.stringify(this._model);
+  }
+
+  deserialize(serializedModel) {
+    this._model = JSON.parse(serializedModel);
+  }
 }
 
 export default DiagramModel;
