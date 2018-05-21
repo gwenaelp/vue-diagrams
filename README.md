@@ -37,48 +37,6 @@ export default {
   },
   ...
 };
-
-//
-// or register the whole module with vue
-//
-import ModuleLibrary from 'vue-diagrams';
-
-// Install this library
-Vue.use(ModuleLibrary);
-```
-
-### CommonJS
-```js
-//
-// You can register a component manually
-//
-var Vue = require('vue');
-var ModuleLibrary = require('vue-diagrams');
-
-var YourComponent = Vue.extend({
-  ...
-  components: {
-    'diagram': ModuleLibrary.Diagram
-  },
-  ...
-});
-
-//
-// or register the whole module with vue
-//
-var Vue = require('vue');
-var ModuleLibrary = require('vue-diagrams');
-
-// Install this library
-Vue.use(ModuleLibrary);
-```
-
-### Browser
-
-```html
-<script src="path/to/vue/vue.min.js"></script>
-<script src="path/to/vue-diagrams/dist/vue-diagrams.min.js"></script>
-<!-- Components are registered globally -->
 ```
 
 ### After that, you can use it in your Vue components:
