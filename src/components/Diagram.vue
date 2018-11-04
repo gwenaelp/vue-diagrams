@@ -78,6 +78,7 @@
             :nodeIndex="nodeIndex"
             :y="portIndex * 20"
             :nodeWidth="node.width"
+            :nodeHeight="node.height"
             :type="port.type"
             :name="port.name"
             @onStartDragNewLink="startDragNewLink"
@@ -224,6 +225,9 @@ export default {
         if (port.type === "in") {
           x = node.x + 10;
           y = node.y + port.y + 64;
+        } else if (port.type === "node") {
+          x = node.x + node.width / 2;
+          y = node.y + 20;
         } else {
           x = node.x + node.width + 10;
           y = node.y + port.y + 64;
@@ -286,7 +290,10 @@ export default {
         var pointIndex = this.draggedItem.pointIndex;
         var linkIndex = this.draggedItem.linkIndex;
 
-        if (this.$refs["port-" + portId][0].type === "in") {
+        if (
+          this.$refs["port-" + portId][0].type === "in" ||
+          this.$refs["port-" + portId][0].type === "both"
+        ) {
           var l = links[linkIndex].points.length;
           links[linkIndex].points.splice(
             pointIndex,
@@ -305,26 +312,50 @@ export default {
         var port1 = this.$refs["port-" + port1Id][0];
         var port2 = this.$refs["port-" + port2Id][0];
 
-        if (port1.type === "in" && port2.type === "out") {
-          links.push({
-            id: generateId(),
-            from: port2.id,
-            to: port1.id,
-            positionFrom: {},
-            positionTo: {},
-            points: []
-          });
-        } else if (port2.type === "in" && port1.type === "out") {
-          links.push({
-            id: generateId(),
-            from: port1.id,
-            to: port2.id,
-            positionFrom: {},
-            positionTo: {},
-            points: []
-          });
+        if (port1.type == "node" || port2.type == "node") {
+          if (port1.type == "node" && port2.type == "node") {
+            links.push({
+              id: generateId(),
+              from: port1.id,
+              to: port2.id,
+              positionFrom: {},
+              positionTo: {},
+              points: []
+            });
+          } else {
+            console.warn("You must link one out port and one in port");
+          }
         } else {
-          console.warn("You must link one out port and one in port");
+          if (port1.type == "both" || port1.type == "both") {
+            links.push({
+              id: generateId(),
+              from: port1.id,
+              to: port2.id,
+              positionFrom: {},
+              positionTo: {},
+              points: []
+            });
+          } else if (port1.type === "in" && port2.type === "out") {
+            links.push({
+              id: generateId(),
+              from: port2.id,
+              to: port1.id,
+              positionFrom: {},
+              positionTo: {},
+              points: []
+            });
+          } else if (port2.type === "in" && port1.type === "out") {
+            links.push({
+              id: generateId(),
+              from: port1.id,
+              to: port2.id,
+              positionFrom: {},
+              positionTo: {},
+              points: []
+            });
+          } else {
+            console.warn("You must link one out port and one in port");
+          }
         }
 
         this.model._model.links = links;

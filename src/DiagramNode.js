@@ -57,6 +57,40 @@ class DiagramNode {
 
     return newPort.id;
   }
+
+  /**
+   * Adds a new "both" port into the node.
+   * @param {String} name
+   * @return {Integer} The port id
+   */
+  addBothPort(name) {
+    let newPort = {
+      id: generateId(),
+      type: "both",
+      name
+    };
+
+    this.ports.push(newPort);
+
+    return newPort.id;
+  }
+
+  /**
+   * Adds a new "node" port into the node.
+   * @param {String} name
+   * @return {Integer} The port id
+   */
+  addNodePort(name) {
+    let newPort = {
+      id: generateId(),
+      type: "node",
+      name
+    };
+
+    this.ports.push(newPort);
+
+    return newPort.id;
+  }
 }
 
 export default DiagramNode;

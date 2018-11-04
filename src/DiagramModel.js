@@ -28,6 +28,7 @@ class DiagramModel {
    */
   addNode(title, x, y, width, height) {
     const newNode = new DiagramNode(generateId(), title, x, y, width, height);
+    newNode.addNodePort(title);
     this._model.nodes.push(newNode);
     return newNode;
   }

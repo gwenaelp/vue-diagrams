@@ -11,7 +11,7 @@
       </rect>
       <text x="12" y="9" font-size="8pt" fill="#000000">{{name}}</text>
     </svg>
-    <svg :y="y + 55" v-else>
+    <svg :y="y + 55" v-else-if="type === 'out'">
       <rect
         :fill="fill"
         ref="handle"
@@ -22,12 +22,33 @@
       </rect>
       <text :x="nodeWidth - 6" y="9" text-anchor="end" font-size="8pt" fill="#000000">{{name}}</text>
     </svg>
+    <svg :y="y + 55" v-else-if="type === 'both'">
+      <rect
+        :fill="fill"
+        ref="handle"
+        :x="nodeWidth" y="0"
+        rx="3" ry="3"
+        width="10" height="10"
+        @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
+      </rect>
+      <text :x="nodeWidth - 6" y="9" text-anchor="end" font-size="8pt" fill="#000000">{{name}}</text>
+    </svg>
+    <svg :y="y + 20" v-else-if="type === 'node'">
+      <rect
+        :fill="fill"
+        ref="handle"
+        :x="nodeWidth/2" y="0"
+        rx="3" ry="3"
+        width="10" height="10"
+        @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
+      </rect>
+    </svg>
   </g>
 </template>
 <script>
 export default {
   name: "DiagramPort",
-  props: ["id", "y", "type", "name", "nodeWidth", "nodeIndex"],
+  props: ["id", "y", "type", "name", "nodeWidth", "nodeHeight", "nodeIndex"],
   data() {
     return {
       fill: "#444444"
