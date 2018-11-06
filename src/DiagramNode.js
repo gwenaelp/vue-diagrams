@@ -22,6 +22,8 @@ class DiagramNode {
     this.width = width;
     this.height = height;
     this.ports = [];
+    this.directedPorts = [];
+    this.undirectedPorts = [];
   }
 
   /**
@@ -37,6 +39,7 @@ class DiagramNode {
     };
 
     this.ports.push(newPort);
+    this.directedPorts.push(newPort);
 
     return newPort.id;
   }
@@ -54,6 +57,7 @@ class DiagramNode {
     };
 
     this.ports.push(newPort);
+    this.directedPorts.push(newPort);
 
     return newPort.id;
   }
@@ -66,11 +70,21 @@ class DiagramNode {
   addBothPort(name) {
     let newPort = {
       id: generateId(),
-      type: "both",
+      type: "left",
       name
     };
 
     this.ports.push(newPort);
+    this.undirectedPorts.push(newPort);
+
+    newPort = {
+      id: generateId(),
+      type: "right",
+      name
+    };
+
+    this.ports.push(newPort);
+    this.undirectedPorts.push(newPort);
 
     return newPort.id;
   }
@@ -88,6 +102,7 @@ class DiagramNode {
     };
 
     this.ports.push(newPort);
+    this.directedPorts.push(newPort);
 
     return newPort.id;
   }

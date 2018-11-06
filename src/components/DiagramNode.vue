@@ -19,11 +19,11 @@
         :fill-opacity="titleFillOpacity"
         x="7" y="17"
         rx="3" ry="3"
-        :width="width-4" height="16"
+        :width="width-4" height="32"
         class="node-dark-background"
         >
       </rect>
-      <text :x="10" :y="30" font-size="14" font-weight="bold" fill="#000000">{{title}}</text>
+      <text :x="10" :y="46" font-size="14" font-weight="bold" fill="#000000">{{title}}</text>
       <g v-if="deletable" @click="deleteNode">
         <rect
           :x="width - 12"
@@ -49,9 +49,9 @@
     </svg>
     <rect
       fill="#ffffff"
-      x="7" y="35"
+      x="7" y="49"
       rx="3" ry="3"
-      :width="width-4" :height="height - 22"
+      :width="width-4" :height="height - 36"
       class="node-light-background">
     </rect>
     <slot></slot>

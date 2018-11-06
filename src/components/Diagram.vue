@@ -72,11 +72,24 @@
           @delete="model.deleteNode(node)"
         >
           <DiagramPort
-            v-for="(port, portIndex) in node.ports"
+            v-for="(port, portIndex) in node.directedPorts"
             :ref="'port-' + port.id"
             :id="port.id"
             :nodeIndex="nodeIndex"
             :y="portIndex * 20"
+            :nodeWidth="node.width"
+            :nodeHeight="node.height"
+            :type="port.type"
+            :name="port.name"
+            @onStartDragNewLink="startDragNewLink"
+            @mouseUpPort="mouseUpPort"
+          />
+          <DiagramPort
+            v-for="(port, portIndex) in node.undirectedPorts"
+            :ref="'port-' + port.id"
+            :id="port.id"
+            :nodeIndex="nodeIndex"
+            :y="(node.directedPorts.length-1)*20 + portIndex * 10"
             :nodeWidth="node.width"
             :nodeHeight="node.height"
             :type="port.type"
@@ -224,13 +237,19 @@ export default {
         var y;
         if (port.type === "in") {
           x = node.x + 10;
-          y = node.y + port.y + 64;
+          y = node.y + port.y + 44;
         } else if (port.type === "node") {
           x = node.x + node.width / 2;
           y = node.y + 20;
-        } else {
+        } else if (port.type === "out") {
           x = node.x + node.width + 10;
-          y = node.y + port.y + 64;
+          y = node.y + port.y + 44;
+        } else if (port.type === "left") {
+          x = node.x + 10;
+          y = node.y + port.y + 65;
+        } else if (port.type === "right") {
+          x = node.x + node.width + 10;
+          y = node.y + port.y + 55;
         }
 
         return { x, y };
@@ -292,7 +311,8 @@ export default {
 
         if (
           this.$refs["port-" + portId][0].type === "in" ||
-          this.$refs["port-" + portId][0].type === "both"
+          this.$refs["port-" + portId][0].type === "left" ||
+          this.$refs["port-" + portId][0].type === "right"
         ) {
           var l = links[linkIndex].points.length;
           links[linkIndex].points.splice(
@@ -326,15 +346,46 @@ export default {
             console.warn("You must link one out port and one in port");
           }
         } else {
-          if (port1.type == "both" || port1.type == "both") {
-            links.push({
-              id: generateId(),
-              from: port1.id,
-              to: port2.id,
-              positionFrom: {},
-              positionTo: {},
-              points: []
-            });
+          if (port1.type == "left" || port1.type == "right") {
+            if (port2.type == "out") {
+              links.push({
+                id: generateId(),
+                from: port2.id,
+                to: port1.id,
+                positionFrom: {},
+                positionTo: {},
+                points: []
+              });
+            } else {
+              links.push({
+                id: generateId(),
+                from: port1.id,
+                to: port2.id,
+                positionFrom: {},
+                positionTo: {},
+                points: []
+              });
+            }
+          } else if (port2.type == "left" || port2.type == "right") {
+            if (port1.type == "in") {
+              links.push({
+                id: generateId(),
+                from: port2.id,
+                to: port1.id,
+                positionFrom: {},
+                positionTo: {},
+                points: []
+              });
+            } else {
+              links.push({
+                id: generateId(),
+                from: port1.id,
+                to: port2.id,
+                positionFrom: {},
+                positionTo: {},
+                points: []
+              });
+            }
           } else if (port1.type === "in" && port2.type === "out") {
             links.push({
               id: generateId(),

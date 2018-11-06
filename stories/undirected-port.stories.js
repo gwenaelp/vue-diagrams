@@ -7,10 +7,16 @@ storiesOf("Diagram", module).add("undirected-port", () => ({
     const diagramModel = new Diagram.Model();
     const node1 = diagramModel.addNode("test", 300, 200, 150, 150);
     node1.addBothPort("testBoth");
+    node1.addInPort("testIn");
+    node1.addInPort("testIn2");
+    node1.addOutPort("testOut");
 
-    const node2 = diagramModel.addNode("test", 10, 200, 100, 100);
+    const node2 = diagramModel.addNode("test", 10, 200, 100, 200);
     node2.addBothPort("testBoth");
     node2.addBothPort("testBoth2");
+    node2.addInPort("testIn");
+    node2.addInPort("testIn2");
+    node2.addOutPort("testOut");
 
     // const node1 = diagramModel.addNode("test2", 300, 200);
     // const inPort = node1.addBothPort("testBoth");
