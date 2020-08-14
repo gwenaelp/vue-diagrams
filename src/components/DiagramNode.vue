@@ -52,7 +52,11 @@
       x="7" y="35"
       rx="3" ry="3"
       :width="width-4" :height="height - 22"
-      class="node-light-background">
+      class="node-light-background"
+      @drop="onDrop($event)"
+      @dragover.prevent
+      @dragenter.prevent
+      >
     </rect>
     <slot></slot>
   </svg>
@@ -121,6 +125,11 @@ export default {
 
     mouseleave() {
       this.titleFillOpacity = 0.25;
+    },
+
+    onDrop: function(event) {
+      console.log("received an event on a node ");
+      this.$emit("drop", event);
     }
   }
 };

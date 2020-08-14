@@ -70,6 +70,7 @@
           v-for="(node, nodeIndex) in model._model.nodes"
           @onStartDrag="startDragItem"
           @delete="model.deleteNode(node)"
+          @drop="onDrop($event, node)"
         >
           <DiagramPort
             v-for="(port, portIndex) in node.ports"
@@ -82,6 +83,7 @@
             :name="port.name"
             @onStartDragNewLink="startDragNewLink"
             @mouseUpPort="mouseUpPort"
+            @delete="model.removePort(node, port)"
           />
         </DiagramNode>
       </g>
@@ -344,6 +346,14 @@ export default {
       this.selectedItem = item;
       this.initialDragX = x;
       this.initialDragY = y;
+    },
+
+    onDrop(evt, node) {
+      const itemID = evt.dataTransfer.getData("itemID");
+      const itemName = evt.dataTransfer.getData("itemName");
+      console.log("received on diagram node " + itemID);
+      node.addOutPort("new Property");
+      // const node4 = this.model.addNode(itemName, 100, 200, 72, 100);
     }
   },
   computed: {
