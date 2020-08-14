@@ -139,7 +139,6 @@ export default {
     },
 
     onDrop: function(event) {
-      console.log("received an event on a node ");
       this.$emit("drop", event);
     }
   }

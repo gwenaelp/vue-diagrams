@@ -34,7 +34,7 @@
         </pattern>
       </defs>
 
-      <rect x="-5000px" y="-5000px" width="10000px" height="10000px" fill="url(#grid)" @mousedown="clearSelection" ref="grid" class="svg-pan-zoom_viewport"/>
+      <rect x="-5000px" y="-5000px" width="10000px" height="10000px" fill="url(#grid)" @drop="onDrop($event)" @dragover.prevent @dragenter.prevent @mousedown="clearSelection" ref="grid" class="svg-pan-zoom_viewport"/>
       <g ref="viewPort" id="viewport" x="50" y="50">
         <DiagramLink
           :ref="'link-' + index"
@@ -70,7 +70,7 @@
           v-for="(node, nodeIndex) in model._model.nodes"
           @onStartDrag="startDragItem"
           @delete="model.deleteNode(node)"
-          @drop="onDrop($event, node)"
+          @drop="onDropNode($event, node)"
         >
           <DiagramPort
             v-for="(port, portIndex) in node.ports"
@@ -348,12 +348,12 @@ export default {
       this.initialDragY = y;
     },
 
-    onDrop(evt, node) {
-      const itemID = evt.dataTransfer.getData("itemID");
-      const itemName = evt.dataTransfer.getData("itemName");
-      console.log("received on diagram node " + itemID);
-      node.addOutPort("new Property");
-      // const node4 = this.model.addNode(itemName, 100, 200, 72, 100);
+    onDrop(evt) {
+      this.$emit("drop", evt);
+    },
+
+    onDropNode(evt, node) {
+      this.$emit("dropNode", evt, node);
     }
   },
   computed: {
