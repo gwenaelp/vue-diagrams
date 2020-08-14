@@ -26,8 +26,17 @@ class DiagramModel {
    * @param {Integer} height Height
    * @return {Node} The node created
    */
-  addNode(title, x, y, width, height) {
-    const newNode = new DiagramNode(generateId(), title, x, y, width, height);
+  addNode(object, x, y, width, height) {
+    let id = null;
+    if (typeof object === "object") {
+      if (object.id != undefined) {
+        id = object.id;
+      }
+    }
+    if (id === null) {
+      id = generateId();
+    }
+    const newNode = new DiagramNode(id, object, x, y, width, height);
     this._model.nodes.push(newNode);
     return newNode;
   }

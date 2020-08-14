@@ -15,8 +15,13 @@ class DiagramNode {
    * @param  {Integer} height [description]
    * @param  {Integer} id [description]
    */
-  constructor(id, title, x, y, width, height) {
-    this.title = title;
+  constructor(id, object, x, y, width, height) {
+    if (typeof object === "object") {
+      this.object = object;
+      this.title = object.title;
+    } else {
+      this.title = object;
+    }
     this.x = x;
     this.y = y;
     this.width = width;
