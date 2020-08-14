@@ -52,6 +52,21 @@ class DiagramModel {
     this._model.nodes.splice(index, 1);
   }
 
+  /**
+   * Removes a port.
+   */
+  removePort(node, port) {
+    const index = node.ports.indexOf(port);
+    for (var j = 0; j < this._model.links.length; j++) {
+      const currentLink = this._model.links[j];
+      if (currentLink.from === port.id || currentLink.to === port.id) {
+        this.deleteLink(currentLink);
+        j--;
+      }
+    }
+    node.ports.splice(index, 1);
+  }
+
   deleteLink(link) {
     const index = this._model.links.indexOf(link);
     this._model.links.splice(index, 1);
