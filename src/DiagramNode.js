@@ -34,12 +34,17 @@ class DiagramNode {
    * @param {String} name
    * @return {Integer} The port id
    */
-  addInPort(name) {
+  addInPort(object) {
     let newPort = {
       id: generateId(),
-      type: "in",
-      name
+      type: "in"
     };
+    if (typeof object === "object") {
+      newPort.object = object;
+      newPort.name = object.title;
+    } else {
+      newPort.name = object;
+    }
 
     this.ports.push(newPort);
 
@@ -51,12 +56,17 @@ class DiagramNode {
    * @param {String} name
    * @return {Integer} The port id
    */
-  addOutPort(name) {
+  addOutPort(object) {
     let newPort = {
       id: generateId(),
-      type: "out",
-      name
+      type: "out"
     };
+    if (typeof object === "object") {
+      newPort.object = object;
+      newPort.name = object.title;
+    } else {
+      newPort.name = object;
+    }
 
     this.ports.push(newPort);
 
