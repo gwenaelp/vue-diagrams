@@ -6,7 +6,7 @@
       :stroke-width="selected ? 2 : 0"
       x="5" y="15"
       rx="3" ry="3"
-      :width="width" :height="height"
+      :width="width" :height="computedHeight"
       class="node-dark-background">
     </rect>
     <svg
@@ -51,7 +51,7 @@
       fill="#ffffff"
       x="7" y="35"
       rx="3" ry="3"
-      :width="width-4" :height="height - 22"
+      :width="width-4" :height="computedHeight - 22"
       class="node-light-background"
       @drop="onDrop($event)"
       @dragover.prevent
@@ -103,6 +103,17 @@ export default {
       nodeStrokeWidth: 0,
       titleFillOpacity: 0.25
     };
+  },
+
+  computed: {
+    computedHeight() {
+      let newHeight = this.ports.length * 20 + 40;
+      if (this.height > newHeight) {
+        return this.height;
+      } else {
+        return newHeight;
+      }
+    }
   },
 
   methods: {
