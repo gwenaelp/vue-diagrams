@@ -1,5 +1,5 @@
 var generateId = function() {
-  return Math.trunc(Math.random() * 1000);
+  return Math.trunc(Math.random() * 1000000);
 };
 
 /**

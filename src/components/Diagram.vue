@@ -100,7 +100,7 @@ import DiagramLink from "./DiagramLink";
 import DiagramPort from "./DiagramPort";
 
 var generateId = function() {
-  return Math.trunc(Math.random() * 1000);
+  return Math.trunc(Math.random() * 1000000);
 };
 
 function getAbsoluteXY(element) {
