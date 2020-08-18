@@ -84,6 +84,7 @@
             @onStartDragNewLink="startDragNewLink"
             @mouseUpPort="mouseUpPort"
             @delete="model.removePort(node, port)"
+            @configure="configurePort(node, port)"
           />
         </DiagramNode>
       </g>
@@ -354,6 +355,10 @@ export default {
 
     onDropNode(evt, node) {
       this.$emit("dropNode", evt, node);
+    },
+
+    configurePort(node, port) {
+      this.$emit("configurePort", node, port);
     }
   },
   computed: {

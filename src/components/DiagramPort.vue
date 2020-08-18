@@ -9,7 +9,7 @@
         width="10" height="10"
         @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
       </rect>
-      <text x="12" y="9" font-size="8pt" fill="#000000" @click="deletePort">{{name}}</text>
+      <text x="12" y="9" font-size="8pt" fill="#000000">{{name}}</text>
     </svg>
     <svg :y="y + 55" v-else>
       <rect
@@ -20,7 +20,9 @@
         width="10" height="10"
         @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
       </rect>
-      <text :x="12" y="9" font-size="8pt" fill="#000000" @click="deletePort">{{name}}</text>
+      <text :x="12" y="9" font-size="8pt" fill="#000000">{{name}}</text>
+      <text :x="nodeWidth - 24" y="9" font-size="8pt" fill="#000000" @click="configurePort" style="cursor: pointer">o</text>
+      <text :x="nodeWidth - 12" y="9" font-size="8pt" fill="#000000" @click="deletePort" style="cursor: pointer">x</text>
     </svg>
   </g>
 </template>
@@ -50,6 +52,9 @@ export default {
     },
     deletePort: function() {
       this.$emit("delete");
+    },
+    configurePort: function() {
+      this.$emit("configure");
     }
   }
 };
