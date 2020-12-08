@@ -20,7 +20,9 @@
         width="10" height="10"
         @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
       </rect>
-      <text :x="nodeWidth - 6" y="9" text-anchor="end" font-size="8pt" fill="#000000">{{name}}</text>
+      <text :x="12" y="9" font-size="8pt" fill="#000000">{{name}}</text>
+      <text :x="nodeWidth - 24" y="9" font-size="8pt" fill="#000000" @click="configurePort" style="cursor: pointer">o</text>
+      <text :x="nodeWidth - 12" y="9" font-size="8pt" fill="#000000" @click="deletePort" style="cursor: pointer">x</text>
     </svg>
   </g>
 </template>
@@ -47,6 +49,12 @@ export default {
     },
     startDragNewLink() {
       this.$emit("onStartDragNewLink", this.id);
+    },
+    deletePort: function() {
+      this.$emit("delete");
+    },
+    configurePort: function() {
+      this.$emit("configure");
     }
   }
 };

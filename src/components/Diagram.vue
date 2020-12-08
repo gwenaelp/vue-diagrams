@@ -34,7 +34,7 @@
         </pattern>
       </defs>
 
-      <rect x="-5000px" y="-5000px" width="10000px" height="10000px" fill="url(#grid)" @mousedown="clearSelection" ref="grid" class="svg-pan-zoom_viewport"/>
+      <rect x="-5000px" y="-5000px" width="10000px" height="10000px" fill="url(#grid)" @drop="onDrop($event)" @dragover.prevent @dragenter.prevent @mousedown="clearSelection" ref="grid" class="svg-pan-zoom_viewport"/>
       <g ref="viewPort" id="viewport" x="50" y="50">
         <DiagramLink
           :ref="'link-' + index"
@@ -70,6 +70,7 @@
           v-for="(node, nodeIndex) in model._model.nodes"
           @onStartDrag="startDragItem"
           @delete="model.deleteNode(node)"
+          @drop="onDropNode($event, node)"
         >
           <DiagramPort
             v-for="(port, portIndex) in node.ports"
@@ -82,6 +83,8 @@
             :name="port.name"
             @onStartDragNewLink="startDragNewLink"
             @mouseUpPort="mouseUpPort"
+            @delete="model.removePort(node, port)"
+            @configure="configurePort(node, port)"
           />
         </DiagramNode>
       </g>
@@ -98,7 +101,7 @@ import DiagramLink from "./DiagramLink";
 import DiagramPort from "./DiagramPort";
 
 var generateId = function() {
-  return Math.trunc(Math.random() * 1000);
+  return Math.trunc(Math.random() * 1000000);
 };
 
 function getAbsoluteXY(element) {
@@ -344,6 +347,18 @@ export default {
       this.selectedItem = item;
       this.initialDragX = x;
       this.initialDragY = y;
+    },
+
+    onDrop(evt) {
+      this.$emit("drop", evt);
+    },
+
+    onDropNode(evt, node) {
+      this.$emit("dropNode", evt, node);
+    },
+
+    configurePort(node, port) {
+      this.$emit("configurePort", node, port);
     }
   },
   computed: {

@@ -1,5 +1,5 @@
 var generateId = function() {
-  return Math.trunc(Math.random() * 1000);
+  return Math.trunc(Math.random() * 1000000);
 };
 
 /**
@@ -15,8 +15,13 @@ class DiagramNode {
    * @param  {Integer} height [description]
    * @param  {Integer} id [description]
    */
-  constructor(id, title, x, y, width, height) {
-    this.title = title;
+  constructor(id, object, x, y, width, height) {
+    if (typeof object === "object") {
+      this.object = object;
+      this.title = object.title;
+    } else {
+      this.title = object;
+    }
     this.x = x;
     this.y = y;
     this.width = width;
@@ -29,16 +34,8 @@ class DiagramNode {
    * @param {String} name
    * @return {Integer} The port id
    */
-  addInPort(name) {
-    let newPort = {
-      id: generateId(),
-      type: "in",
-      name
-    };
-
-    this.ports.push(newPort);
-
-    return newPort.id;
+  addInPort(object) {
+    return this.addPort(object, "in");
   }
 
   /**
@@ -46,12 +43,28 @@ class DiagramNode {
    * @param {String} name
    * @return {Integer} The port id
    */
-  addOutPort(name) {
+  addOutPort(object) {
+    return this.addPort(object, "out");
+  }
+
+  /**
+   * Adds a new port into the node.
+   * @param {String} name
+   * @param {String} type
+   * @return {Integer} The port id
+   */
+  addPort(object, type) {
     let newPort = {
       id: generateId(),
-      type: "out",
-      name
+      type: type
     };
+
+    if (typeof object === "object") {
+      newPort.object = object;
+      newPort.name = object.title;
+    } else {
+      newPort.name = object;
+    }
 
     this.ports.push(newPort);
 
