@@ -68,8 +68,8 @@ class DiagramModel {
       id: generateId(),
       from: from,
       to: to,
-      positionFrom: {},
-      positionTo: {},
+      positionFrom: { x: 0, y: 0 },
+      positionTo: { x: 0, y: 0 },
       points
     });
   }
