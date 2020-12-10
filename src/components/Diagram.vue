@@ -48,7 +48,7 @@
           @onCreatePoint="createPoint"
         />
         <line
-          :x1="getPortHandlePosition(newLink.startPortId).x"
+          :x1="getPortHandlePosition(newLink.startPortId).x - 5"
           :y1="getPortHandlePosition(newLink.startPortId).y"
           :x2="convertXYtoViewPort(mouseX, 0).x"
           :y2="convertXYtoViewPort(0, mouseY).y"
@@ -256,12 +256,10 @@ export default {
 
           links[this.draggedItem.linkIndex].points[
             this.draggedItem.pointIndex
-          ].x =
-            coords.x;
+          ].x = coords.x;
           links[this.draggedItem.linkIndex].points[
             this.draggedItem.pointIndex
-          ].y =
-            coords.y;
+          ].y = coords.y;
           this.updateLinksPositions();
         } else {
           let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);

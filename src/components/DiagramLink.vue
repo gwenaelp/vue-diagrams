@@ -116,15 +116,15 @@ export default {
   },
   computed: {
     x1() {
-      return this.positionFrom.x;
+      return this.positionFrom.x - 5;
     },
 
     y1() {
-      return this.positionFrom.y - 4;
+      return this.positionFrom.y - 0;
     },
 
     x2() {
-      return this.positionTo.x - 4;
+      return this.positionTo.x - 0;
     },
 
     y2() {
@@ -132,9 +132,9 @@ export default {
     },
 
     curve() {
-      var x1 = Math.trunc(this.positionFrom.x),
-        y1 = Math.trunc(this.positionFrom.y - 4),
-        x2 = Math.trunc(this.positionTo.x - 4),
+      var x1 = Math.trunc(this.positionFrom.x - 5),
+        y1 = Math.trunc(this.positionFrom.y - 0),
+        x2 = Math.trunc(this.positionTo.x - 0),
         y2 = Math.trunc(this.positionTo.y - 4);
 
       var distance = Math.trunc(4 * Math.sqrt(Math.abs(x1 - x2)));
