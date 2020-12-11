@@ -1,30 +1,37 @@
 <template>
   <svg :x="x" :y="y">
+    <!-- stroke="#000000" -->
+    <!-- :stroke="borderColor" -->
+    <!-- :stroke-width="selected ? 2 : 0" -->
+    <!-- :fill="color" -->
+    <!-- class="node-dark-background" -->
     <rect
-      :fill="color"
-      stroke="#000000"
-      :stroke-width="selected ? 2 : 0"
+      fill="none"
+      :stroke="selected ? borderColorSelected : borderColor"
+      stroke-width="2"
       x="5" y="15"
       rx="3" ry="3"
       :width="width" :height="computedHeight"
-      class="node-dark-background">
+      filter="url(#filter_gaus_40)"
+      >
     </rect>
     <svg
       x="0" y="0"
-      @mousedown="mouseDown"
-      @mouseenter="mouseenter"
-      @mouseleave="mouseleave">
+      @mousedown="mouseDownTitleBar"
+      @mouseenter="mouseEnterTitleBar"
+      @mouseleave="mouseLeaveTitleBar"
+      >
       <rect
-        fill="#000000"
-        :fill-opacity="titleFillOpacity"
-        x="7" y="17"
-        rx="3" ry="3"
-        :width="width-4" height="16"
-        class="node-dark-background"
+        :fill="titleBarColor"
+        :fill-opacity="titleBarFillOpacity * titleFillOpacityCorrection"
+        x="6" y="16"
+        rx="2" ry="2"
+        :width="width - 2" height="18"
+         style="cursor: move"
         >
       </rect>
-      <text :x="10" :y="30" font-size="14" font-weight="bold" fill="#000000">{{title}}</text>
-      <g v-if="deletable" @click="deleteNode">
+      <text :x="12" :y="30" font-size="14" font-weight="bold" :fill="titleTextColor">{{title}}</text>
+      <g v-if="deletable && !readOnly" @click="deleteNode" style="cursor: pointer">
         <rect
           :x="width - 12"
           y="18"
@@ -32,7 +39,8 @@
           height="14"
           rx="2" ry="2"
           fill="#ffffff"
-          :fill-opacity="0.25"/>
+          :fill-opacity="0.25"
+          />
         <line
           :x1="width" :y1="20"
           :x2="width - 10" :y2="30"
@@ -48,15 +56,16 @@
       </g>
     </svg>
     <rect
-      fill="#ffffff"
-      x="7" y="35"
-      rx="3" ry="3"
-      :width="width-4" :height="computedHeight - 22"
-      class="node-light-background"
+      :fill="backgroundColor"
+      :fill-opacity="backgroundOpacity"
+      x="6" y="34"
+      rx="2" ry="2"
+      :width="width - 2" :height="computedHeight - 20"
       @drop="onDrop($event)"
       @dragover.prevent
       @dragenter.prevent
       >
+      <!-- class="node-light-background" -->
     </rect>
     <slot></slot>
   </svg>
@@ -91,9 +100,41 @@ export default {
       type: String,
       default: "#66cc00"
     },
+    backgroundColor: {
+      type: String,
+      default: "#000000"
+    },
+    backgroundOpacity: {
+      type: Number,
+      default: 0.3
+    },
+    borderColor: {
+      type: String,
+      default: "#000000"
+    },
+    borderColorSelected: {
+      type: String,
+      default: "#ED7D31"
+    },
+    titleTextColor: {
+      type: String,
+      default: "#FFFFFF"
+    },
+    titleBarColor: {
+      type: String,
+      default: "#606060"
+    },
+    titleBarFillOpacity: {
+      type: Number,
+      default: 0.5
+    },
     deletable: {
       type: Boolean,
       default: true
+    },
+    readOnly: {
+      type: Boolean,
+      default: false
     },
     selected: Boolean
   },
@@ -101,13 +142,13 @@ export default {
   data() {
     return {
       nodeStrokeWidth: 0,
-      titleFillOpacity: 0.25
+      titleFillOpacityCorrection: 1
     };
   },
 
   computed: {
     computedHeight() {
-      let newHeight = this.ports.length * 20 + 40;
+      let newHeight = this.ports.length * 20 + 50;
       if (this.height > newHeight) {
         return this.height;
       } else {
@@ -121,7 +162,7 @@ export default {
       this.$emit("delete");
     },
 
-    mouseDown: function(event) {
+    mouseDownTitleBar: function(event) {
       this.$emit(
         "onStartDrag",
         { type: "nodes", index: this.index },
@@ -130,12 +171,12 @@ export default {
       );
     },
 
-    mouseenter() {
-      this.titleFillOpacity = 0.5;
+    mouseEnterTitleBar() {
+      this.titleFillOpacityCorrection = 1.5;
     },
 
-    mouseleave() {
-      this.titleFillOpacity = 0.25;
+    mouseLeaveTitleBar() {
+      this.titleFillOpacityCorrection = 1;
     },
 
     onDrop: function(event) {
