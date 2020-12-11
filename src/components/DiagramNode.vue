@@ -20,6 +20,7 @@
       @mousedown="mouseDownTitleBar"
       @mouseenter="mouseEnterTitleBar"
       @mouseleave="mouseLeaveTitleBar"
+      style="cursor: move"
       >
       <rect
         :fill="titleBarColor"
@@ -27,7 +28,6 @@
         x="6" y="16"
         rx="2" ry="2"
         :width="width - 2" height="18"
-         style="cursor: move"
         >
       </rect>
       <text :x="12" :y="30" font-size="14" font-weight="bold" :fill="titleTextColor">{{title}}</text>
