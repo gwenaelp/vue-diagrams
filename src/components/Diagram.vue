@@ -387,6 +387,9 @@ export default {
       this.selectedItem = item;
       this.initialDragX = x;
       this.initialDragY = y;
+      if (item.type === "nodes") {
+        this.$emit("SelectNode", { index: item.index, details: undefined });
+      }
     },
 
     onDrop(evt) {
