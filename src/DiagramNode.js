@@ -3,6 +3,25 @@ var generateId = function() {
 };
 
 /**
+ * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.
+ *
+ * @param {String} text The text to be rendered.
+ * @param {String} font The css font descriptor that text is to be rendered with (e.g. "bold 14px verdana").
+ *
+ * @see https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
+ */
+function getTextWidth(text, font) {
+  // re-use canvas object for better performance
+  var canvas =
+    getTextWidth.canvas ||
+    (getTextWidth.canvas = document.createElement("canvas"));
+  var context = canvas.getContext("2d");
+  context.font = font;
+  var metrics = context.measureText(text);
+  return metrics.width;
+}
+
+/**
  * @class DiagramNode
  */
 class DiagramNode {
@@ -24,7 +43,15 @@ class DiagramNode {
     }
     this.x = x;
     this.y = y;
-    this.width = width;
+    let newWidth =
+      getTextWidth(this.title, "bold 14pt sans") * 0.85 +
+      20 /* for the thickness and spaces around */ +
+      14; /* for the Delete/Close button */
+    if (width > newWidth) {
+      this.width = width;
+    } else {
+      this.width = newWidth;
+    }
     this.height = height;
     this.ports = [];
   }
