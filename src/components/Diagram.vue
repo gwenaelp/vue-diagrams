@@ -1,7 +1,7 @@
 <template>
   <div>
    <SvgPanZoom
-      :style="{ width: width + 'px', height: height + 'px', border:'1px solid black'}"
+      :style="{ width: width + 'px', height: height + 'px', border:'1px solid black', cursor: (newLink ? 'crosshair' : 'default')}"
       xmlns="http://www.w3.org/2000/svg"
       :zoomEnabled="zoomEnabled"
       id="svgroot"
@@ -11,7 +11,8 @@
       :center="true"
       viewportSelector="#svgroot2"
       :preventMouseEventsDefault="false"
-      :beforePan="beforePan">
+      :beforePan="beforePan"
+      >
     <svg
       id="svgroot2"
       version="1.1"
@@ -32,9 +33,39 @@
           <rect width="80" height="80" fill="url(#smallGrid)"/>
           <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1"/>
         </pattern>
+        <filter id="filter_gaus_10" style="color-interpolation-filters:sRGB">
+          <feGaussianBlur stdDeviation=".1" />
+        </filter>
+        <filter id="filter_gaus_20" style="color-interpolation-filters:sRGB">
+          <feGaussianBlur stdDeviation=".2" />
+        </filter>
+        <filter id="filter_gaus_30" style="color-interpolation-filters:sRGB">
+          <feGaussianBlur stdDeviation=".3" />
+        </filter>
+        <filter id="filter_gaus_40" style="color-interpolation-filters:sRGB">
+          <feGaussianBlur stdDeviation=".4" />
+        </filter>
+        <filter id="filter_gaus_50" style="color-interpolation-filters:sRGB">
+          <feGaussianBlur stdDeviation=".5" />
+        </filter>
+        <filter id="filter_gaus_60" style="color-interpolation-filters:sRGB">
+          <feGaussianBlur stdDeviation=".6" />
+        </filter>
+        <filter id="filter_gaus_70" style="color-interpolation-filters:sRGB">
+          <feGaussianBlur stdDeviation=".7" />
+        </filter>
+        <filter id="filter_gaus_80" style="color-interpolation-filters:sRGB">
+          <feGaussianBlur stdDeviation=".8" />
+        </filter>
+        <filter id="filter_gaus_90" style="color-interpolation-filters:sRGB">
+          <feGaussianBlur stdDeviation=".9" />
+        </filter>
+        <filter id="filter_gaus_100" style="color-interpolation-filters:sRGB">
+          <feGaussianBlur stdDeviation="1" />
+        </filter>
       </defs>
 
-      <rect x="-5000px" y="-5000px" width="10000px" height="10000px" fill="url(#grid)" @mousedown="clearSelection" ref="grid" class="svg-pan-zoom_viewport"/>
+      <rect x="-5000px" y="-5000px" width="10000px" height="10000px" fill="url(#grid)" @drop="onDrop($event)" @dragover.prevent @dragenter.prevent @mousedown="clearSelection" ref="grid" class="svg-pan-zoom_viewport"/>
       <g ref="viewPort" id="viewport" x="50" y="50">
         <DiagramLink
           :ref="'link-' + index"
@@ -48,11 +79,22 @@
           @onCreatePoint="createPoint"
         />
         <line
-          :x1="getPortHandlePosition(newLink.startPortId).x"
+          :x1="getPortHandlePosition(newLink.startPortId).x - 5"
           :y1="getPortHandlePosition(newLink.startPortId).y"
           :x2="convertXYtoViewPort(mouseX, 0).x"
           :y2="convertXYtoViewPort(0, mouseY).y"
-          style="stroke:rgb(255,0,0);stroke-width:2"
+          style="stroke:rgba(0,0,0,.3);"
+          stroke-width="4"
+          filter="url(#filter_gaus_20)"
+          v-if="newLink"
+        />
+        <line
+          :x1="getPortHandlePosition(newLink.startPortId).x - 5"
+          :y1="getPortHandlePosition(newLink.startPortId).y"
+          :x2="convertXYtoViewPort(mouseX, 0).x"
+          :y2="convertXYtoViewPort(0, mouseY).y"
+          style="stroke:rgb(255,0,0);stroke-width:1"
+          filter="url(#filter_gaus_30)"
           v-if="newLink"
         />
         <DiagramNode
@@ -70,18 +112,55 @@
           v-for="(node, nodeIndex) in model._model.nodes"
           @onStartDrag="startDragItem"
           @delete="model.deleteNode(node)"
+          @drop="onDropNode($event, node)"
         >
           <DiagramPort
-            v-for="(port, portIndex) in node.ports"
+            v-for="(port, portIndex) in node.ports.filter(p => p.type === 'in')"
             :ref="'port-' + port.id"
             :id="port.id"
             :nodeIndex="nodeIndex"
-            :y="portIndex * 20"
+            :y="(portIndex - 1) * 20 + 5"
             :nodeWidth="node.width"
             :type="port.type"
             :name="port.name"
+            :deletable="port.deletable"
+            :isASpacer="port.isASpacer"
+            :fontSize="port.fontSize"
+            :fontFamily="port.fontFamily"
+            :connectorCategory="port.connectorCategory"
+            :connectorCategoryTextColor="port.connectorCategoryTextColor"
+            :connectorCategoryTagColor="port.connectorCategoryTagColor"
+            :connectorCategoryTagColorHover="port.connectorCategoryTagColorHover"
+            :connectorNameTagColor="port.connectorNameTagColor"
+            :connectorNameTextColor="port.connectorNameTextColor"
             @onStartDragNewLink="startDragNewLink"
             @mouseUpPort="mouseUpPort"
+            @delete="model.removePort(node, port)"
+            @configure="configurePort(node, port)"
+          />
+          <DiagramPort
+            v-for="(port, portIndex) in node.ports.filter(p => p.type === 'out')"
+            :ref="'port-' + port.id"
+            :id="port.id"
+            :nodeIndex="nodeIndex"
+            :y="(portIndex - 1) * 20 + 5"
+            :nodeWidth="node.width"
+            :type="port.type"
+            :name="port.name"
+            :deletable="port.deletable"
+            :isASpacer="port.isASpacer"
+            :fontSize="port.fontSize"
+            :fontFamily="port.fontFamily"
+            :connectorCategory="port.connectorCategory"
+            :connectorCategoryTextColor="port.connectorCategoryTextColor"
+            :connectorCategoryTagColor="port.connectorCategoryTagColor"
+            :connectorCategoryTagColorHover="port.connectorCategoryTagColorHover"
+            :connectorNameTagColor="port.connectorNameTagColor"
+            :connectorNameTextColor="port.connectorNameTextColor"
+            @onStartDragNewLink="startDragNewLink"
+            @mouseUpPort="mouseUpPort"
+            @delete="model.removePort(node, port)"
+            @configure="configurePort(node, port)"
           />
         </DiagramNode>
       </g>
@@ -98,6 +177,7 @@ import DiagramLink from "./DiagramLink";
 import DiagramPort from "./DiagramPort";
 
 import { generateId } from "./../DiagramModel";
+
 
 function getAbsoluteXY(element) {
   var viewportElement = document.documentElement;
@@ -340,6 +420,22 @@ export default {
       this.selectedItem = item;
       this.initialDragX = x;
       this.initialDragY = y;
+      if (item.type === "nodes") {
+        // this.$emit("SelectNode", { index: item.index, nodeObject: item.nodeObject });
+        this.$emit("SelectNode", item);
+      }
+    },
+
+    onDrop(evt) {
+      this.$emit("drop", evt);
+    },
+
+    onDropNode(evt, node) {
+      this.$emit("dropNode", evt, node);
+    },
+
+    configurePort(node, port) {
+      this.$emit("configurePort", node, port);
     }
   },
   computed: {

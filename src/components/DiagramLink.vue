@@ -13,14 +13,16 @@
         <line
           :x1="index === 0 ? x1 : points[index - 1].x" :y1="index === 0 ? y1 : points[index - 1].y"
           :x2="point.x" :y2="point.y"
-          :style="largeStrokeStyle"
-          stroke-width="8"
+          style="stroke:rgba(0,0,0,.3);"
+          stroke-width="4"
+          filter="url(#filter_gaus_20)"
         />
         <line
           :x1="index === 0 ? x1 : points[index - 1].x" :y1="index === 0 ? y1 : points[index - 1].y"
           :x2="point.x" :y2="point.y"
-          style="stroke:rgb(0,0,0);"
-          stroke-width="2"
+          :style="isHighlighted ? hoverStrokeStyle : normalStrokeStyle"
+          stroke-width="1"
+          filter="url(#filter_gaus_30)"
         />
       </g>
       <g
@@ -29,14 +31,16 @@
         <line
           :x1="points[points.length - 1].x" :y1="points[points.length - 1].y"
           :x2="x2" :y2="y2"
-          :style="largeStrokeStyle"
-          stroke-width="8"
+          style="stroke:rgba(0,0,0,.3);"
+          stroke-width="4"
+          filter="url(#filter_gaus_20)"
         />
         <line
           :x1="points[points.length - 1].x" :y1="points[points.length - 1].y"
           :x2="x2" :y2="y2"
-          style="stroke:rgb(0,0,0);"
-          stroke-width="2"
+          :style="isHighlighted ? hoverStrokeStyle : normalStrokeStyle"
+          stroke-width="1"
+          filter="url(#filter_gaus_30)"
         />
       </g>
     </g>
@@ -51,14 +55,16 @@
       >
         <path
           :d="curve"
-          :style="largeStrokeStyle"
-          stroke-width="8"
+          style="stroke:rgba(0,0,0,.3);"
+          stroke-width="4"
           fill="none"
+          filter="url(#filter_gaus_20)"
         />
         <path
           :d="curve"
-          style="stroke:rgb(0,0,0);"
-          stroke-width="2"
+          :style="isHighlighted ? hoverStrokeStyle : normalStrokeStyle"
+          stroke-width="1"
+          filter="url(#filter_gaus_30)"
           fill="none"
         />
       </g>
@@ -87,15 +93,21 @@ export default {
     return {
       largeStrokeStyle: "stroke:rgba(255,0,0,0.0);",
       pointStyleNormal: "stroke:rgba(255,0,0,0.0); stroke-width: 6",
-      pointStyleHover: "stroke:rgba(255,0,0,0.5); stroke-width: 6"
+      pointStyleHover: "stroke:rgba(255,0,0,0.5); stroke-width: 6",
+
+      isHighlighted: false,
+      normalStrokeStyle: "stroke:rgba(255,255,255,.75);",
+      hoverStrokeStyle: "stroke:rgba(255,0,0,.75);"
     };
   },
   methods: {
     mouseEnter() {
       this.largeStrokeStyle = "stroke:rgba(255,0,0,0.5);";
+      this.isHighlighted = true;
     },
     mouseLeave() {
       this.largeStrokeStyle = "stroke:rgba(255,0,0,0.0);";
+      this.isHighlighted = false;
     },
     mouseDownPoint(pos, pointIndex) {
       console.log("mouseDownPoint", arguments);
@@ -116,26 +128,26 @@ export default {
   },
   computed: {
     x1() {
-      return this.positionFrom.x;
+      return this.positionFrom.x - 5;
     },
 
     y1() {
-      return this.positionFrom.y - 4;
+      return this.positionFrom.y - 0;
     },
 
     x2() {
-      return this.positionTo.x - 4;
+      return this.positionTo.x - 5;
     },
 
     y2() {
-      return this.positionTo.y - 4;
+      return this.positionTo.y - 0;
     },
 
     curve() {
-      var x1 = Math.trunc(this.positionFrom.x),
-        y1 = Math.trunc(this.positionFrom.y - 4),
-        x2 = Math.trunc(this.positionTo.x - 4),
-        y2 = Math.trunc(this.positionTo.y - 4);
+      var x1 = Math.trunc(this.positionFrom.x - 5),
+        y1 = Math.trunc(this.positionFrom.y - 0),
+        x2 = Math.trunc(this.positionTo.x - 5),
+        y2 = Math.trunc(this.positionTo.y - 0);
 
       var distance = Math.trunc(4 * Math.sqrt(Math.abs(x1 - x2)));
       var path = `M${x1},${y1} C${x1 + distance},${y1} ${x2 -
