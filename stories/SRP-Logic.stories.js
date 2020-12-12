@@ -12,7 +12,7 @@ storiesOf("Diagram", module).add("SRP - Logic", () => ({
     const node2 = diagramModel.addNode("test", 10, 320, 144, 80);
     const node2OutPort = node2.addOutPort("testOut");
     node2.addOutPort("testOut2");
-    node2.color = "#00cc66";
+    node2.color = "#00cc66"; // #66cc00
 
     const node3 = diagramModel.addNode("test3 Bla blo blu", 10, 100, 72, 100);
     const node3OutPort = node3.addOutPort("testOut3");
@@ -20,9 +20,8 @@ storiesOf("Diagram", module).add("SRP - Logic", () => ({
 
     const node4 = diagramModel.addNode("test3 Bla blo bl", 10, 205, 72, 100);
     const node4OutPort = node4.addOutPort("testOut4");
-    node4.color = "#cc6600";
-    node4.deletable = false;
-    // node4OutPort.connectorCategory = 'Z';
+    // node4.color = "#cc6600";
+    // node4.deletable = false;
 
     diagramModel.addLink(node2OutPort, inPort);
     diagramModel.addLink(node3OutPort, inPort);
@@ -45,6 +44,15 @@ storiesOf("Diagram", module).add("SRP - Logic", () => ({
       set(value) {
         this.model.deserialize(value);
       }
+    },
+    prettySerializedModel: {
+      get() {
+        return JSON.stringify(JSON.parse(this.serializedModel), undefined, 2);
+        // return this.serializedModel;
+      },
+      set(value) {
+        this.serializedModel = value;
+      }
     }
   }, // computed
   methods: {
@@ -53,7 +61,7 @@ storiesOf("Diagram", module).add("SRP - Logic", () => ({
       newNode.addInPort({ title: "Case Name", connectorCategory: "S" });
       newNode.addInPort({ title: "Alarm ID", connectorCategory: "N" });
       newNode.addInPort({ isASpacer: true, title: "in - spacer" });
-      // newNode.addOutPort({ isASpacer: true, title: "out - spacer" }); // FIX ME: doesn't work for Out ports
+      newNode.addOutPort({ isASpacer: true, title: "out - spacer" });
       newNode.addInPort({ title: "", connectorCategory: "A" });
       newNode.addInPort({ title: "" });
 
@@ -83,27 +91,49 @@ storiesOf("Diagram", module).add("SRP - Logic", () => ({
     selectNode(node) {
       this.console.log("selectNode:");
       this.console.log(node);
+    },
+    svgReset() {
+      this.model.svgReset();
     }
   }, // methods
   template: `<div style="background-color: #423661; background-image: radial-gradient(#413561, #473d58);">
     <div>
-      <diagram :model="model" width="800" height="500" @SelectNode="selectNode"></diagram>
-      <button @click="console.log(model.serialize())">serialize</button>
-      <button @click="model.deserialize(serializedModel)">deserialize</button>
-      <button @click="model.deserialize(serialisedConf_1)">deserialize Conf 1</button>
-      <input v-model="newNodeName" type="text" name="newName"/>
-      <button @click="addNode">Add Node</button>
+      <div>
+        <diagram :model="model" width="800" height="400" @SelectNode="selectNode"></diagram>
+        <button @click="console.log(model.serialize())">serialize</button>
+        <button @click="model.deserialize(serializedModel)">deserialize</button>
+        <button @click="model.deserialize(serialisedConf_1)">deserialize Conf 1</button>
+        <input v-model="newNodeName" type="text" name="newName"/>
+        <button @click="addNode">Add Node</button>
+        <button @click="svgReset">Reset View</button>
+      </div>
+      <hr>
+      <input v-model="serializedModel" type="text" size="250" style="background-color: rgb(76 67 99);" />
+      <div style="font-family: sans-serif; font-size: x-small;">
+       {{ serializedModel }}
+      </div>
+      <hr>
+      <div style="font-size: x-small;">
+        <pre>
+          {{ prettyModel }}
+        </pre>
+      </div>
+      <hr>
+      <b>SerializedModel:</b><br>
+      <button @click="model.deserialize(serializedModel)">deserialize</button><br>
+      <textarea
+        name="prettyModelSerializedTextArea"
+        cols="80" rows="250"
+        style="background-color: rgb(76 90 99);"
+      >{{ prettySerializedModel }}</textarea>
+      <hr>
+      <b>Model:</b><br>
+      <textarea
+        name="prettyModelTextArea"
+        cols="80" rows="250"
+        style="background-color: rgb(255 67 99);"
+      >{{ prettyModel }}</textarea>
+      <hr>
     </div>
-    <hr>
-    <div style="font-family: sans-serif; font-size: x-small;">
-     {{ serializedModel }}
-    </div>
-    <hr>
-    <div style="font-size: x-small;">
-      <pre>
-        {{ prettyModel }}
-      </pre>
-    </div>
-    <hr>
   </div>`
 }));
