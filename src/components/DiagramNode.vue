@@ -7,7 +7,7 @@
     <!-- class="node-dark-background" -->
     <rect v-if="selected"
       fill="none"
-      :stroke="borderColorSelected"
+      :stroke="(borderColorSelected.length ? borderColorSelected : color)"
       stroke-width="4"
       stroke-opacity=".75"
       x="4" y="14"
@@ -127,7 +127,7 @@ export default {
     },
     color: {
       type: String,
-      default: "#66cc00"
+      default: "#505050"
     },
     backgroundColor: {
       type: String,
@@ -143,7 +143,8 @@ export default {
     },
     borderColorSelected: {
       type: String,
-      default: "#6666FF"
+      default: ""
+      // default: "#6666FF"
       // default: "#d0d0d0"
       // default: "#FF99FF"
       // default: "#ED7D31"
