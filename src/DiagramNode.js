@@ -1,4 +1,4 @@
-import { generateId } from "./DiagramModel";
+import { generateId } from "./utils/Identifier";
 
 /**
  * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.

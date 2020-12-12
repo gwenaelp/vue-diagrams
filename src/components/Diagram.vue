@@ -176,8 +176,7 @@ import DiagramNode from "./DiagramNode";
 import DiagramLink from "./DiagramLink";
 import DiagramPort from "./DiagramPort";
 
-import { generateId } from "./../DiagramModel";
-
+import { generateId } from "./../utils/Identifier";
 
 function getAbsoluteXY(element) {
   var viewportElement = document.documentElement;
