@@ -148,6 +148,7 @@
             :type="port.type"
             :name="port.name"
             :deletable="port.deletable"
+            :isASpacer="port.isASpacer"
             :fontSize="port.fontSize"
             :fontFamily="port.fontFamily"
             :connectorCategory="port.connectorCategory"
