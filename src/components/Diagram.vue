@@ -176,9 +176,8 @@ import DiagramNode from "./DiagramNode";
 import DiagramLink from "./DiagramLink";
 import DiagramPort from "./DiagramPort";
 
-var generateId = function() {
-  return Math.trunc(Math.random() * 1000000);
-};
+import { generateId } from "./../DiagramModel";
+
 
 function getAbsoluteXY(element) {
   var viewportElement = document.documentElement;

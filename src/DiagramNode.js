@@ -1,6 +1,4 @@
-var generateId = function() {
-  return Math.trunc(Math.random() * 1000000);
-};
+import { generateId } from "./DiagramModel";
 
 /**
  * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.
