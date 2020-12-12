@@ -5,14 +5,43 @@
     <!-- :stroke-width="selected ? 2 : 0" -->
     <!-- :fill="color" -->
     <!-- class="node-dark-background" -->
+    <rect v-if="selected"
+      fill="none"
+      :stroke="borderColorSelected"
+      stroke-width="4"
+      stroke-opacity=".75"
+      x="4" y="14"
+      rx="4" ry="4"
+      :width="width + 2" :height="computedHeight + 2"
+      filter="url(#filter_gaus_100)"
+      >
+    </rect>
     <rect
       fill="none"
-      :stroke="selected ? borderColorSelected : borderColor"
+      :stroke="borderColor"
       stroke-width="2"
       x="5" y="15"
       rx="3" ry="3"
       :width="width" :height="computedHeight"
-      filter="url(#filter_gaus_40)"
+      >
+    </rect>
+    <!-- <rect
+      fill="none"
+      :stroke="selected ? borderColorSelected : borderColor"
+      :stroke-width="selected ? 4 : 2"
+      x="5" y="15"
+      rx="3" ry="3"
+      :width="width" :height="computedHeight"
+      :filter="selected ? 'url(#filter_gaus_60)' : 'url(#filter_gaus_40)'"
+      >
+    </rect> -->
+    <rect
+      fill="none"
+      :stroke="color"
+      stroke-width="1"
+      x="5" y="15"
+      rx="3" ry="3"
+      :width="width" :height="computedHeight"
       >
     </rect>
     <svg
@@ -114,7 +143,10 @@ export default {
     },
     borderColorSelected: {
       type: String,
-      default: "#ED7D31"
+      default: "#6666FF"
+      // default: "#d0d0d0"
+      // default: "#FF99FF"
+      // default: "#ED7D31"
     },
     titleTextColor: {
       type: String,
@@ -148,7 +180,11 @@ export default {
 
   computed: {
     computedHeight() {
-      let newHeight = this.ports.length * 20 + 50;
+      let maxConnectors = Math.max(
+        this.ports.filter(p => p.type === "in").length,
+        this.ports.filter(p => p.type === "out").length
+      );
+      let newHeight = maxConnectors * 20 + 40;
       if (this.height > newHeight) {
         return this.height;
       } else {
@@ -165,7 +201,7 @@ export default {
     mouseDownTitleBar: function(event) {
       this.$emit(
         "onStartDrag",
-        { type: "nodes", index: this.index },
+        { type: "nodes", index: this.index, nodeObject: this },
         event.x - this.x,
         event.y - this.y
       );

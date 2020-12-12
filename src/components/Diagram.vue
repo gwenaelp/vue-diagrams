@@ -115,7 +115,7 @@
           @drop="onDropNode($event, node)"
         >
           <DiagramPort
-            v-for="(port, portIndex) in node.ports"
+            v-for="(port, portIndex) in node.ports.filter(p => p.type === 'in')"
             :ref="'port-' + port.id"
             :id="port.id"
             :nodeIndex="nodeIndex"
@@ -123,6 +123,39 @@
             :nodeWidth="node.width"
             :type="port.type"
             :name="port.name"
+            :deletable="port.deletable"
+            :isASpacer="port.isASpacer"
+            :fontSize="port.fontSize"
+            :fontFamily="port.fontFamily"
+            :connectorCategory="port.connectorCategory"
+            :connectorCategoryTextColor="port.connectorCategoryTextColor"
+            :connectorCategoryTagColor="port.connectorCategoryTagColor"
+            :connectorCategoryTagColorHover="port.connectorCategoryTagColorHover"
+            :connectorNameTagColor="port.connectorNameTagColor"
+            :connectorNameTextColor="port.connectorNameTextColor"
+            @onStartDragNewLink="startDragNewLink"
+            @mouseUpPort="mouseUpPort"
+            @delete="model.removePort(node, port)"
+            @configure="configurePort(node, port)"
+          />
+          <DiagramPort
+            v-for="(port, portIndex) in node.ports.filter(p => p.type === 'out')"
+            :ref="'port-' + port.id"
+            :id="port.id"
+            :nodeIndex="nodeIndex"
+            :y="(portIndex - 1) * 20 + 5"
+            :nodeWidth="node.width"
+            :type="port.type"
+            :name="port.name"
+            :deletable="port.deletable"
+            :fontSize="port.fontSize"
+            :fontFamily="port.fontFamily"
+            :connectorCategory="port.connectorCategory"
+            :connectorCategoryTextColor="port.connectorCategoryTextColor"
+            :connectorCategoryTagColor="port.connectorCategoryTagColor"
+            :connectorCategoryTagColorHover="port.connectorCategoryTagColorHover"
+            :connectorNameTagColor="port.connectorNameTagColor"
+            :connectorNameTextColor="port.connectorNameTextColor"
             @onStartDragNewLink="startDragNewLink"
             @mouseUpPort="mouseUpPort"
             @delete="model.removePort(node, port)"
@@ -388,7 +421,8 @@ export default {
       this.initialDragX = x;
       this.initialDragY = y;
       if (item.type === "nodes") {
-        this.$emit("SelectNode", { index: item.index, details: undefined });
+        // this.$emit("SelectNode", { index: item.index, nodeObject: item.nodeObject });
+        this.$emit("SelectNode", item);
       }
     },
 
