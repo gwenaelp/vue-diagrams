@@ -97,9 +97,7 @@ import DiagramNode from "./DiagramNode";
 import DiagramLink from "./DiagramLink";
 import DiagramPort from "./DiagramPort";
 
-var generateId = function() {
-  return Math.trunc(Math.random() * 1000);
-};
+import { generateId } from "./../DiagramModel";
 
 function getAbsoluteXY(element) {
   var viewportElement = document.documentElement;
@@ -253,12 +251,10 @@ export default {
 
           links[this.draggedItem.linkIndex].points[
             this.draggedItem.pointIndex
-          ].x =
-            coords.x;
+          ].x = coords.x;
           links[this.draggedItem.linkIndex].points[
             this.draggedItem.pointIndex
-          ].y =
-            coords.y;
+          ].y = coords.y;
           this.updateLinksPositions();
         } else {
           let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
