@@ -11,6 +11,27 @@
           a 9.5 9.5 0 0 0 0 -19
           h ${(portNameWidth + 25) * -1}
           z `" />
+      <text :x="30" :y="9 + fontSize / 2" :font-size="`${fontSize}pt`" :fill="connectorNameTextColor" @click="configurePort" style="cursor: pointer">{{name}}</text>
+      <path opacity="1" :fill="connectorNameTagColor" stroke="none" @click="isOptionsPanelVisible = false" style="cursor: pointer"
+        v-if="isOptionsPanelVisible"
+        filter="url(#filter_gaus_20)"
+        :d="`
+          M 5 0
+          v 19
+          h 40
+          a 9.5 9.5 0 0 0 0 -19
+          h -40
+          z `" />
+      <path opacity="1" :fill="connectorNameTagColor" stroke="none" @click="isOptionsPanelVisible = false" style="cursor: pointer"
+        v-if="isOptionsPanelVisible"
+        filter="url(#filter_gaus_20)"
+        :d="`
+          M 5 0
+          v 19
+          h 25
+          a 9.5 9.5 0 0 0 0 -19
+          h -25
+          z `" />
       <path opacity=".6" stroke="none"
         filter="url(#filter_gaus_20)"
         fill="#00000"
@@ -33,7 +54,6 @@
           a 9 -9 0 0 0 0 -18
           h -10
           z `" />
-      <text :x="30" :y="9 + fontSize / 2" :font-size="`${fontSize}pt`" :fill="connectorNameTextColor" @click="configurePort" style="cursor: pointer">{{name}}</text>
       <text :x="10" :y="9 + fontSize / 2" :font-size="`${fontSize}pt`" :fill="connectorCategoryTextColor" style="cursor: crosshair" @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">{{ connectorCategory }}</text>
     </svg>
     <svg :y="y + 55" v-if="type === 'out'">
@@ -98,10 +118,7 @@ function getTextWidth(text, font) {
 export default {
   name: "DiagramPort",
   props: {
-    id: {
-      type: Number,
-      default: null
-    },
+    id: {},
     y: {
       type: Number,
       default: null
@@ -165,7 +182,8 @@ export default {
   },
   data() {
     return {
-      fill: "#b0b0ff"
+      fill: "#b0b0ff",
+      isOptionsPanelVisible: false
     };
   },
   computed: {
@@ -199,6 +217,7 @@ export default {
     configurePort: function() {
       console.log("configurePort");
       this.$emit("configure");
+      this.isOptionsPanelVisible = true; // XXXXX
     }
   },
   mounted() {
