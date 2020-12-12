@@ -28,11 +28,32 @@ storiesOf("Diagram", module).add(
         serializedModel: diagramModel.serialize(),
         model: diagramModel
       };
-    },
+    }, // data
+    computed: {
+      prettyModel: {
+        get() {
+          return JSON.stringify(this.model, undefined, 2);
+        },
+        set(value) {
+          this.model.deserialize(value);
+        }
+      }
+    }, // computed
     template: `<div style="background-color: #423661; background-image: radial-gradient(#413561, #473d58);">
-    <diagram :model="model"></diagram>
+    <diagram :model="model" width="800" height="500"></diagram>
     <button @click="console.log(model.serialize())">serialize</button>
     <button @click="model.deserialize(serializedModel)">deserialize</button>
+    <hr>
+    <div style="font-family: sans-serif; font-size: x-small;">
+     {{ serializedModel }}
+    </div>
+    <hr>
+    <div style="font-size: x-small;">
+      <pre>
+        {{ prettyModel }}
+      </pre>
+    </div>
+    <hr>
   </div>`
   })
 );
