@@ -23,17 +23,8 @@ class DiagramModel {
    * @param {Integer} height Height
    * @return {Node} The node created
    */
-  addNode(object, x, y, width, height) {
-    let id = null;
-    if (typeof object === "object") {
-      if (object.id != undefined) {
-        id = object.id;
-      }
-    }
-    if (id === null) {
-      id = generateId();
-    }
-    const newNode = new DiagramNode(id, object, x, y, width, height);
+  addNode(title, x, y, width, height) {
+    const newNode = new DiagramNode(generateId(), title, x, y, width, height);
     this._model.nodes.push(newNode);
     return newNode;
   }
@@ -58,21 +49,6 @@ class DiagramModel {
     this._model.nodes.splice(index, 1);
   }
 
-  /**
-   * Removes a port.
-   */
-  removePort(node, port) {
-    const index = node.ports.indexOf(port);
-    for (var j = 0; j < this._model.links.length; j++) {
-      const currentLink = this._model.links[j];
-      if (currentLink.from === port.id || currentLink.to === port.id) {
-        this.deleteLink(currentLink);
-        j--;
-      }
-    }
-    node.ports.splice(index, 1);
-  }
-
   deleteLink(link) {
     const index = this._model.links.indexOf(link);
     this._model.links.splice(index, 1);
@@ -89,8 +65,8 @@ class DiagramModel {
       id: generateId(),
       from: from,
       to: to,
-      positionFrom: { x: 0, y: 0 },
-      positionTo: { x: 0, y: 0 },
+      positionFrom: {},
+      positionTo: {},
       points
     });
   }
