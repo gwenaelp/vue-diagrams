@@ -1,8 +1,5 @@
 import DiagramNode from "./DiagramNode";
-
-var generateId = function() {
-  return Math.trunc(Math.random() * 1000);
-};
+import { generateId } from "./utils/Identifier";
 
 /**
  * @class DiagramModel
