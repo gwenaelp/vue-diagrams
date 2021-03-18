@@ -77,7 +77,7 @@ import DiagramPoint from "./DiagramPoint";
 
 export default {
   name: "DiagramLink",
-  props: ["positionFrom", "positionTo", "id", "index", "points"],
+  props: ["positionFrom", "positionTo", "id", "index", "points", "readonly"],
 
   components: {
     DiagramPoint
@@ -92,26 +92,36 @@ export default {
   },
   methods: {
     mouseEnter() {
-      this.largeStrokeStyle = "stroke:rgba(255,0,0,0.5);";
+      if (!this.readonly) {
+        this.largeStrokeStyle = "stroke:rgba(255,0,0,0.5);";
+      }
     },
     mouseLeave() {
-      this.largeStrokeStyle = "stroke:rgba(255,0,0,0.0);";
+      if (!this.readonly) {
+        this.largeStrokeStyle = "stroke:rgba(255,0,0,0.0);";
+      }
     },
     mouseDownPoint(pos, pointIndex) {
       console.log("mouseDownPoint", arguments);
-      this.$emit("onStartDrag", {
-        type: "points",
-        linkIndex: this.index,
-        pointIndex
-      });
+      if (!this.readonly) {
+        this.$emit("onStartDrag", {
+          type: "points",
+          linkIndex: this.index,
+          pointIndex
+        });
+      }
     },
     mouseDown(pos) {},
     mouseDownSegment(pos, segmentIndex) {
-      this.createPoint(pos.x, pos.y, segmentIndex);
-      this.mouseDownPoint(pos, segmentIndex);
+      if (!this.readonly) {
+        this.createPoint(pos.x, pos.y, segmentIndex);
+        this.mouseDownPoint(pos, segmentIndex);
+      }
     },
     createPoint(x, y, pointIndex) {
-      this.$emit("onCreatePoint", x, y, this.index, pointIndex);
+      if (!this.readonly) {
+        this.$emit("onCreatePoint", x, y, this.index, pointIndex);
+      }
     }
   },
   computed: {

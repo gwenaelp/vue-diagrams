@@ -46,6 +46,7 @@
           v-for="(link, index) in model._model.links"
           @onStartDrag="startDragPoint"
           @onCreatePoint="createPoint"
+          :readonly="readonlyLinks"
         />
         <line
           :x1="getPortHandlePosition(newLink.startPortId).x"
@@ -70,6 +71,7 @@
           v-for="(node, nodeIndex) in model._model.nodes"
           @onStartDrag="startDragItem"
           @delete="model.deleteNode(node)"
+          :readonly="readonlyNodes"
         >
           <DiagramPort
             v-for="(port, portIndex) in node.ports"
@@ -82,6 +84,7 @@
             :name="port.name"
             @onStartDragNewLink="startDragNewLink"
             @mouseUpPort="mouseUpPort"
+            :readonly="readonlyLinks"
           />
         </DiagramNode>
       </g>
@@ -131,6 +134,14 @@ export default {
     },
     gridSnap: {
       default: 1
+    },
+    readonlyLinks: {
+      type: Boolean,
+      default: false
+    },
+    readonlyNodes: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -340,8 +351,8 @@ export default {
 
     startDragItem(item, x, y) {
       this.panEnabled = false;
-      this.draggedItem = item;
       this.selectedItem = item;
+      this.draggedItem = item;
       this.initialDragX = x;
       this.initialDragY = y;
     }
