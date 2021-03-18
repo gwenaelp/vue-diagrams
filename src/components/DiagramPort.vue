@@ -27,7 +27,7 @@
 <script>
 export default {
   name: "DiagramPort",
-  props: ["id", "y", "type", "name", "nodeWidth", "nodeIndex"],
+  props: ["id", "y", "type", "name", "nodeWidth", "nodeIndex", "readonly"],
   data() {
     return {
       fill: "#444444"
@@ -35,18 +35,26 @@ export default {
   },
   methods: {
     mouseup() {
-      this.$emit("mouseUpPort", this.id);
+      if (!this.readonly) {
+        this.$emit("mouseUpPort", this.id);
+      }
     },
 
     enter() {
-      this.fill = "#888888";
+      if (!this.readonly) {
+        this.fill = "#888888";
+      }
     },
 
     leave() {
-      this.fill = "#444444";
+      if (!this.readonly) {
+        this.fill = "#444444";
+      }
     },
     startDragNewLink() {
-      this.$emit("onStartDragNewLink", this.id);
+      if (!this.readonly) {
+        this.$emit("onStartDragNewLink", this.id);
+      }
     }
   }
 };

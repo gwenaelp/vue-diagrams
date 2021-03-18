@@ -24,7 +24,7 @@
         >
       </rect>
       <text :x="10" :y="30" font-size="14" font-weight="bold" fill="#000000">{{title}}</text>
-      <g v-if="deletable" @click="deleteNode">
+      <g v-if="isDeletable" @click="deleteNode">
         <rect
           :x="width - 12"
           y="18"
@@ -60,7 +60,6 @@
 <script>
 export default {
   name: "DiagramNode",
-
   props: {
     title: {
       type: String,
@@ -91,7 +90,8 @@ export default {
       type: Boolean,
       default: true
     },
-    selected: Boolean
+    selected: Boolean,
+    readonly: Boolean
   },
 
   data() {
@@ -107,20 +107,31 @@ export default {
     },
 
     mouseDown: function(event) {
-      this.$emit(
-        "onStartDrag",
-        { type: "nodes", index: this.index },
-        event.x - this.x,
-        event.y - this.y
-      );
+      if (!this.readonly) {
+        this.$emit(
+          "onStartDrag",
+          { type: "nodes", index: this.index },
+          event.x - this.x,
+          event.y - this.y
+        );
+      }
     },
 
     mouseenter() {
-      this.titleFillOpacity = 0.5;
+      if (!this.readonly) {
+        this.titleFillOpacity = 0.5;
+      }
     },
 
     mouseleave() {
-      this.titleFillOpacity = 0.25;
+      if (!this.readonly) {
+        this.titleFillOpacity = 0.25;
+      }
+    }
+  },
+  computed: {
+    isDeletable() {
+      return this.deletable && !this.readonly;
     }
   }
 };
