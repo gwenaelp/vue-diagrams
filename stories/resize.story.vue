@@ -1,8 +1,21 @@
-import { storiesOf } from "@storybook/vue";
-import Diagram from "../src/components/Diagram";
+<template>
+  <Story title="Resize">
+    <div>
+      <diagram :model="model" :width="width" :height="height" />
+      <input type="range" id="width" v-model="width" min="200" max="400" />
+      <label for="width">Width</label><br/>
+      <input type="range" id="height" v-model="height" min="200" max="400" />
+      <label for="height">Width</label>
+    </div>
+  </Story>
+</template>
+<script>
+import Diagram from "../src/components/Diagram.vue";
 
-// Add more stories here to live develop your components
-storiesOf("Diagram", module).add("serialization/deserialization", () => ({
+export default {
+  components: {
+    Diagram,
+  },
   data() {
     const diagramModel = new Diagram.Model();
 
@@ -17,19 +30,16 @@ storiesOf("Diagram", module).add("serialization/deserialization", () => ({
     const node3 = diagramModel.addNode("test3", 10, 100, 72, 100);
     const node3OutPort = node3.addOutPort("testOut3");
     node3.color = "#cc6600";
+    node3.deletable = false;
 
     diagramModel.addLink(node2OutPort, inPort);
     diagramModel.addLink(node3OutPort, inPort);
 
     return {
-      console,
-      serializedModel: diagramModel.serialize(),
-      model: diagramModel
+      model: diagramModel,
+      width: 200,
+      height: 200,
     };
   },
-  template: `<div>
-    <diagram :model="model"></diagram>
-    <button @click="console.log(model.serialize())">serialize</button>
-    <button @click="model.deserialize(serializedModel)">deserialize</button>
-  </div>`
-}));
+};
+</script>

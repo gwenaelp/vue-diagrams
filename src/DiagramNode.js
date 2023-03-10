@@ -8,19 +8,21 @@ var generateId = function() {
 class DiagramNode {
   /**
    *  This should not be called directly. Use the "addNode" method from the DiagramModel class
-   * @param  {String} title  [description]
+   * @param  {Integer} id [description]
+   * @param  {String} title   [description]
    * @param  {Integer} x      [description]
    * @param  {Integer} y      [description]
    * @param  {Integer} width  [description]
    * @param  {Integer} height [description]
-   * @param  {Integer} id [description]
+   * @param  {Object} options [description]
    */
-  constructor(id, title, x, y, width, height) {
+  constructor(id, title, x, y, width, height, options) {
     this.title = title;
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+    this.options = options || {};
     this.ports = [];
   }
 

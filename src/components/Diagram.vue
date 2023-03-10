@@ -1,8 +1,8 @@
 <template>
   <div>
    <SvgPanZoom
+      ref="svgpanzoom"
       :style="{ width: width + 'px', height: height + 'px', border:'1px solid black'}"
-      xmlns="http://www.w3.org/2000/svg"
       :zoomEnabled="zoomEnabled"
       id="svgroot"
       :panEnabled="panEnabled"
@@ -66,6 +66,7 @@
           :deletable="node.deletable"
           :ports="node.ports"
           :selected="selectedItem.type === 'nodes' && selectedItem.index === nodeIndex"
+          :options="node.options"
           :index="nodeIndex"
           v-for="(node, nodeIndex) in model._model.nodes"
           @onStartDrag="startDragItem"
@@ -90,12 +91,14 @@
   </div>
 </template>
 <script>
-import SvgPanZoom from "vue-svg-pan-zoom";
+import SvgPanZoom from 'vue-svg-pan-zoom';
 
-import DiagramModel from "./../DiagramModel";
-import DiagramNode from "./DiagramNode";
-import DiagramLink from "./DiagramLink";
-import DiagramPort from "./DiagramPort";
+import DiagramModel from './../DiagramModel';
+import DiagramNode from './DiagramNode.vue';
+import DiagramLink from './DiagramLink.vue';
+import DiagramPort from './DiagramPort.vue';
+
+console.log('SvgPanZoom?', SvgPanZoom);
 
 var generateId = function() {
   return Math.trunc(Math.random() * 1000);
@@ -131,7 +134,7 @@ export default {
     },
     gridSnap: {
       default: 1
-    }
+    },
   },
 
   data() {
@@ -355,6 +358,9 @@ export default {
   watch: {
     "model._model.links": function() {
       this.updateLinksPositions();
+    },
+    width() {
+      console.log(this.$refs.svgpanzoom);
     }
   }
 };

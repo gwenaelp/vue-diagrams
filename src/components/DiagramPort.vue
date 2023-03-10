@@ -15,12 +15,12 @@
       <rect
         :fill="fill"
         ref="handle"
-        :x="nodeWidth" y="0"
+        :x="width" y="0"
         rx="3" ry="3"
         width="10" height="10"
         @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
       </rect>
-      <text :x="nodeWidth - 6" y="9" text-anchor="end" font-size="8pt" fill="#000000">{{name}}</text>
+      <text :x="width - 6" y="9" text-anchor="end" font-size="8pt" fill="#000000">{{name}}</text>
     </svg>
   </g>
 </template>
@@ -32,6 +32,11 @@ export default {
     return {
       fill: "#444444"
     };
+  },
+  computed: {
+    width () {
+      return this.nodeWidth || 72;
+    },
   },
   methods: {
     mouseup() {

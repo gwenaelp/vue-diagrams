@@ -1,8 +1,15 @@
-import { storiesOf } from "@storybook/vue";
-import Diagram from "../src/components/Diagram";
+<template>
+  <Story title="Grid snap">
+    <diagram :model="model" gridSnap="16" />
+  </Story>
+</template>
+<script>
+import Diagram from "../src/components/Diagram.vue";
 
-// Add more stories here to live develop your components
-storiesOf("Diagram", module).add("Grid snap", () => ({
+export default {
+  components: {
+    Diagram,
+  },
   data() {
     const diagramModel = new Diagram.Model();
 
@@ -26,5 +33,5 @@ storiesOf("Diagram", module).add("Grid snap", () => ({
       model: diagramModel
     };
   },
-  template: `<diagram :model="model" gridSnap="16"></diagram>`
-}));
+};
+</script>

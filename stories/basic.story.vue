@@ -1,8 +1,14 @@
-import { storiesOf } from "@storybook/vue";
-import Diagram from "../src/components/Diagram";
-
-// Add more stories here to live develop your components
-storiesOf("Diagram", module).add("Simple diagram", () => ({
+<template>
+  <Story title="Simple">
+    <diagram :model="model" height="300" />
+  </Story>
+</template>
+<script>
+import Diagram from "../src/components/Diagram.vue";
+export default {
+  components: {
+    Diagram,
+  },
   data() {
     const diagramModel = new Diagram.Model();
 
@@ -26,5 +32,5 @@ storiesOf("Diagram", module).add("Simple diagram", () => ({
       model: diagramModel
     };
   },
-  template: `<diagram :model="model" height="300"></diagram>`
-}));
+};
+</script>

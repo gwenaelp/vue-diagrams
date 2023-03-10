@@ -1,4 +1,4 @@
-<template>
+  <template>
   <g>
     <g
       v-if="points && points.length"
@@ -73,7 +73,7 @@
   </g>
 </template>
 <script>
-import DiagramPoint from "./DiagramPoint";
+import DiagramPoint from "./DiagramPoint.vue";
 
 export default {
   name: "DiagramLink",
