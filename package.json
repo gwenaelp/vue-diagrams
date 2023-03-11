@@ -61,9 +61,9 @@
     "@vitejs/plugin-vue": "^4.0.0",
     "@vitejs/plugin-vue2": "^2.2.0",
     "draggable-vue-directive": "^1.1.0",
-    "svg-pan-zoom": "^3.5.3",
+    "svg-pan-zoom": "^3.6.1",
     "vite": "^4.1.4",
-    "vue-svg-pan-zoom": "^0.1.0",
+    "vue-svg-pan-zoom": "1.1.0",
     "webpack": "^5.76.0"
   }
 }

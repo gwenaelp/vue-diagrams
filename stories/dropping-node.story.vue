@@ -2,7 +2,7 @@
   <Story title="Drop to create nodes">
     <div class="node" draggable="true">Drop this node</div>
     <div @drop="onDrop" @dragover.prevent @dragenter.prevent>
-      <diagram :model="model" width="400" height="400"/>
+      <diagram :model="model" width="400" height="400" ref="diagram" />
     </div>
   </Story>
 </template>
@@ -22,7 +22,11 @@ export default {
   },
   methods: {
     onDrop(event) {
-      const n = this.model.addNode('Node', 0, 0);
+      const pan = this.$refs.diagram.$refs.svgpanzoom.spz.getPan();
+      const zoom = this.$refs.diagram.$refs.svgpanzoom.spz.getZoom();
+      const x = pan.x * (1/zoom) * -1;
+      const y = pan.y * (1/zoom) * -1;
+      const n = this.model.addNode('Node', x, y);
       n.addInPort('In');
       n.addOutPort('Out')
     },

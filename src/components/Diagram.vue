@@ -11,7 +11,8 @@
       :center="true"
       viewportSelector="#svgroot2"
       :preventMouseEventsDefault="false"
-      :beforePan="beforePan">
+      :beforePan="beforePan"
+    >
     <svg
       id="svgroot2"
       version="1.1"
@@ -98,8 +99,6 @@ import DiagramNode from './DiagramNode.vue';
 import DiagramLink from './DiagramLink.vue';
 import DiagramPort from './DiagramPort.vue';
 
-console.log('SvgPanZoom?', SvgPanZoom);
-
 var generateId = function() {
   return Math.trunc(Math.random() * 1000);
 };
@@ -111,7 +110,7 @@ function getAbsoluteXY(element) {
   var scrollTop = viewportElement.scrollTop;
   var x = box.left + scrollLeft;
   var y = box.top + scrollTop;
-  return { x: x, y: y };
+  return { x, y };
 }
 
 function snapToGrip(val, gridSize) {
@@ -150,7 +149,8 @@ export default {
       initialDragY: 0,
       newLink: undefined,
       mouseX: 0,
-      mouseY: 0
+      mouseY: 0,
+      viewPosition: undefined,
     };
   },
   components: {
@@ -176,7 +176,6 @@ export default {
         return false;
       else return true;
     },
-
     createPoint(x, y, linkIndex, pointIndex) {
       let coords = this.convertXYtoViewPort(x, y);
       let links = this.model._model.links;
@@ -219,7 +218,7 @@ export default {
     },
 
     getPortHandlePosition(portId) {
-      if (this.$refs["port-" + portId]) {
+      if (this.$refs["port-" + portId] && this.$refs["port-" + portId][0]) {
         var port = this.$refs["port-" + portId][0];
         var node = this.$refs["node-" + port.nodeIndex][0];
         var x;

@@ -7242,7 +7242,12 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-svg-pan-zoom@^3.5.3:
+svg-pan-zoom@3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/svg-pan-zoom/-/svg-pan-zoom-3.6.0.tgz#31d8137d7e079e8f059effd85c7605b0567b6e4b"
+  integrity sha512-ZBEL2z/n/W2fLLFzn3NTQgd+7QEfbrKvKmu29U3qvMflmJgLaWkwKbOzWJYESFidTiGYMHkijAKmY6m64moyYg==
+
+svg-pan-zoom@^3.6.1:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/svg-pan-zoom/-/svg-pan-zoom-3.6.1.tgz#f880a1bb32d18e9c625d7715350bebc269b450cf"
   integrity sha512-JaKkGHHfGvRrcMPdJWkssLBeWqM+Isg/a09H7kgNNajT1cX5AztDTNs+C8UzpCxjCTRrG34WbquwaovZbmSk9g==
@@ -7665,12 +7670,12 @@ vue-property-decorator@8.3.0:
   dependencies:
     vue-class-component "^7.1.0"
 
-vue-svg-pan-zoom@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/vue-svg-pan-zoom/-/vue-svg-pan-zoom-0.1.0.tgz#53cb10585c53eea85c5b4a83d862b14da81ef11d"
-  integrity sha512-8A+QMTaSVjclrNymSoVS/UNRexrGJpOfCiLNbyTQqjaQ/hE/zW4Y3u64TYeExeLpvoWHV+4o+3mwSWdJzgsnXA==
+vue-svg-pan-zoom@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vue-svg-pan-zoom/-/vue-svg-pan-zoom-1.1.0.tgz#7f104366a51d6fa3d4b0f798788c05296d811436"
+  integrity sha512-H/KuL+zuSsZtQETFyE68Ms6YfMjfvLCtBKYcFc/o2NZsP6dlV3+XJfywjqZJKPsFUYJkFvX6XgNe+BKUqnkzzQ==
   dependencies:
-    svg-pan-zoom "^3.5.3"
+    svg-pan-zoom "3.6.0"
 
 vue-template-compiler@^2.7.14:
   version "2.7.14"
