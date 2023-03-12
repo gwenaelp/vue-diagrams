@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="vue-diagrams" :contenteditable="!!editedSvgText">
    <SvgPanZoom
       ref="svgpanzoom"
       :style="{ width: width + 'px', height: height + 'px', border:'1px solid black'}"
@@ -24,10 +24,12 @@
       class="svg-content"
       ref="dragramRoot"
       @mousemove="mouseMove"
-      @mouseup="mouseUp">
+      @mouseup="mouseUp"
+      @mousedown="mouseDown"
+    >
       <defs>
         <pattern id="smallGrid" width="16" height="16" patternUnits="userSpaceOnUse">
-          <path d="M 16 0 L 0 0 0 16" fill="none" stroke="gray" stroke-width="0.5"/>
+          <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#ccc" stroke-width="1"/>
         </pattern>
         <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
           <rect width="80" height="80" fill="url(#smallGrid)"/>
@@ -140,6 +142,7 @@ export default {
     this.updateLinksPositions();
 
     return {
+      editedSvgText: undefined,
       document,
       zoomEnabled: true,
       panEnabled: true,
@@ -159,11 +162,34 @@ export default {
     DiagramPort,
     SvgPanZoom
   },
+  computed: {
+    querySelector() {
+      return document.querySelector("#viewport");
+    }
+  },
 
+  watch: {
+    editedSvgText(v) {
+      if (v) {
+        this.$refs.svgpanzoom.spz.disablePan();
+        this.$refs.svgpanzoom.spz.disableZoom();
+      } else {
+        if (this.zoomEnabled) {
+          this.$refs.svgpanzoom.spz.enableZoom();
+        }
+        if (this.panEnabled) {
+          this.$refs.svgpanzoom.spz.enablePan();
+        }
+      }
+    },
+    "model._model.links"() {
+      this.updateLinksPositions();
+    },
+  },
   methods: {
     convertXYtoViewPort(x, y) {
-      let rootelt = document.getElementById("svgroot2");
-      let rec = document.getElementById("viewport");
+      let rootelt = document.getElementById('svgroot2');
+      let rec = document.getElementById('viewport');
       let point = rootelt.createSVGPoint();
       let rooteltPosition = getAbsoluteXY(rootelt);
       point.x = x - rooteltPosition.x;
@@ -274,7 +300,17 @@ export default {
         }
       }
     },
-
+    mouseDown (event) {
+      if (event.target.classList.contains('title-editable')) {
+        this.editedSvgText = event.target;
+      } else {
+        if (this.editedSvgText && this.editedSvgText.closest('.diagram-node')) {
+          const nodeComponent = this.editedSvgText.closest('.diagram-node').__vue__;
+          this.model._model.nodes[nodeComponent.index].title = this.editedSvgText.innerHTML;
+        }
+        this.editedSvgText = undefined;
+      }
+    },
     mouseUp() {
       this.draggedItem = undefined;
       this.newLink = undefined;
@@ -284,7 +320,6 @@ export default {
       var links = this.model._model.links;
 
       if (this.draggedItem && this.draggedItem.type === "points") {
-        console.log(this.draggedItem);
         var pointIndex = this.draggedItem.pointIndex;
         var linkIndex = this.draggedItem.linkIndex;
 
@@ -336,7 +371,6 @@ export default {
     },
 
     startDragPoint(pointInfo) {
-      console.log("startDragPoint", pointInfo);
       this.draggedItem = pointInfo;
     },
 
@@ -348,20 +382,6 @@ export default {
       this.initialDragY = y;
     }
   },
-  computed: {
-    querySelector: function() {
-      return document.querySelector("#viewport");
-    }
-  },
-
-  watch: {
-    "model._model.links": function() {
-      this.updateLinksPositions();
-    },
-    width() {
-      console.log(this.$refs.svgpanzoom);
-    }
-  }
 };
 </script>
 

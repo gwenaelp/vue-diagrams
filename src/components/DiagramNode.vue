@@ -1,5 +1,5 @@
 <template>
-  <svg :x="x" :y="y">
+  <svg :x="x" :y="y" class="diagram-node">
     <template v-if="options.type === undefined">
       <rect
         :fill="color"
@@ -24,7 +24,15 @@
           class="node-dark-background"
           >
         </rect>
-        <text :x="10" :y="30" font-size="14" font-weight="bold" fill="#000000">{{title}}</text>
+        <text
+          :x="10" :y="30"
+          :class="options.editableTitle ? 'title-editable': ''"
+          font-size="14"
+          font-weight="bold"
+          fill="#000000"
+        >
+          {{title}}
+        </text>
         <g v-if="deletable" @click="deleteNode">
           <rect
             :x="width - 12"
@@ -73,24 +81,26 @@
         @mouseleave="mouseleave"
       >
         <image :href="options.image" x="10" :width="width - 10" :height="height" />
-        <text
-          :x="width/2"
-          :width="width"
-          text-anchor="middle"
-          :y="height + 14"
-          font-size="14"
-          font-weight="bold"
-          fill="#000000"
-        >
+      </g>
+      <text
+        :class="options.editableTitle ? 'title-editable': ''"
+        :x="width/2"
+        :width="width"
+        text-anchor="middle"
+        :y="height + 14"
+        font-size="14"
+        font-weight="bold"
+        fill="#000000"
+      >
           {{title}}
         </text>
-      </g>
       <slot />
     </template>
 
   </svg>
 </template>
 <script>
+
 export default {
   name: "DiagramNode",
 
@@ -144,12 +154,14 @@ export default {
     },
 
     mouseDown: function(event) {
-      this.$emit(
-        "onStartDrag",
-        { type: "nodes", index: this.index },
-        event.x - this.x,
-        event.y - this.y
-      );
+      if (!event.target.classList.contains('title-editable')) {
+        this.$emit(
+          "onStartDrag",
+          { type: "nodes", index: this.index },
+          event.x - this.x,
+          event.y - this.y
+        );
+      }
     },
 
     mouseenter() {
@@ -158,7 +170,13 @@ export default {
 
     mouseleave() {
       this.titleFillOpacity = 0.25;
-    }
+    },
   }
 };
 </script>
+<style scoped>
+  .title-editable:hover {
+    fill: blue;
+    cursor: pointer;
+  }
+</style>
