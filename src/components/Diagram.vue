@@ -182,6 +182,12 @@ export default {
         }
       }
     },
+    "model._model": {
+      handler () {
+        this.$emit('model-updated', this.model._model);
+      },
+      deep: true,
+    },
     "model._model.links"() {
       this.updateLinksPositions();
     },
