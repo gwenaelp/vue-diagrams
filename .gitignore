@@ -61,7 +61,7 @@ typings/
 .env
 
 # Generated code
-dist/
+dist
 
 ### VisualStudioCode ###
 .vscode/*
@@ -71,3 +71,10 @@ dist/
 !.vscode/extensions.json
 
 # End of https://www.gitignore.io/api/node,visualstudiocode
+
+*.log*
+.nuxt
+.nitro
+.cache
+.output
+.DS_Store

@@ -26,7 +26,7 @@
     "build": "webpack --config webpack.config.js",
     "story:dev": "histoire dev",
     "story:build": "histoire build",
-    "doc:build": "histoire build",
+    "doc:build": "cd doc && yarn && yarn generate && rm ./dist -Rf && mkdir ./dist && mv .output/public/* ./dist && cd .. && yarn story:build",
     "test": "npm run lint && jest --verbose --coverage",
     "test:update": "jest --verbose --updateSnapshot",
     "test:watch": "jest --verbose --watchAll --notify"
