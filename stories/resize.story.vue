@@ -1,7 +1,13 @@
 <template>
-  <Story title="Resize">
+  <Story title="Resize nodes">
     <div>
-      <diagram :model="model" width="500" height="500" gridSnap="10" />
+      <button @click="toggleResizable">
+        Toggle resizable ({{resizableNode.options.resizable ? 'On': 'Off'}})
+      </button>
+      <div style="background: whitesmoke; padding: 20px; margin-bottom: 20px;">
+        Try to resize the resizable node
+      </div>
+      <diagram v-if="visible" :model="model" width="500" height="500" gridSnap="10" />
     </div>
   </Story>
 </template>
@@ -15,25 +21,28 @@ export default {
   data() {
     const diagramModel = new Diagram.Model();
 
-    const node1 = diagramModel.addNode("test2", 300, 200);
+    const node1 = diagramModel.addNode("fixed", 300, 200);
     const inPort = node1.addInPort("test");
 
-    const node2 = diagramModel.addNode("test", 10, 300, 144, 80);
-    const node2OutPort = node2.addOutPort("testOut");
-    node2.addOutPort("testOut2");
-    node2.color = "#00cc66";
-
-    const node3 = diagramModel.addNode("test3", 10, 100, 72, 100);
-    const node3OutPort = node3.addOutPort("testOut3");
-    node3.color = "#cc6600";
-    node3.deletable = false;
+    const resizableNode = diagramModel.addNode("resizable", 10, 300, 144, 80, {
+      resizable: true,
+    });
+    const node2OutPort = resizableNode.addOutPort("testOut");
+    resizableNode.addOutPort("testOut2");
+    resizableNode.color = "#00cc66";
 
     diagramModel.addLink(node2OutPort, inPort);
-    diagramModel.addLink(node3OutPort, inPort);
 
     return {
+      visible: true,
       model: diagramModel,
+      resizableNode,
     };
+  },
+  methods: {
+    toggleResizable() {
+      this.resizableNode.options.resizable = !this.resizableNode.options.resizable;
+    },
   },
 };
 </script>

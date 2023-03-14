@@ -105,6 +105,7 @@ import DiagramModel from './../DiagramModel';
 import DiagramNode from './DiagramNode.vue';
 import DiagramLink from './DiagramLink.vue';
 import DiagramPort from './DiagramPort.vue';
+import '../style.css';
 
 
 var generateId = function() {
@@ -137,6 +138,10 @@ export default {
     },
     height: {
       default: 500
+    },
+    mode: {
+      type: String,
+      default: 'move',
     },
     gridSnap: {
       default: 1
@@ -174,9 +179,25 @@ export default {
   computed: {
     querySelector() {
       return document.querySelector("#viewport");
-    }
+    },
   },
   watch: {
+    mode: {
+      handler (v) {
+        this.$nextTick(() => {
+          if (v === 'move') {
+            if (this.panEnabled) {
+              this.$refs.svgpanzoom.spz.enablePan();
+            } else {
+              this.$refs.svgpanzoom.spz.disablePan();
+            }
+          } else {
+            this.$refs.svgpanzoom.spz.disablePan();
+          }
+        });
+      },
+      immediate: true,
+    },
     editedSvgText(v) {
       if (v) {
         this.$refs.svgpanzoom.spz.disablePan();
@@ -309,7 +330,6 @@ export default {
           links[linkIndex].points[pointIndex].y = coords.y;
           this.updateLinksPositions();
         } if (type === 'resizeHandle') {
-          console.log('drag handle', this.draggedItem);
           if (this.draggedItem.direction.indexOf('e') !== -1) {
             this.model._model.nodes[index].width = coords.x - this.model._model.nodes[index].x;
             this.updateLinksPositions();
@@ -357,15 +377,12 @@ export default {
       var links = this.model._model.links;
 
       if (this.draggedItem && this.draggedItem.type === "points") {
-        var pointIndex = this.draggedItem.pointIndex;
-        var linkIndex = this.draggedItem.linkIndex;
+        const pointIndex = this.draggedItem.pointIndex;
+        const linkIndex = this.draggedItem.linkIndex;
 
         if (this.$refs["port-" + portId][0].type === "in") {
-          var l = links[linkIndex].points.length;
-          links[linkIndex].points.splice(
-            pointIndex,
-            l - this.draggedItem.pointIndex
-          );
+          const l = links[linkIndex].points.length;
+          links[linkIndex].points.splice(pointIndex, l - this.draggedItem.pointIndex);
         } else {
           links[linkIndex].points.splice(0, pointIndex + 1);
         }
@@ -421,8 +438,6 @@ export default {
   },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   svg{
     user-select: none;

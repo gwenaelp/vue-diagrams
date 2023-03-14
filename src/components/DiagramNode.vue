@@ -10,30 +10,7 @@
         :width="width" :height="height"
         class="node-dark-background">
       </rect>
-      <g class="resize-handle nw" @mousedown="startDragResizeHandle('nw')">
-        <rect :x="3" :y="10" :height="5" :width="5" />
-      </g>
-      <g class="resize-handle n" @mousedown="startDragResizeHandle('n')">
-        <rect :x="5" :y="12" :height="3" :width="width" />
-      </g>
-      <g class="resize-handle ne" @mousedown="startDragResizeHandle('ne')">
-        <rect :x="width + 5" :y="10" :height="5" :width="5" />
-      </g>
-      <g class="resize-handle e" @mousedown="startDragResizeHandle('e')">
-        <rect :x="width + 5" :y="15" :width="3" :height="height" />
-      </g>
-      <g class="resize-handle se" @mousedown="startDragResizeHandle('se')">
-        <rect :x="width + 5" :y="height + 15" :height="5" :width="5" />
-      </g>
-      <g class="resize-handle s" @mousedown="startDragResizeHandle('s')">
-        <rect :x="5" :y="height + 15" :height="3" :width="width" />
-      </g>
-      <g class="resize-handle sw" @mousedown="startDragResizeHandle('sw')">
-        <rect :x="3" :y="height + 15" :height="5" :width="5" />
-      </g>
-      <g class="resize-handle w" @mousedown="startDragResizeHandle('w')">
-        <rect :x="2" :y="15" :width="3" :height="height" />
-      </g>
+      <g ref="resizeHandles" />
       <svg
         x="0" y="0"
         @mousedown="mouseDown"
@@ -124,6 +101,7 @@
   </svg>
 </template>
 <script>
+import ResizeHandles from '../NodeResizeHandles';
 
 export default {
   name: "DiagramNode",
@@ -168,11 +146,45 @@ export default {
   data() {
     return {
       nodeStrokeWidth: 0,
-      titleFillOpacity: 0.25
+      titleFillOpacity: 0.25,
+      resizeHandles: undefined,
     };
   },
-
+  beforeDestroy () {
+    if (this.resizeHandles) {
+      this.resizeHandles.unmount();
+    }
+  },
+  watch: {
+    x: 'resizeNode',
+    y: 'resizeNode',
+    width: 'resizeNode',
+    height: 'resizeNode',
+    'options.resizable': {
+      handler(v) {
+        this.$nextTick(() => {
+          if (v) {
+            this.resizeHandles = new ResizeHandles(
+              this.$refs.resizeHandles,
+              this.width,
+              this.height,
+              this.startDragResizeHandle,
+            );
+          } else if(this.resizeHandles) {
+            this.resizeHandles.unmount();
+            this.resizeHandles = undefined;
+          }
+        });
+      },
+      immediate: true,
+    }
+  },
   methods: {
+    resizeNode() {
+      if(this.resizeHandles) {
+        this.resizeHandles.updatePosition(this.x, this.y, this.width, this.height);
+      }
+    },
     deleteNode: function() {
       this.$emit("delete");
     },
@@ -195,7 +207,6 @@ export default {
     mouseleave() {
       this.titleFillOpacity = 0.25;
     },
-
     startDragResizeHandle(direction) {
         this.$emit(
           "onStartDrag",
@@ -212,32 +223,5 @@ export default {
     fill: blue;
     cursor: pointer;
   }
-  .resize-handle rect {
-    fill: red;
-    fill-opacity: 0;
-  }
-  .resize-handle.nw {
-    cursor: nw-resize;
-  }
-  .resize-handle.n {
-    cursor: n-resize;
-  }
-  .resize-handle.ne {
-    cursor: ne-resize;
-  }
-  .resize-handle.e {
-    cursor: e-resize;
-  }
-  .resize-handle.se {
-    cursor: se-resize;
-  }
-  .resize-handle.s {
-    cursor: s-resize;
-  }
-  .resize-handle.sw {
-    cursor: sw-resize;
-  }
-  .resize-handle.w {
-    cursor: w-resize;
-  }
+
 </style>

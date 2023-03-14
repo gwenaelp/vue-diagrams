@@ -3,14 +3,8 @@
   "description": "Diagram component for vue.js, inspired by react-diagrams",
   "version": "0.0.1-development",
   "license": "MIT",
-  "main": "dist/vue-diagrams.common.js",
-  "module": "dist/vue-diagrams.esm.js",
-  "unpkg": "dist/vue-diagrams.js",
-  "jsdelivr": "dist/vue-diagrams.js",
-  "files": [
-    "src",
-    "dist/*.js"
-  ],
+  "main": "src/index.js",
+  "files": [ "src" ],
   "author": "Gwenael Pluchon",
   "repository": {
     "type": "git",

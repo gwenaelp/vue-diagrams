@@ -1,0 +1,31 @@
+body: {
+  background: green;
+}
+.resize-handle {
+  fill: red;
+  fill-opacity: 0;
+}
+.resize-handle[data-direction="nw"] {
+  cursor: nw-resize;
+}
+.resize-handle[data-direction="n"] {
+  cursor: n-resize;
+}
+.resize-handle[data-direction="ne"] {
+  cursor: ne-resize;
+}
+.resize-handle[data-direction="e"] {
+  cursor: e-resize;
+}
+.resize-handle[data-direction="se"] {
+  cursor: se-resize;
+}
+.resize-handle[data-direction="s"] {
+  cursor: s-resize;
+}
+.resize-handle[data-direction="sw"] {
+  cursor: sw-resize;
+}
+.resize-handle[data-direction="w"] {
+  cursor: w-resize;
+}
