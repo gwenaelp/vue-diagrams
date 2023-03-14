@@ -1,6 +1,7 @@
 <template>
   <div class="vue-diagrams" :contenteditable="!!editedSvgText">
-   <SvgPanZoom
+    <Menu v-if="showMenu" />
+    <SvgPanZoom
       ref="svgpanzoom"
       :style="{ width: width + 'px', height: height + 'px', border:'1px solid black'}"
       :zoomEnabled="zoomEnabled"
@@ -13,93 +14,98 @@
       :preventMouseEventsDefault="false"
       :beforePan="beforePan"
     >
-    <svg
-      id="svgroot2"
-      version="1.1"
-      xmlns="http://www.w3.org/2000/svg"
-      :viewBox="'0 0 ' + width + ' ' + height"
-      :width="width"
-      :height="height"
-      preserveAspectRatio="xMinYMin meet"
-      class="svg-content"
-      ref="dragramRoot"
-      @mousemove="mouseMove"
-      @mouseup="mouseUp"
-      @mousedown="mouseDown"
-    >
-      <defs>
-        <pattern id="smallGrid" width="16" height="16" patternUnits="userSpaceOnUse">
-          <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#ccc" stroke-width="1"/>
-        </pattern>
-        <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
-          <rect width="80" height="80" fill="url(#smallGrid)"/>
-          <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1"/>
-        </pattern>
-      </defs>
+      <svg
+        id="svgroot2"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        :viewBox="'0 0 ' + width + ' ' + height"
+        :width="width"
+        :height="height"
+        preserveAspectRatio="xMinYMin meet"
+        class="svg-content"
+        ref="dragramRoot"
+        @mousemove="mouseMove"
+        @mouseup="mouseUp"
+        @mousedown="mouseDown"
+      >
+        <defs>
+          <pattern id="smallGrid" width="16" height="16" patternUnits="userSpaceOnUse">
+            <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#ccc" stroke-width="1"/>
+          </pattern>
+          <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+            <rect width="80" height="80" fill="url(#smallGrid)"/>
+            <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1"/>
+          </pattern>
+        </defs>
 
-      <rect x="-5000px" y="-5000px" width="10000px" height="10000px" fill="url(#grid)" @mousedown="clearSelection" ref="grid" class="svg-pan-zoom_viewport"/>
-      <g ref="viewPort" id="viewport" x="50" y="50">
-        <DiagramLink
-          :ref="'link-' + index"
-          :positionFrom="link.positionFrom"
-          :positionTo="link.positionTo"
-          :points="link.points"
-          :id="link.id"
-          :index="index"
-          v-for="(link, index) in model._model.links"
-          @onStartDrag="startDragPoint"
-          @onCreatePoint="createPoint"
-        />
-        <line
-          :x1="getPortHandlePosition(newLink.startPortId).x"
-          :y1="getPortHandlePosition(newLink.startPortId).y"
-          :x2="convertXYtoViewPort(mouseX, 0).x"
-          :y2="convertXYtoViewPort(0, mouseY).y"
-          style="stroke:rgb(255,0,0);stroke-width:2"
-          v-if="newLink"
-        />
-        <DiagramNode
-          :ref="'node-' + nodeIndex"
-          :title="node.title"
-          :x="node.x"
-          :y="node.y"
-          :width="node.width"
-          :height="node.height"
-          :color="node.color"
-          :deletable="node.deletable"
-          :ports="node.ports"
-          :selected="selectedItem.type === 'nodes' && selectedItem.index === nodeIndex"
-          :options="node.options"
-          :index="nodeIndex"
-          v-for="(node, nodeIndex) in model._model.nodes"
-          @onStartDrag="startDragItem"
-          @delete="model.deleteNode(node)"
-        >
-          <DiagramPort
-            v-for="(port, portIndex) in node.ports"
-            :ref="'port-' + port.id"
-            :id="port.id"
-            :nodeIndex="nodeIndex"
-            :y="portIndex * 20"
-            :nodeWidth="node.width"
-            :type="port.type"
-            :name="port.name"
-            @onStartDragNewLink="startDragNewLink"
-            @mouseUpPort="mouseUpPort"
+        <rect x="-5000px" y="-5000px" width="10000px" height="10000px" fill="url(#grid)" @mousedown="clearSelection" ref="grid" class="svg-pan-zoom_viewport"/>
+        <g ref="viewPort" id="viewport" x="50" y="50">
+          <DiagramNode
+            :ref="'node-' + nodeIndex"
+            :title="node.title"
+            :x="node.x"
+            :y="node.y"
+            :width="node.width"
+            :height="node.height"
+            :color="node.color"
+            :deletable="node.deletable"
+            :ports="node.ports"
+            :selected="selectedItem.type === 'nodes' && selectedItem.index === nodeIndex"
+            :options="node.options"
+            :index="nodeIndex"
+            v-for="(node, nodeIndex) in model._model.nodes"
+            @onStartDrag="startDragItem"
+            @delete="model.deleteNode(node)"
+          >
+            <DiagramPort
+              v-for="(port, portIndex) in node.ports"
+              :ref="'port-' + port.id"
+              :id="port.id"
+              :nodeIndex="nodeIndex"
+              :y="portIndex * 20"
+              :nodeWidth="node.width"
+              :type="port.type"
+              :name="port.name"
+              @onStartDragNewLink="startDragNewLink"
+              @mouseUpPort="mouseUpPort"
+            />
+          </DiagramNode>
+          <DiagramLink
+            :ref="'link-' + link.id"
+            :positionFrom="link.positionFrom"
+            :positionTo="link.positionTo"
+            :points="link.points"
+            :id="link.id"
+            :index="index"
+            :options="link.options"
+            v-for="(link, index) in model._model.links"
+            @onStartDrag="startDragPoint"
+            @onCreatePoint="createPoint"
+            @delete="model.deleteLink(link)"
           />
-        </DiagramNode>
-      </g>
-    </svg>
-  </SvgPanZoom>
+          <line
+            :x1="getPortHandlePosition(newLink.startPortId).x"
+            :y1="getPortHandlePosition(newLink.startPortId).y"
+            :x2="convertXYtoViewPort(mouseX, 0).x"
+            :y2="convertXYtoViewPort(0, mouseY).y"
+            style="stroke:rgb(255,0,0);stroke-width:2"
+            v-if="newLink"
+          />
+        </g>
+      </svg>
+    </SvgPanZoom>
   </div>
 </template>
 <script>
 import SvgPanZoom from 'vue-svg-pan-zoom';
 
+import Menu from './Menu.vue';
+
 import DiagramModel from './../DiagramModel';
 import DiagramNode from './DiagramNode.vue';
 import DiagramLink from './DiagramLink.vue';
 import DiagramPort from './DiagramPort.vue';
+
 
 var generateId = function() {
   return Math.trunc(Math.random() * 1000);
@@ -122,7 +128,6 @@ function snapToGrip(val, gridSize) {
 export default {
   name: "Diagram",
   Model: DiagramModel,
-
   props: {
     model: {
       required: true
@@ -136,8 +141,11 @@ export default {
     gridSnap: {
       default: 1
     },
+    showMenu: {
+      type: Boolean,
+      default: false,
+    },
   },
-
   data() {
     this.updateLinksPositions();
 
@@ -157,17 +165,17 @@ export default {
     };
   },
   components: {
+    Menu,
     DiagramNode,
     DiagramLink,
     DiagramPort,
-    SvgPanZoom
+    SvgPanZoom,
   },
   computed: {
     querySelector() {
       return document.querySelector("#viewport");
     }
   },
-
   watch: {
     editedSvgText(v) {
       if (v) {
@@ -232,11 +240,20 @@ export default {
       this.$nextTick(() => {
         setTimeout(() => {
           for (var i = 0; i < links.length; i++) {
-            var coords;
+            let coords;
             coords = this.getPortHandlePosition(links[i].from);
             links[i].positionFrom = { x: coords.x, y: coords.y };
             coords = this.getPortHandlePosition(links[i].to);
             links[i].positionTo = { x: coords.x, y: coords.y };
+            if (this.$refs['link-' + links[i].id]) {
+              let linkComponent = this.$refs['link-' + links[i].id];
+              if(Array.isArray(linkComponent)) {
+                linkComponent = linkComponent[0];
+              }
+              if(linkComponent && linkComponent.refreshLink) {
+                linkComponent.refreshLink();
+              }
+            }
           }
         }, 100);
       });
@@ -277,29 +294,43 @@ export default {
       this.mouseX = pos.x;
       this.mouseY = pos.y;
       if (this.draggedItem) {
-        var index = this.draggedItem.index;
-        var type = this.draggedItem.type;
-        if (type === "points") {
-          let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
+        const index = this.draggedItem.index;
+        const type = this.draggedItem.type;
 
-          coords.x = snapToGrip(coords.x, this.gridSnap) - this.gridSnap / 2;
-          coords.y = snapToGrip(coords.y, this.gridSnap);
+        let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
 
-          links[this.draggedItem.linkIndex].points[
-            this.draggedItem.pointIndex
-          ].x =
-            coords.x;
-          links[this.draggedItem.linkIndex].points[
-            this.draggedItem.pointIndex
-          ].y =
-            coords.y;
+        coords.x = snapToGrip(coords.x, this.gridSnap) - this.gridSnap / 2;
+        coords.y = snapToGrip(coords.y, this.gridSnap);
+
+        if (type === 'points') {
+          const linkIndex = this.draggedItem.linkIndex;
+          const pointIndex = this.draggedItem.pointIndex;
+          links[linkIndex].points[pointIndex].x = coords.x;
+          links[linkIndex].points[pointIndex].y = coords.y;
           this.updateLinksPositions();
+        } if (type === 'resizeHandle') {
+          console.log('drag handle', this.draggedItem);
+          if (this.draggedItem.direction.indexOf('e') !== -1) {
+            this.model._model.nodes[index].width = coords.x - this.model._model.nodes[index].x;
+            this.updateLinksPositions();
+          }
+          if(this.draggedItem.direction.indexOf('s') !== -1) {
+            this.model._model.nodes[index].height = coords.y - this.model._model.nodes[index].y;
+            this.updateLinksPositions();
+          }
+          if (this.draggedItem.direction.indexOf('n') !== -1) {
+            const bottom = this.model._model.nodes[index].y + this.model._model.nodes[index].height;
+            this.model._model.nodes[index].y = coords.y;
+            this.model._model.nodes[index].height = bottom - coords.y;
+            this.updateLinksPositions();
+          }
+          if (this.draggedItem.direction.indexOf('w') !== -1) {
+            const right = this.model._model.nodes[index].x + this.model._model.nodes[index].width;
+            this.model._model.nodes[index].x = coords.x;
+            this.model._model.nodes[index].width = right - coords.x;
+            this.updateLinksPositions();
+          }
         } else {
-          let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
-
-          coords.x = snapToGrip(coords.x, this.gridSnap) - this.gridSnap / 2;
-          coords.y = snapToGrip(coords.y, this.gridSnap);
-
           this.model._model[type][index].x = coords.x - 30;
           this.model._model[type][index].y = coords.y - 30;
           this.updateLinksPositions();

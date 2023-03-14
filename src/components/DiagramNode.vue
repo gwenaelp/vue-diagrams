@@ -10,6 +10,30 @@
         :width="width" :height="height"
         class="node-dark-background">
       </rect>
+      <g class="resize-handle nw" @mousedown="startDragResizeHandle('nw')">
+        <rect :x="3" :y="10" :height="5" :width="5" />
+      </g>
+      <g class="resize-handle n" @mousedown="startDragResizeHandle('n')">
+        <rect :x="5" :y="12" :height="3" :width="width" />
+      </g>
+      <g class="resize-handle ne" @mousedown="startDragResizeHandle('ne')">
+        <rect :x="width + 5" :y="10" :height="5" :width="5" />
+      </g>
+      <g class="resize-handle e" @mousedown="startDragResizeHandle('e')">
+        <rect :x="width + 5" :y="15" :width="3" :height="height" />
+      </g>
+      <g class="resize-handle se" @mousedown="startDragResizeHandle('se')">
+        <rect :x="width + 5" :y="height + 15" :height="5" :width="5" />
+      </g>
+      <g class="resize-handle s" @mousedown="startDragResizeHandle('s')">
+        <rect :x="5" :y="height + 15" :height="3" :width="width" />
+      </g>
+      <g class="resize-handle sw" @mousedown="startDragResizeHandle('sw')">
+        <rect :x="3" :y="height + 15" :height="5" :width="5" />
+      </g>
+      <g class="resize-handle w" @mousedown="startDragResizeHandle('w')">
+        <rect :x="2" :y="15" :width="3" :height="height" />
+      </g>
       <svg
         x="0" y="0"
         @mousedown="mouseDown"
@@ -171,6 +195,15 @@ export default {
     mouseleave() {
       this.titleFillOpacity = 0.25;
     },
+
+    startDragResizeHandle(direction) {
+        this.$emit(
+          "onStartDrag",
+          { type: "resizeHandle", index: this.index, direction },
+          event.x - this.x,
+          event.y - this.y
+        );
+    },
   }
 };
 </script>
@@ -178,5 +211,33 @@ export default {
   .title-editable:hover {
     fill: blue;
     cursor: pointer;
+  }
+  .resize-handle rect {
+    fill: red;
+    fill-opacity: 0;
+  }
+  .resize-handle.nw {
+    cursor: nw-resize;
+  }
+  .resize-handle.n {
+    cursor: n-resize;
+  }
+  .resize-handle.ne {
+    cursor: ne-resize;
+  }
+  .resize-handle.e {
+    cursor: e-resize;
+  }
+  .resize-handle.se {
+    cursor: se-resize;
+  }
+  .resize-handle.s {
+    cursor: s-resize;
+  }
+  .resize-handle.sw {
+    cursor: sw-resize;
+  }
+  .resize-handle.w {
+    cursor: w-resize;
   }
 </style>

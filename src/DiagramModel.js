@@ -70,14 +70,15 @@ class DiagramModel {
    * @param {Integer} to     Port id. Must be an in port
    * @param {Array}  points  Optional. Array of points to make the link represented as a segmented line
    */
-  addLink(from, to, points = []) {
+  addLink(from, to, points = [], options = {}) {
     this._model.links.push({
       id: generateId(),
       from: from,
       to: to,
       positionFrom: {},
       positionTo: {},
-      points
+      points,
+      options,
     });
   }
 

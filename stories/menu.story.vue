@@ -1,13 +1,13 @@
 <template>
-  <Story title="Resize">
-    <div>
-      <diagram :model="model" width="500" height="500" gridSnap="10" />
+  <Story title="Menu/Basic">
+    <div style="background: whitesmoke; padding: 20px; margin-bottom: 20px;">
+      Right click on nodes and link to show the edit menu
     </div>
+    <diagram :model="model" height="300" show-menu />
   </Story>
 </template>
 <script>
 import Diagram from "../src/components/Diagram.vue";
-
 export default {
   components: {
     Diagram,

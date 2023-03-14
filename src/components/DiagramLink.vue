@@ -1,5 +1,5 @@
   <template>
-  <g>
+  <g class="diagram-link">
     <g
       v-if="points && points.length"
       @mouseenter="mouseEnter"
@@ -8,6 +8,7 @@
     >
       <g
         v-for="(point, index) in points"
+        :key="index"
         @mousedown="mouseDownSegment($event, index)"
         >
         <line
@@ -23,9 +24,7 @@
           stroke-width="2"
         />
       </g>
-      <g
-        @mousedown="mouseDownSegment($event, points.length)"
-        >
+      <g @mousedown="mouseDownSegment($event, points.length)" >
         <line
           :x1="points[points.length - 1].x" :y1="points[points.length - 1].y"
           :x2="x2" :y2="y2"
@@ -46,9 +45,7 @@
       @mouseleave="mouseLeave"
       @mousedown="mouseDown"
     >
-      <g
-        @mousedown="mouseDownSegment($event, 0)"
-      >
+      <g @mousedown="mouseDownSegment($event, 0)">
         <path
           :d="curve"
           :style="largeStrokeStyle"
@@ -57,6 +54,7 @@
         />
         <path
           :d="curve"
+          ref="curvePath"
           style="stroke:rgb(0,0,0);"
           stroke-width="2"
           fill="none"
@@ -76,8 +74,8 @@
 import DiagramPoint from "./DiagramPoint.vue";
 
 export default {
-  name: "DiagramLink",
-  props: ["positionFrom", "positionTo", "id", "index", "points"],
+  name: 'DiagramLink',
+  props: ['positionFrom', 'positionTo', 'id', 'index', 'points', 'options'],
 
   components: {
     DiagramPoint
@@ -87,32 +85,10 @@ export default {
     return {
       largeStrokeStyle: "stroke:rgba(255,0,0,0.0);",
       pointStyleNormal: "stroke:rgba(255,0,0,0.0); stroke-width: 6",
-      pointStyleHover: "stroke:rgba(255,0,0,0.5); stroke-width: 6"
+      pointStyleHover: "stroke:rgba(255,0,0,0.5); stroke-width: 6",
+      beginCurvePath: undefined,
+      endCurvePath: undefined,
     };
-  },
-  methods: {
-    mouseEnter() {
-      this.largeStrokeStyle = "stroke:rgba(255,0,0,0.5);";
-    },
-    mouseLeave() {
-      this.largeStrokeStyle = "stroke:rgba(255,0,0,0.0);";
-    },
-    mouseDownPoint(pos, pointIndex) {
-      console.log("mouseDownPoint", arguments);
-      this.$emit("onStartDrag", {
-        type: "points",
-        linkIndex: this.index,
-        pointIndex
-      });
-    },
-    mouseDown(pos) {},
-    mouseDownSegment(pos, segmentIndex) {
-      this.createPoint(pos.x, pos.y, segmentIndex);
-      this.mouseDownPoint(pos, segmentIndex);
-    },
-    createPoint(x, y, pointIndex) {
-      this.$emit("onCreatePoint", x, y, this.index, pointIndex);
-    }
   },
   computed: {
     x1() {
@@ -132,16 +108,46 @@ export default {
     },
 
     curve() {
-      var x1 = Math.trunc(this.positionFrom.x),
-        y1 = Math.trunc(this.positionFrom.y - 4),
-        x2 = Math.trunc(this.positionTo.x - 4),
-        y2 = Math.trunc(this.positionTo.y - 4);
+      if(this.positionFrom.x && this.positionFrom.y && this.positionTo.x && this.positionTo.y) {
+        var x1 = Math.trunc(this.positionFrom.x),
+          y1 = Math.trunc(this.positionFrom.y - 4),
+          x2 = Math.trunc(this.positionTo.x - 4),
+          y2 = Math.trunc(this.positionTo.y - 4);
 
-      var distance = Math.trunc(4 * Math.sqrt(Math.abs(x1 - x2)));
-      var path = `M${x1},${y1} C${x1 + distance},${y1} ${x2 -
-        distance},${y2} ${x2},${y2}`;
-      return path;
+        var distance = Math.trunc(4 * Math.sqrt(Math.abs(x1 - x2)));
+        var path = `M${x1},${y1} C${x1 + distance},${y1} ${x2 -
+          distance},${y2} ${x2},${y2}`;
+        return path;
+      }
+    },
+  },
+  methods: {
+    refreshLink() {},
+    deleteLink: function() {
+      this.$emit("delete");
+    },
+
+    mouseEnter() {
+      this.largeStrokeStyle = "stroke:rgba(255,0,0,0.5);";
+    },
+    mouseLeave() {
+      this.largeStrokeStyle = "stroke:rgba(255,0,0,0.0);";
+    },
+    mouseDownPoint(pos, pointIndex) {
+      this.$emit("onStartDrag", {
+        type: "points",
+        linkIndex: this.index,
+        pointIndex
+      });
+    },
+    mouseDown(pos) {},
+    mouseDownSegment(pos, segmentIndex) {
+      this.createPoint(pos.x, pos.y, segmentIndex);
+      this.mouseDownPoint(pos, segmentIndex);
+    },
+    createPoint(x, y, pointIndex) {
+      this.$emit("onCreatePoint", x, y, this.index, pointIndex);
     }
-  }
+  },
 };
 </script>

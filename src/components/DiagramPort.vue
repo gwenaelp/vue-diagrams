@@ -30,7 +30,7 @@ export default {
   props: ["id", "y", "type", "name", "nodeWidth", "nodeIndex"],
   data() {
     return {
-      fill: "#444444"
+      fill: "#666666"
     };
   },
   computed: {
@@ -44,11 +44,11 @@ export default {
     },
 
     enter() {
-      this.fill = "#888888";
+      this.fill = "#999999";
     },
 
     leave() {
-      this.fill = "#444444";
+      this.fill = "#666666";
     },
     startDragNewLink() {
       this.$emit("onStartDragNewLink", this.id);
