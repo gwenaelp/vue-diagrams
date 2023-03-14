@@ -1,0 +1,256 @@
+{
+  "stories": [
+    {
+      "id": "stories-basic-story-vue",
+      "title": "Simple",
+      "group": null,
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "icon": null,
+      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/basic.story.vue",
+      "supportPluginId": "vue2",
+      "treePath": [
+        "Simple"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
+      "id": "stories-diagram-dimensions-story-vue",
+      "title": "Assigning dimensions",
+      "group": null,
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "icon": null,
+      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/diagram-dimensions.story.vue",
+      "supportPluginId": "vue2",
+      "treePath": [
+        "Assigning dimensions"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
+      "id": "stories-dropping-node-story-vue",
+      "title": "Drop to create nodes",
+      "group": null,
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "icon": null,
+      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/dropping-node.story.vue",
+      "supportPluginId": "vue2",
+      "treePath": [
+        "Drop to create nodes"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
+      "id": "stories-editable-titles-story-vue",
+      "title": "Editable titles",
+      "group": null,
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "icon": null,
+      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/editable-titles.story.vue",
+      "supportPluginId": "vue2",
+      "treePath": [
+        "Editable titles"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
+      "id": "stories-grid-snap-story-vue",
+      "title": "Grid snap",
+      "group": null,
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "icon": null,
+      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/grid-snap.story.vue",
+      "supportPluginId": "vue2",
+      "treePath": [
+        "Grid snap"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
+      "id": "stories-images-story-vue",
+      "title": "Image nodes",
+      "group": null,
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "icon": null,
+      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/images.story.vue",
+      "supportPluginId": "vue2",
+      "treePath": [
+        "Image nodes"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
+      "id": "stories-menu-story-vue",
+      "title": "Basic",
+      "group": null,
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "icon": null,
+      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/menu.story.vue",
+      "supportPluginId": "vue2",
+      "treePath": [
+        "Menu",
+        "Basic"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
+      "id": "stories-modes-story-vue",
+      "title": "Edit modes",
+      "group": null,
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "icon": null,
+      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/modes.story.vue",
+      "supportPluginId": "vue2",
+      "treePath": [
+        "Edit modes"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
+      "id": "stories-resize-story-vue",
+      "title": "Resize nodes",
+      "group": null,
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "icon": null,
+      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/resize.story.vue",
+      "supportPluginId": "vue2",
+      "treePath": [
+        "Resize nodes"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
+      "id": "stories-serialization-deserialization-story-vue",
+      "title": "serialization deserialization",
+      "group": null,
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "icon": null,
+      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/serialization-deserialization.story.vue",
+      "supportPluginId": "vue2",
+      "treePath": [
+        "serialization deserialization"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    }
+  ],
+  "markdownFiles": []
+}
