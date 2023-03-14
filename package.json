@@ -25,6 +25,8 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "story:dev": "histoire dev",
+    "story:build": "histoire build",
+    "doc:build": "histoire build",
     "test": "npm run lint && jest --verbose --coverage",
     "test:update": "jest --verbose --updateSnapshot",
     "test:watch": "jest --verbose --watchAll --notify"
