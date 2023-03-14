@@ -4,7 +4,7 @@
       <div class="container">
         <NuxtLink to="/" class="logo">Vue-diagrams</NuxtLink>
         <NuxtLink to="/doc">Docs</NuxtLink>
-        <a href="/stories">Examples</a>
+        <a href="stories">Examples</a>
         <span style="flex-grow: 1" />
         <a href="https://github.com/gwenaelp/vue-diagrams">
           <i class="mdi mdi-github mdi-24px" />
