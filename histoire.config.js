@@ -6,6 +6,7 @@ export default defineConfig({
     HstVue(),
   ],
   outDir: 'doc/dist/stories',
+  routerMode: 'hash',
   vite: {
     base: "./",
   },
