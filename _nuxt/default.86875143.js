@@ -1,1 +1,0 @@
-import{a,b as r,e as t,r as o,o as s}from"./entry.f6e3e161.js";const c={};function n(e,d){return s(),r("div",null,[t(" Vue-diagrams header "),o(e.$slots,"default")])}const f=a(c,[["render",n]]);export{f as default};
