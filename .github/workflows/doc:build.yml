@@ -22,9 +22,7 @@ jobs:
         run: yarn install
 
       - name: Build 🏗️
-        env: 
-          NUXT_APP_BASE_URL: /vue-diagrams/
-        run: yarn doc:build
+        run: NUXT_APP_BASE_URL=/vue-diagrams/ yarn doc:build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
