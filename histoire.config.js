@@ -5,5 +5,5 @@ export default defineConfig({
   plugins: [
     HstVue(),
   ],
-  outDir: 'dist/stories',
+  outDir: 'doc/dist/stories',
 })
