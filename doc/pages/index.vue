@@ -4,29 +4,39 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title"> An easy to use diagram editor component</h1>
-          <p>Vue-diagrams makes it a breeze to edit diagrams in a Vue app.</p>
+          <p>Diagram component for vue.js, inspired by react-diagrams</p>
           <p><b>This documentation is under construction.</b></p>
           <DiagramDemo />
         </div>
       </div>
     </section>
     <section>
+      <div class="container">
+        <h2>Installation</h2>
+        <div style="display: flex; justify-content: space-around;">
+          <pre>npm install vue-diagrams</pre>
+          <pre>yarn add vue-diagrams</pre>
+        </div>
+      </div>
+    </section>
+    <section>
       <div class="container features-list">
+        <h2>Features</h2>
         <div class="feature">
-          <h2>Easy to learn</h2>
+          <h3>Easy to learn</h3>
         </div>
         <div class="feature">
-          <h2>Grid snap</h2>
+          <h3>Grid snap</h3>
         </div>
         <div class="feature">
-          <h2>In place editing</h2>
+          <h3>In place editing</h3>
           Move nodes, resize them, connect links as curves or segments...
         </div>
         <div class="feature">
-          <h2>Serialization/deserialization</h2>
+          <h3>Serialization/deserialization</h3>
         </div>
         <div class="feature">
-          <h2>Various node types</h2>
+          <h3>Various node types</h3>
         </div>
       </div>
     </section>
@@ -50,7 +60,7 @@ h1 {
   margin-top: 30px;
   margin-bottom: 30px;
 }
-.feature h2 {
+.feature h3 {
   padding: 0;
   margin: 0;
 }
