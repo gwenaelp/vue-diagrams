@@ -10,6 +10,26 @@
         </div>
       </div>
     </section>
+    <section>
+      <div class="container features-list">
+        <div class="feature">
+          <h2>Easy to learn</h2>
+        </div>
+        <div class="feature">
+          <h2>Grid snap</h2>
+        </div>
+        <div class="feature">
+          <h2>In place editing</h2>
+          Move nodes, resize them, connect links as curves or segments...
+        </div>
+        <div class="feature">
+          <h2>Serialization/deserialization</h2>
+        </div>
+        <div class="feature">
+          <h2>Various node types</h2>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 <style scoped>
@@ -29,5 +49,13 @@ h1 {
 .hero p{
   margin-top: 30px;
   margin-bottom: 30px;
+}
+.feature h2 {
+  padding: 0;
+  margin: 0;
+}
+.feature {
+  border-bottom: 1px solid #ccc;
+  padding: 20px;
 }
 </style>
