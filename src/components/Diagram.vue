@@ -103,6 +103,18 @@
           />
         </g>
       </svg>
+      <svg v-if="showThumbnail" slot="thumbnail" class="thumbViewClass">
+        <rect
+          v-for="(node, nodeIndex) in model._model.nodes"
+          :x="node.x"
+          :y="node.y"
+          :width="node.width"
+          :height="node.height"
+          :fill="node.color || '#66cc00'"
+          :key="node.id"
+        />
+
+      </svg>
     </SvgPanZoom>
   </div>
 </template>
@@ -153,6 +165,10 @@ export default {
       default: 1
     },
     showMenu: {
+      type: Boolean,
+      default: false,
+    },
+    showThumbnail: {
       type: Boolean,
       default: false,
     },
@@ -378,7 +394,7 @@ export default {
               const moveDeltaX = this.model._model[type][index].x - initialItemX;
               const moveDeltaY = this.model._model[type][index].y - initialItemY;
               for (let n of this.secondarySelectedNodes) {
-                if (!(type === 'nodes' && n.id === this.model._model[type][index].id)) {
+                if (!(type === 'nodes' && n === this.model._model[type][index])) {
                   n.x += moveDeltaX;
                   n.y += moveDeltaY;
                 }
@@ -498,5 +514,9 @@ export default {
   svg{
     user-select: none;
     font-family: Helvetica;
+  }
+  .thumbViewClass {
+    width: 100px;
+    height: 70px;
   }
 </style>

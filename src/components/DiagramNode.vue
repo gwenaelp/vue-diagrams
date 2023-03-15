@@ -94,8 +94,8 @@
         font-weight="bold"
         fill="#000000"
       >
-          {{title}}
-        </text>
+        {{title}}
+      </text>
       <slot />
     </template>
   </svg>
