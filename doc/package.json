@@ -11,6 +11,11 @@
     "nuxt": "^3.3.1"
   },
   "dependencies": {
-    "@mdi/font": "^7.1.96"
+    "@codemirror/lang-javascript": "^6.1.4",
+    "@codemirror/lang-vue": "^0.1.1",
+    "@codemirror/theme-one-dark": "^6.1.1",
+    "@mdi/font": "^7.1.96",
+    "codemirror": "^6.0.1",
+    "vue-codemirror": "^6.1.1"
   }
 }
