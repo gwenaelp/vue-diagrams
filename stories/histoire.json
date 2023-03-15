@@ -250,6 +250,31 @@
       ],
       "virtual": false,
       "markdownFile": null
+    },
+    {
+      "id": "stories-thumbnail-story-vue",
+      "title": "Thumbnail",
+      "group": null,
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "icon": null,
+      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/thumbnail.story.vue",
+      "supportPluginId": "vue2",
+      "treePath": [
+        "Thumbnail"
+      ],
+      "virtual": false,
+      "markdownFile": null
     }
   ],
   "markdownFiles": []

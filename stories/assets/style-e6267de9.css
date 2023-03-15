@@ -2878,6 +2878,15 @@ a.is-active[data-v-9d91c643] {
   font-weight: bold;
 }
 
+.diagram[data-v-983da70f] .thumbnail {
+  background: white;
+}
+.diagram[data-v-983da70f] .thumbViewClass, .diagram[data-v-983da70f] .thumbnail {
+  width: 150px;
+  height: 100px;
+  top: 5px;
+}
+
 .menu[data-v-e065371e] {
   position: fixed;
   font-size: 13px;
@@ -2935,4 +2944,8 @@ body: {
 svg[data-v-2c52bd4f]{
   user-select: none;
   font-family: Helvetica;
+}
+.thumbViewClass[data-v-2c52bd4f] {
+  width: 100px;
+  height: 70px;
 }

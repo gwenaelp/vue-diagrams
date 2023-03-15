@@ -690,6 +690,10 @@ const _sfc_main = {
     showMenu: {
       type: Boolean,
       default: false
+    },
+    showThumbnail: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -901,7 +905,7 @@ const _sfc_main = {
               const moveDeltaX = this.model._model[type][index].x - initialItemX;
               const moveDeltaY = this.model._model[type][index].y - initialItemY;
               for (let n of this.secondarySelectedNodes) {
-                if (!(type === "nodes" && n.id === this.model._model[type][index].id)) {
+                if (!(type === "nodes" && n === this.model._model[type][index])) {
                   n.x += moveDeltaX;
                   n.y += moveDeltaY;
                 }
@@ -1019,7 +1023,9 @@ var _sfc_render = function render6() {
     return _c("DiagramLink", { ref: "link-" + link.id, refInFor: true, attrs: { "positionFrom": link.positionFrom, "positionTo": link.positionTo, "points": link.points, "id": link.id, "index": index, "options": link.options }, on: { "onStartDrag": _vm.startDragPoint, "onCreatePoint": _vm.createPoint, "delete": function($event) {
       return _vm.model.deleteLink(link);
     } } });
-  }), _vm.newLink ? _c("line", { staticStyle: { "stroke": "rgb(255,0,0)", "stroke-width": "2" }, attrs: { "x1": _vm.getPortHandlePosition(_vm.newLink.startPortId).x, "y1": _vm.getPortHandlePosition(_vm.newLink.startPortId).y, "x2": _vm.convertXYtoViewPort(_vm.mouseX, 0).x, "y2": _vm.convertXYtoViewPort(0, _vm.mouseY).y } }) : _vm._e(), _vm.mode === "select" && _vm.mouseButtonIsPressed ? _c("rect", { attrs: { "x": _vm.min(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x), "y": _vm.min(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y), "width": _vm.max(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x) - _vm.min(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x), "height": _vm.max(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y) - _vm.min(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y), "fill": "#000000", "fill-opacity": 0.5 } }) : _vm._e()], 2)])])], 1);
+  }), _vm.newLink ? _c("line", { staticStyle: { "stroke": "rgb(255,0,0)", "stroke-width": "2" }, attrs: { "x1": _vm.getPortHandlePosition(_vm.newLink.startPortId).x, "y1": _vm.getPortHandlePosition(_vm.newLink.startPortId).y, "x2": _vm.convertXYtoViewPort(_vm.mouseX, 0).x, "y2": _vm.convertXYtoViewPort(0, _vm.mouseY).y } }) : _vm._e(), _vm.mode === "select" && _vm.mouseButtonIsPressed ? _c("rect", { attrs: { "x": _vm.min(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x), "y": _vm.min(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y), "width": _vm.max(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x) - _vm.min(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x), "height": _vm.max(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y) - _vm.min(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y), "fill": "#000000", "fill-opacity": 0.5 } }) : _vm._e()], 2)]), _vm.showThumbnail ? _c("svg", { staticClass: "thumbViewClass", attrs: { "slot": "thumbnail" }, slot: "thumbnail" }, _vm._l(_vm.model._model.nodes, function(node, nodeIndex) {
+    return _c("rect", { key: node.id, attrs: { "x": node.x, "y": node.y, "width": node.width, "height": node.height, "fill": node.color || "#66cc00" } });
+  }), 0) : _vm._e()])], 1);
 };
 var _sfc_staticRenderFns = [];
 _sfc_render._withStripped = true;
