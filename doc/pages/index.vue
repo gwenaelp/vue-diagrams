@@ -5,7 +5,10 @@
         <div class="container">
           <h1 class="title"> An easy to use diagram editor component</h1>
           <p>Vue-diagrams makes it a breeze to edit diagrams in a Vue app.</p>
-          <DiagramDemo />
+          <no-ssr>
+            <DiagramDemo />
+          </no-ssr>
+          <p>This documentation is under construction. </p>
         </div>
       </div>
     </section>
