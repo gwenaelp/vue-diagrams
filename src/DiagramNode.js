@@ -17,11 +17,12 @@ class DiagramNode {
    * @param  {Object} options [description]
    */
   constructor(id, title, x, y, width, height, options) {
+    this.id = id
     this.title = title;
     this.x = x;
     this.y = y;
-    this.width = width;
-    this.height = height;
+    this.width = width || 72;
+    this.height = height || 100;
     this.options = options || {};
     this.ports = [];
   }

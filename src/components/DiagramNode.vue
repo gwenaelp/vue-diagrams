@@ -15,7 +15,8 @@
         x="0" y="0"
         @mousedown="mouseDown"
         @mouseenter="mouseenter"
-        @mouseleave="mouseleave">
+        @mouseleave="mouseleave"
+      >
         <rect
           fill="#000000"
           :fill-opacity="titleFillOpacity"
@@ -23,8 +24,7 @@
           rx="3" ry="3"
           :width="width-4" height="16"
           class="node-dark-background"
-          >
-        </rect>
+        />
         <text
           :x="10" :y="30"
           :class="options.editableTitle ? 'title-editable': ''"
@@ -42,7 +42,8 @@
             height="14"
             rx="2" ry="2"
             fill="#ffffff"
-            :fill-opacity="0.25"/>
+            :fill-opacity="0.25"
+          />
           <line
             :x1="width" :y1="20"
             :x2="width - 10" :y2="30"
@@ -62,8 +63,8 @@
         x="7" y="35"
         rx="3" ry="3"
         :width="width-4" :height="height - 22"
-        class="node-light-background">
-      </rect>
+        class="node-light-background"
+      />
       <slot />
     </template>
     <template v-else>
@@ -97,14 +98,13 @@
         </text>
       <slot />
     </template>
-
   </svg>
 </template>
 <script>
 import ResizeHandles from '../NodeResizeHandles';
 
 export default {
-  name: "DiagramNode",
+  name: 'DiagramNode',
 
   props: {
     title: {
@@ -122,11 +122,11 @@ export default {
     y: Number,
     width: {
       type: Number,
-      default: 72
+      required: true,
     },
     height: {
       type: Number,
-      default: 100
+      required: true,
     },
     color: {
       type: String,
@@ -185,17 +185,18 @@ export default {
         this.resizeHandles.updatePosition(this.x, this.y, this.width, this.height);
       }
     },
-    deleteNode: function() {
-      this.$emit("delete");
+    deleteNode () {
+      this.$emit('delete');
     },
 
-    mouseDown: function(event) {
+    mouseDown (event) {
       if (!event.target.classList.contains('title-editable')) {
+        const pos = this.$parent.$parent.convertXYtoViewPort(event.x, event.y);
         this.$emit(
-          "onStartDrag",
-          { type: "nodes", index: this.index },
-          event.x - this.x,
-          event.y - this.y
+          'onStartDrag',
+          { type: 'nodes', index: this.index, },
+          pos.x - this.x,
+          pos.y - this.y
         );
       }
     },
@@ -209,7 +210,7 @@ export default {
     },
     startDragResizeHandle(direction) {
         this.$emit(
-          "onStartDrag",
+          'onStartDrag',
           { type: "resizeHandle", index: this.index, direction },
           event.x - this.x,
           event.y - this.y

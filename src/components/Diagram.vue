@@ -50,7 +50,7 @@
             :color="node.color"
             :deletable="node.deletable"
             :ports="node.ports"
-            :selected="selectedItem.type === 'nodes' && selectedItem.index === nodeIndex"
+            :selected="(mainSelectedItem.type === 'nodes' && mainSelectedItem.index === nodeIndex) || secondarySelectedNodes.indexOf(node) !== -1"
             :options="node.options"
             :index="nodeIndex"
             v-for="(node, nodeIndex) in model._model.nodes"
@@ -90,6 +90,16 @@
             :y2="convertXYtoViewPort(0, mouseY).y"
             style="stroke:rgb(255,0,0);stroke-width:2"
             v-if="newLink"
+          />
+          <rect
+            v-if="mode === 'select' && mouseButtonIsPressed"
+            :x="min(viewportMousePos.x, mouseDownViewportPos.x)"
+            :y="min(viewportMousePos.y, mouseDownViewportPos.y)"
+            :width="max(viewportMousePos.x, mouseDownViewportPos.x) - min(viewportMousePos.x, mouseDownViewportPos.x)"
+            :height="max(viewportMousePos.y, mouseDownViewportPos.y) - min(viewportMousePos.y, mouseDownViewportPos.y)"
+            fill="#000000"
+            :fill-opacity="0.5"
+
           />
         </g>
       </svg>
@@ -139,10 +149,6 @@ export default {
     height: {
       default: 500
     },
-    mode: {
-      type: String,
-      default: 'move',
-    },
     gridSnap: {
       default: 1
     },
@@ -155,14 +161,20 @@ export default {
     this.updateLinksPositions();
 
     return {
+      mode: 'move',
       editedSvgText: undefined,
       document,
       zoomEnabled: true,
       panEnabled: true,
       draggedItem: undefined,
-      selectedItem: {},
+      mainSelectedItem: {},
+      secondarySelectedNodes: [],
       initialDragX: 0,
       initialDragY: 0,
+      initialDragY: 0,
+      mouseButtonIsPressed: false,
+      mouseDownViewportPos: {},
+      viewportMousePos: {},
       newLink: undefined,
       mouseX: 0,
       mouseY: 0,
@@ -222,6 +234,12 @@ export default {
     },
   },
   methods: {
+    min (a, b) {
+      return Math.min(a, b);
+    },
+    max (a, b) {
+      return Math.max(a, b);
+    },
     convertXYtoViewPort(x, y) {
       let rootelt = document.getElementById('svgroot2');
       let rec = document.getElementById('viewport');
@@ -233,7 +251,7 @@ export default {
       return point.matrixTransform(ctm);
     },
     beforePan() {
-      if (this.selectedItem.type || this.draggedItem || this.newLink)
+      if (this.mainSelectedItem.type || this.draggedItem || this.newLink)
         return false;
       else return true;
     },
@@ -250,7 +268,7 @@ export default {
     },
 
     clearSelection() {
-      this.selectedItem = {};
+      this.mainSelectedItem = {};
     },
 
     updateLinksPositions() {
@@ -282,9 +300,7 @@ export default {
 
     startDragNewLink(startPortId) {
       this.panEnabled = false;
-      this.newLink = {
-        startPortId
-      };
+      this.newLink = { startPortId };
     },
 
     getPortHandlePosition(portId) {
@@ -311,53 +327,70 @@ export default {
     },
 
     mouseMove(pos) {
-      var links = this.model._model.links;
+      const links = this.model._model.links;
       this.mouseX = pos.x;
       this.mouseY = pos.y;
-      if (this.draggedItem) {
-        const index = this.draggedItem.index;
-        const type = this.draggedItem.type;
+      this.viewportMousePos = this.convertXYtoViewPort(pos.x, pos.y);
+      if (this.mode === 'move') {
+        if (this.draggedItem) {
+          const index = this.draggedItem.index;
+          const type = this.draggedItem.type;
 
-        let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
+          let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
 
-        coords.x = snapToGrip(coords.x, this.gridSnap) - this.gridSnap / 2;
-        coords.y = snapToGrip(coords.y, this.gridSnap);
+          coords.x = snapToGrip(coords.x, this.gridSnap) - this.gridSnap / 2;
+          coords.y = snapToGrip(coords.y, this.gridSnap);
 
-        if (type === 'points') {
-          const linkIndex = this.draggedItem.linkIndex;
-          const pointIndex = this.draggedItem.pointIndex;
-          links[linkIndex].points[pointIndex].x = coords.x;
-          links[linkIndex].points[pointIndex].y = coords.y;
-          this.updateLinksPositions();
-        } if (type === 'resizeHandle') {
-          if (this.draggedItem.direction.indexOf('e') !== -1) {
-            this.model._model.nodes[index].width = coords.x - this.model._model.nodes[index].x;
+          if (type === 'points') {
+            const linkIndex = this.draggedItem.linkIndex;
+            const pointIndex = this.draggedItem.pointIndex;
+            links[linkIndex].points[pointIndex].x = coords.x;
+            links[linkIndex].points[pointIndex].y = coords.y;
             this.updateLinksPositions();
           }
-          if(this.draggedItem.direction.indexOf('s') !== -1) {
-            this.model._model.nodes[index].height = coords.y - this.model._model.nodes[index].y;
+          if (type === 'resizeHandle') {
+            if (this.draggedItem.direction.indexOf('e') !== -1) {
+              this.model._model.nodes[index].width = coords.x - this.model._model.nodes[index].x;
+              this.updateLinksPositions();
+            }
+            if(this.draggedItem.direction.indexOf('s') !== -1) {
+              this.model._model.nodes[index].height = coords.y - this.model._model.nodes[index].y;
+              this.updateLinksPositions();
+            }
+            if (this.draggedItem.direction.indexOf('n') !== -1) {
+              const bottom = this.model._model.nodes[index].y + this.model._model.nodes[index].height;
+              this.model._model.nodes[index].y = coords.y;
+              this.model._model.nodes[index].height = bottom - coords.y;
+              this.updateLinksPositions();
+            }
+            if (this.draggedItem.direction.indexOf('w') !== -1) {
+              const right = this.model._model.nodes[index].x + this.model._model.nodes[index].width;
+              this.model._model.nodes[index].x = coords.x;
+              this.model._model.nodes[index].width = right - coords.x;
+              this.updateLinksPositions();
+            }
+          } else {
+            if(this.model._model[type] && this.model._model[type][index]) {
+              const initialItemX = this.model._model[type][index].x
+              const initialItemY = this.model._model[type][index].y;
+              this.model._model[type][index].x = coords.x - this.initialDragX;
+              this.model._model[type][index].y = coords.y - this.initialDragY;
+              const moveDeltaX = this.model._model[type][index].x - initialItemX;
+              const moveDeltaY = this.model._model[type][index].y - initialItemY;
+              for (let n of this.secondarySelectedNodes) {
+                if (!(type === 'nodes' && n.id === this.model._model[type][index].id)) {
+                  n.x += moveDeltaX;
+                  n.y += moveDeltaY;
+                }
+              }
+            }
             this.updateLinksPositions();
           }
-          if (this.draggedItem.direction.indexOf('n') !== -1) {
-            const bottom = this.model._model.nodes[index].y + this.model._model.nodes[index].height;
-            this.model._model.nodes[index].y = coords.y;
-            this.model._model.nodes[index].height = bottom - coords.y;
-            this.updateLinksPositions();
-          }
-          if (this.draggedItem.direction.indexOf('w') !== -1) {
-            const right = this.model._model.nodes[index].x + this.model._model.nodes[index].width;
-            this.model._model.nodes[index].x = coords.x;
-            this.model._model.nodes[index].width = right - coords.x;
-            this.updateLinksPositions();
-          }
-        } else {
-          this.model._model[type][index].x = coords.x - 30;
-          this.model._model[type][index].y = coords.y - 30;
-          this.updateLinksPositions();
         }
       }
     },
     mouseDown (event) {
+      this.mouseButtonIsPressed = true;
       if (event.target.classList.contains('title-editable')) {
         this.editedSvgText = event.target;
       } else {
@@ -366,11 +399,34 @@ export default {
           this.model._model.nodes[nodeComponent.index].title = this.editedSvgText.innerHTML;
         }
         this.editedSvgText = undefined;
+        if (this.mode === 'select') {
+          this.mouseDownViewportPos = this.convertXYtoViewPort(event.x, event.y);
+        }
       }
     },
     mouseUp() {
+      this.mouseButtonIsPressed = false;
+      if (this.mode === 'move') {
+        if(this.secondarySelectedNodes && this.secondarySelectedNodes.length)
+         if(!this.draggedItem || this.draggedItem.type !== 'nodes' || this.secondarySelectedNodes.filter(n => n === this.model._model.nodes[this.draggedItem.index]).length === 0) {
+          this.secondarySelectedNodes = [];
+         }
+      }
       this.draggedItem = undefined;
       this.newLink = undefined;
+      if (this.mode === 'select') {
+        this.secondarySelectedNodes = [];
+        for (let n of this.model._model.nodes) {
+          const x1 = Math.min(this.viewportMousePos.x, this.mouseDownViewportPos.x);
+          const y1 = Math.min(this.viewportMousePos.y, this.mouseDownViewportPos.y);
+          const x2 = Math.max(this.viewportMousePos.x, this.mouseDownViewportPos.x);
+          const y2 = Math.max(this.viewportMousePos.y, this.mouseDownViewportPos.y);
+          if (n.x < x2 && n.y < y2 && n.x + n.width > x1 && n.y + n.height > y1) {
+            this.secondarySelectedNodes.push(n);
+          }
+          this.mode = 'move';
+        }
+      }
     },
 
     mouseUpPort(portId) {
@@ -390,11 +446,11 @@ export default {
       }
 
       if (this.newLink !== undefined) {
-        var port1Id = this.newLink.startPortId;
-        var port2Id = portId;
+        const port1Id = this.newLink.startPortId;
+        const port2Id = portId;
 
-        var port1 = this.$refs["port-" + port1Id][0];
-        var port2 = this.$refs["port-" + port2Id][0];
+        const port1 = this.$refs["port-" + port1Id][0];
+        const port2 = this.$refs["port-" + port2Id][0];
 
         if (port1.type === "in" && port2.type === "out") {
           links.push({
@@ -431,7 +487,7 @@ export default {
     startDragItem(item, x, y) {
       this.panEnabled = false;
       this.draggedItem = item;
-      this.selectedItem = item;
+      this.mainSelectedItem = item;
       this.initialDragX = x;
       this.initialDragY = y;
     }
