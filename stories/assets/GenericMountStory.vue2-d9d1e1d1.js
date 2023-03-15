@@ -45,44 +45,44 @@ const __vitePreload = function preload(baseModule, deps, importerUrl) {
 };
 const Comp0 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./basic.story-426b29a9.js"
-), true ? ["./basic.story-426b29a9.js","./Diagram-43c7bf3c.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./basic.story-5de76717.js"
+), true ? ["./basic.story-5de76717.js","./Diagram-f86c74aa.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp1 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./diagram-dimensions.story-5a9d594f.js"
-), true ? ["./diagram-dimensions.story-5a9d594f.js","./Diagram-43c7bf3c.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./diagram-dimensions.story-6c6c0b56.js"
+), true ? ["./diagram-dimensions.story-6c6c0b56.js","./Diagram-f86c74aa.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp2 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./dropping-node.story-19b02c48.js"
-), true ? ["./dropping-node.story-19b02c48.js","./Diagram-43c7bf3c.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./dropping-node.story-7d614c67.js"
+), true ? ["./dropping-node.story-7d614c67.js","./Diagram-f86c74aa.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp3 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./editable-titles.story-b923377e.js"
-), true ? ["./editable-titles.story-b923377e.js","./Diagram-43c7bf3c.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./editable-titles.story-d5be351b.js"
+), true ? ["./editable-titles.story-d5be351b.js","./Diagram-f86c74aa.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp4 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./grid-snap.story-cc27825a.js"
-), true ? ["./grid-snap.story-cc27825a.js","./Diagram-43c7bf3c.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./grid-snap.story-c197407b.js"
+), true ? ["./grid-snap.story-c197407b.js","./Diagram-f86c74aa.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp5 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./images.story-f7ce723a.js"
-), true ? ["./images.story-f7ce723a.js","./Diagram-43c7bf3c.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./images.story-c0f84b1c.js"
+), true ? ["./images.story-c0f84b1c.js","./Diagram-f86c74aa.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp6 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./menu.story-f48f8534.js"
-), true ? ["./menu.story-f48f8534.js","./Diagram-43c7bf3c.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./menu.story-00a3390a.js"
+), true ? ["./menu.story-00a3390a.js","./Diagram-f86c74aa.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp7 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./modes.story-ce0250fe.js"
-), true ? ["./modes.story-ce0250fe.js","./Diagram-43c7bf3c.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./modes.story-0c83f7c9.js"
+), true ? ["./modes.story-0c83f7c9.js","./Diagram-f86c74aa.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp8 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./resize.story-920f598a.js"
-), true ? ["./resize.story-920f598a.js","./Diagram-43c7bf3c.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./resize.story-c700427d.js"
+), true ? ["./resize.story-c700427d.js","./Diagram-f86c74aa.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp9 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./serialization-deserialization.story-0134e369.js"
-), true ? ["./serialization-deserialization.story-0134e369.js","./Diagram-43c7bf3c.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./serialization-deserialization.story-82bf747a.js"
+), true ? ["./serialization-deserialization.story-82bf747a.js","./Diagram-f86c74aa.js","./vendor-12611725.js"] : void 0, import.meta.url);
 let files = [
   { "id": "stories-basic-story-vue", "path": ["Simple"], "filePath": "stories/basic.story.vue", "story": { "id": "stories-basic-story-vue", "title": "Simple", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 0, component: Comp0, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-basic-story-vue-f7265202.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-diagram-dimensions-story-vue", "path": ["Assigning dimensions"], "filePath": "stories/diagram-dimensions.story.vue", "story": { "id": "stories-diagram-dimensions-story-vue", "title": "Assigning dimensions", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 1, component: Comp1, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-diagram-dimensions-story-vue-b4b4d1d8.js"), true ? [] : void 0, import.meta.url) },
@@ -91,7 +91,7 @@ let files = [
   { "id": "stories-grid-snap-story-vue", "path": ["Grid snap"], "filePath": "stories/grid-snap.story.vue", "story": { "id": "stories-grid-snap-story-vue", "title": "Grid snap", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 4, component: Comp4, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-grid-snap-story-vue-26a43b9e.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-images-story-vue", "path": ["Image nodes"], "filePath": "stories/images.story.vue", "story": { "id": "stories-images-story-vue", "title": "Image nodes", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 5, component: Comp5, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-images-story-vue-4bbb0ed6.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-menu-story-vue", "path": ["Menu", "Basic"], "filePath": "stories/menu.story.vue", "story": { "id": "stories-menu-story-vue", "title": "Basic", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 6, component: Comp6, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-menu-story-vue-9c61cde7.js"), true ? [] : void 0, import.meta.url) },
-  { "id": "stories-modes-story-vue", "path": ["Edit modes"], "filePath": "stories/modes.story.vue", "story": { "id": "stories-modes-story-vue", "title": "Edit modes", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 7, component: Comp7, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-modes-story-vue-54652f1c.js"), true ? [] : void 0, import.meta.url) },
+  { "id": "stories-modes-story-vue", "path": ["Edit modes"], "filePath": "stories/modes.story.vue", "story": { "id": "stories-modes-story-vue", "title": "Edit modes", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 7, component: Comp7, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-modes-story-vue-1ed25bd6.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-resize-story-vue", "path": ["Resize nodes"], "filePath": "stories/resize.story.vue", "story": { "id": "stories-resize-story-vue", "title": "Resize nodes", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 8, component: Comp8, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-resize-story-vue-4735d264.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-serialization-deserialization-story-vue", "path": ["serialization deserialization"], "filePath": "stories/serialization-deserialization.story.vue", "story": { "id": "stories-serialization-deserialization-story-vue", "title": "serialization deserialization", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 9, component: Comp9, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-serialization-deserialization-story-vue-7c88dc57.js"), true ? [] : void 0, import.meta.url) }
 ];
@@ -116,12 +116,12 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: () => __vitePreload(() => import("./HomeView.vue-31de2434.js"), true ? ["./HomeView.vue-31de2434.js","./vendor-12611725.js"] : void 0, import.meta.url)
+      component: () => __vitePreload(() => import("./HomeView.vue-ee173844.js"), true ? ["./HomeView.vue-ee173844.js","./vendor-12611725.js"] : void 0, import.meta.url)
     },
     {
       path: "/story/:storyId",
       name: "story",
-      component: () => __vitePreload(() => import("./StoryView.vue-5d7d2a1f.js"), true ? ["./StoryView.vue-5d7d2a1f.js","./vendor-12611725.js","./MobileOverlay.vue2-9783ac31.js","./BaseEmpty.vue-b86c71e5.js","./state-31ff7ea4.js"] : void 0, import.meta.url)
+      component: () => __vitePreload(() => import("./StoryView.vue-d90c20d3.js"), true ? ["./StoryView.vue-d90c20d3.js","./vendor-12611725.js","./MobileOverlay.vue2-fc27d097.js","./BaseEmpty.vue-ab454110.js","./state-d1f2c53f.js"] : void 0, import.meta.url)
     }
   ]
 });

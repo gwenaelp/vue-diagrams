@@ -1,6 +1,5 @@
-import { n as normalizeComponent, D as Diagram } from "./Diagram-43c7bf3c.js";
+import { n as normalizeComponent, D as Diagram } from "./Diagram-f86c74aa.js";
 import "./vendor-12611725.js";
-const modes_story_vue_vue_type_style_index_0_scoped_9d91c643_lang = "";
 const _sfc_main = {
   components: {
     Diagram
@@ -20,18 +19,13 @@ const _sfc_main = {
     diagramModel.addLink(node2OutPort, inPort);
     diagramModel.addLink(node3OutPort, inPort);
     return {
-      mode: "move",
       model: diagramModel
     };
   }
 };
 var _sfc_render = function render() {
   var _vm = this, _c = _vm._self._c;
-  return _c("Story", { attrs: { "title": "Edit modes" } }, [_c("a", { class: _vm.mode === "move" ? "is-active" : "", on: { "click": function($event) {
-    _vm.mode = "move";
-  } } }, [_vm._v(" Move ")]), _c("a", { class: _vm.mode === "select" ? "is-active" : "", on: { "click": function($event) {
-    _vm.mode = "select";
-  } } }, [_vm._v(" Select ")]), _c("diagram", { attrs: { "model": _vm.model, "height": "400", "mode": _vm.mode } })], 1);
+  return _c("Story", { attrs: { "title": "Menu/Basic" } }, [_c("div", { staticStyle: { "background": "whitesmoke", "padding": "20px", "margin-bottom": "20px" } }, [_vm._v(" Right click on nodes and link to show the edit menu ")]), _c("diagram", { attrs: { "model": _vm.model, "height": "300", "show-menu": "" } })], 1);
 };
 var _sfc_staticRenderFns = [];
 _sfc_render._withStripped = true;
@@ -41,13 +35,13 @@ var __component__ = /* @__PURE__ */ normalizeComponent(
   _sfc_staticRenderFns,
   false,
   null,
-  "9d91c643",
+  null,
   null,
   null
 );
-__component__.options.__file = "/home/runner/work/vue-diagrams/vue-diagrams/stories/modes.story.vue";
-_sfc_main.__file = "stories/modes.story.vue";
-const modes_story = __component__.exports;
+__component__.options.__file = "/home/runner/work/vue-diagrams/vue-diagrams/stories/menu.story.vue";
+_sfc_main.__file = "stories/menu.story.vue";
+const menu_story = __component__.exports;
 export {
-  modes_story as default
+  menu_story as default
 };

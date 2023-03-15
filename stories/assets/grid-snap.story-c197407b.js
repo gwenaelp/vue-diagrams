@@ -1,4 +1,4 @@
-import { n as normalizeComponent, D as Diagram } from "./Diagram-43c7bf3c.js";
+import { n as normalizeComponent, D as Diagram } from "./Diagram-f86c74aa.js";
 import "./vendor-12611725.js";
 const _sfc_main = {
   components: {
@@ -25,7 +25,7 @@ const _sfc_main = {
 };
 var _sfc_render = function render() {
   var _vm = this, _c = _vm._self._c;
-  return _c("Story", { attrs: { "title": "Simple" } }, [_c("diagram", { attrs: { "model": _vm.model, "height": "300" } })], 1);
+  return _c("Story", { attrs: { "title": "Grid snap" } }, [_c("diagram", { attrs: { "model": _vm.model, "gridSnap": "16" } })], 1);
 };
 var _sfc_staticRenderFns = [];
 _sfc_render._withStripped = true;
@@ -39,9 +39,9 @@ var __component__ = /* @__PURE__ */ normalizeComponent(
   null,
   null
 );
-__component__.options.__file = "/home/runner/work/vue-diagrams/vue-diagrams/stories/basic.story.vue";
-_sfc_main.__file = "stories/basic.story.vue";
-const basic_story = __component__.exports;
+__component__.options.__file = "/home/runner/work/vue-diagrams/vue-diagrams/stories/grid-snap.story.vue";
+_sfc_main.__file = "stories/grid-snap.story.vue";
+const gridSnap_story = __component__.exports;
 export {
-  basic_story as default
+  gridSnap_story as default
 };

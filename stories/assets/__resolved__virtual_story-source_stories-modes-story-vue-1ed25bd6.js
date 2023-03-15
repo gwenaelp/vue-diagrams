@@ -6,11 +6,12 @@ const __resolved__virtual_storySource_storiesModesStoryVue = `<template>
     <a :class="mode === 'select' ? 'is-active': ''" @click="mode = 'select'">
       Select
     </a>
-    <diagram :model="model" height="400" :mode="mode" />
+    <diagram ref="diagram" :model="model" height="400" :mode="mode" />
   </Story>
 </template>
 <script>
 import Diagram from "../src/components/Diagram.vue";
+
 export default {
   components: {
     Diagram,
@@ -35,9 +36,25 @@ export default {
     diagramModel.addLink(node3OutPort, inPort);
 
     return {
-      mode: 'move',
-      model: diagramModel
+      model: diagramModel,
+      diagram: undefined,
     };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.diagram = this.$refs.diagram;
+    });
+  },
+  computed: {
+    mode: {
+      get() {
+        return this.diagram ? this.diagram.mode : undefined;
+      },
+      set(v) {
+        if(this.diagram)
+          this.diagram.mode = v;
+      }
+    },
   },
 };
 

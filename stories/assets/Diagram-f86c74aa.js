@@ -160,11 +160,12 @@ let DiagramNode$1 = class DiagramNode {
    * @param  {Object} options [description]
    */
   constructor(id, title, x, y, width, height, options) {
+    this.id = id;
     this.title = title;
     this.x = x;
     this.y = y;
-    this.width = width;
-    this.height = height;
+    this.width = width || 72;
+    this.height = height || 100;
     this.options = options || {};
     this.ports = [];
   }
@@ -355,11 +356,11 @@ const _sfc_main$4 = {
     y: Number,
     width: {
       type: Number,
-      default: 72
+      required: true
     },
     height: {
       type: Number,
-      default: 100
+      required: true
     },
     color: {
       type: String,
@@ -417,16 +418,17 @@ const _sfc_main$4 = {
         this.resizeHandles.updatePosition(this.x, this.y, this.width, this.height);
       }
     },
-    deleteNode: function() {
+    deleteNode() {
       this.$emit("delete");
     },
-    mouseDown: function(event2) {
+    mouseDown(event2) {
       if (!event2.target.classList.contains("title-editable")) {
+        const pos = this.$parent.$parent.convertXYtoViewPort(event2.x, event2.y);
         this.$emit(
           "onStartDrag",
           { type: "nodes", index: this.index },
-          event2.x - this.x,
-          event2.y - this.y
+          pos.x - this.x,
+          pos.y - this.y
         );
       }
     },
@@ -682,10 +684,6 @@ const _sfc_main = {
     height: {
       default: 500
     },
-    mode: {
-      type: String,
-      default: "move"
-    },
     gridSnap: {
       default: 1
     },
@@ -697,14 +695,20 @@ const _sfc_main = {
   data() {
     this.updateLinksPositions();
     return {
+      mode: "move",
       editedSvgText: void 0,
       document,
       zoomEnabled: true,
       panEnabled: true,
       draggedItem: void 0,
-      selectedItem: {},
+      mainSelectedItem: {},
+      secondarySelectedNodes: [],
       initialDragX: 0,
       initialDragY: 0,
+      initialDragY: 0,
+      mouseButtonIsPressed: false,
+      mouseDownViewportPos: {},
+      viewportMousePos: {},
       newLink: void 0,
       mouseX: 0,
       mouseY: 0,
@@ -764,6 +768,12 @@ const _sfc_main = {
     }
   },
   methods: {
+    min(a, b) {
+      return Math.min(a, b);
+    },
+    max(a, b) {
+      return Math.max(a, b);
+    },
     convertXYtoViewPort(x, y) {
       let rootelt = document.getElementById("svgroot2");
       let rec = document.getElementById("viewport");
@@ -775,7 +785,7 @@ const _sfc_main = {
       return point.matrixTransform(ctm);
     },
     beforePan() {
-      if (this.selectedItem.type || this.draggedItem || this.newLink)
+      if (this.mainSelectedItem.type || this.draggedItem || this.newLink)
         return false;
       else
         return true;
@@ -790,7 +800,7 @@ const _sfc_main = {
       links[linkIndex].points = points;
     },
     clearSelection() {
-      this.selectedItem = {};
+      this.mainSelectedItem = {};
     },
     updateLinksPositions() {
       var links = [];
@@ -819,9 +829,7 @@ const _sfc_main = {
     },
     startDragNewLink(startPortId) {
       this.panEnabled = false;
-      this.newLink = {
-        startPortId
-      };
+      this.newLink = { startPortId };
     },
     getPortHandlePosition(portId) {
       if (this.$refs["port-" + portId] && this.$refs["port-" + portId][0]) {
@@ -845,51 +853,67 @@ const _sfc_main = {
       }
     },
     mouseMove(pos) {
-      var links = this.model._model.links;
+      const links = this.model._model.links;
       this.mouseX = pos.x;
       this.mouseY = pos.y;
-      if (this.draggedItem) {
-        const index = this.draggedItem.index;
-        const type = this.draggedItem.type;
-        let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
-        coords.x = snapToGrip(coords.x, this.gridSnap) - this.gridSnap / 2;
-        coords.y = snapToGrip(coords.y, this.gridSnap);
-        if (type === "points") {
-          const linkIndex = this.draggedItem.linkIndex;
-          const pointIndex = this.draggedItem.pointIndex;
-          links[linkIndex].points[pointIndex].x = coords.x;
-          links[linkIndex].points[pointIndex].y = coords.y;
-          this.updateLinksPositions();
-        }
-        if (type === "resizeHandle") {
-          if (this.draggedItem.direction.indexOf("e") !== -1) {
-            this.model._model.nodes[index].width = coords.x - this.model._model.nodes[index].x;
+      this.viewportMousePos = this.convertXYtoViewPort(pos.x, pos.y);
+      if (this.mode === "move") {
+        if (this.draggedItem) {
+          const index = this.draggedItem.index;
+          const type = this.draggedItem.type;
+          let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
+          coords.x = snapToGrip(coords.x, this.gridSnap) - this.gridSnap / 2;
+          coords.y = snapToGrip(coords.y, this.gridSnap);
+          if (type === "points") {
+            const linkIndex = this.draggedItem.linkIndex;
+            const pointIndex = this.draggedItem.pointIndex;
+            links[linkIndex].points[pointIndex].x = coords.x;
+            links[linkIndex].points[pointIndex].y = coords.y;
             this.updateLinksPositions();
           }
-          if (this.draggedItem.direction.indexOf("s") !== -1) {
-            this.model._model.nodes[index].height = coords.y - this.model._model.nodes[index].y;
+          if (type === "resizeHandle") {
+            if (this.draggedItem.direction.indexOf("e") !== -1) {
+              this.model._model.nodes[index].width = coords.x - this.model._model.nodes[index].x;
+              this.updateLinksPositions();
+            }
+            if (this.draggedItem.direction.indexOf("s") !== -1) {
+              this.model._model.nodes[index].height = coords.y - this.model._model.nodes[index].y;
+              this.updateLinksPositions();
+            }
+            if (this.draggedItem.direction.indexOf("n") !== -1) {
+              const bottom = this.model._model.nodes[index].y + this.model._model.nodes[index].height;
+              this.model._model.nodes[index].y = coords.y;
+              this.model._model.nodes[index].height = bottom - coords.y;
+              this.updateLinksPositions();
+            }
+            if (this.draggedItem.direction.indexOf("w") !== -1) {
+              const right = this.model._model.nodes[index].x + this.model._model.nodes[index].width;
+              this.model._model.nodes[index].x = coords.x;
+              this.model._model.nodes[index].width = right - coords.x;
+              this.updateLinksPositions();
+            }
+          } else {
+            if (this.model._model[type] && this.model._model[type][index]) {
+              const initialItemX = this.model._model[type][index].x;
+              const initialItemY = this.model._model[type][index].y;
+              this.model._model[type][index].x = coords.x - this.initialDragX;
+              this.model._model[type][index].y = coords.y - this.initialDragY;
+              const moveDeltaX = this.model._model[type][index].x - initialItemX;
+              const moveDeltaY = this.model._model[type][index].y - initialItemY;
+              for (let n of this.secondarySelectedNodes) {
+                if (!(type === "nodes" && n.id === this.model._model[type][index].id)) {
+                  n.x += moveDeltaX;
+                  n.y += moveDeltaY;
+                }
+              }
+            }
             this.updateLinksPositions();
           }
-          if (this.draggedItem.direction.indexOf("n") !== -1) {
-            const bottom = this.model._model.nodes[index].y + this.model._model.nodes[index].height;
-            this.model._model.nodes[index].y = coords.y;
-            this.model._model.nodes[index].height = bottom - coords.y;
-            this.updateLinksPositions();
-          }
-          if (this.draggedItem.direction.indexOf("w") !== -1) {
-            const right = this.model._model.nodes[index].x + this.model._model.nodes[index].width;
-            this.model._model.nodes[index].x = coords.x;
-            this.model._model.nodes[index].width = right - coords.x;
-            this.updateLinksPositions();
-          }
-        } else {
-          this.model._model[type][index].x = coords.x - 30;
-          this.model._model[type][index].y = coords.y - 30;
-          this.updateLinksPositions();
         }
       }
     },
     mouseDown(event2) {
+      this.mouseButtonIsPressed = true;
       if (event2.target.classList.contains("title-editable")) {
         this.editedSvgText = event2.target;
       } else {
@@ -898,11 +922,35 @@ const _sfc_main = {
           this.model._model.nodes[nodeComponent.index].title = this.editedSvgText.innerHTML;
         }
         this.editedSvgText = void 0;
+        if (this.mode === "select") {
+          this.mouseDownViewportPos = this.convertXYtoViewPort(event2.x, event2.y);
+        }
       }
     },
     mouseUp() {
+      this.mouseButtonIsPressed = false;
+      if (this.mode === "move") {
+        if (this.secondarySelectedNodes && this.secondarySelectedNodes.length) {
+          if (!this.draggedItem || this.draggedItem.type !== "nodes" || this.secondarySelectedNodes.filter((n) => n === this.model._model.nodes[this.draggedItem.index]).length === 0) {
+            this.secondarySelectedNodes = [];
+          }
+        }
+      }
       this.draggedItem = void 0;
       this.newLink = void 0;
+      if (this.mode === "select") {
+        this.secondarySelectedNodes = [];
+        for (let n of this.model._model.nodes) {
+          const x1 = Math.min(this.viewportMousePos.x, this.mouseDownViewportPos.x);
+          const y1 = Math.min(this.viewportMousePos.y, this.mouseDownViewportPos.y);
+          const x2 = Math.max(this.viewportMousePos.x, this.mouseDownViewportPos.x);
+          const y2 = Math.max(this.viewportMousePos.y, this.mouseDownViewportPos.y);
+          if (n.x < x2 && n.y < y2 && n.x + n.width > x1 && n.y + n.height > y1) {
+            this.secondarySelectedNodes.push(n);
+          }
+          this.mode = "move";
+        }
+      }
     },
     mouseUpPort(portId) {
       var links = this.model._model.links;
@@ -918,10 +966,10 @@ const _sfc_main = {
         this.updateLinksPositions();
       }
       if (this.newLink !== void 0) {
-        var port1Id = this.newLink.startPortId;
-        var port2Id = portId;
-        var port1 = this.$refs["port-" + port1Id][0];
-        var port2 = this.$refs["port-" + port2Id][0];
+        const port1Id = this.newLink.startPortId;
+        const port2Id = portId;
+        const port1 = this.$refs["port-" + port1Id][0];
+        const port2 = this.$refs["port-" + port2Id][0];
         if (port1.type === "in" && port2.type === "out") {
           links.push({
             id: generateId(),
@@ -953,7 +1001,7 @@ const _sfc_main = {
     startDragItem(item, x, y) {
       this.panEnabled = false;
       this.draggedItem = item;
-      this.selectedItem = item;
+      this.mainSelectedItem = item;
       this.initialDragX = x;
       this.initialDragY = y;
     }
@@ -962,7 +1010,7 @@ const _sfc_main = {
 var _sfc_render = function render6() {
   var _vm = this, _c = _vm._self._c;
   return _c("div", { staticClass: "vue-diagrams", attrs: { "contenteditable": !!_vm.editedSvgText } }, [_vm.showMenu ? _c("Menu") : _vm._e(), _c("SvgPanZoom", { ref: "svgpanzoom", style: { width: _vm.width + "px", height: _vm.height + "px", border: "1px solid black" }, attrs: { "zoomEnabled": _vm.zoomEnabled, "id": "svgroot", "panEnabled": _vm.panEnabled, "controlIconsEnabled": true, "fit": false, "center": true, "viewportSelector": "#svgroot2", "preventMouseEventsDefault": false, "beforePan": _vm.beforePan } }, [_c("svg", { ref: "dragramRoot", staticClass: "svg-content", attrs: { "id": "svgroot2", "version": "1.1", "xmlns": "http://www.w3.org/2000/svg", "viewBox": "0 0 " + _vm.width + " " + _vm.height, "width": _vm.width, "height": _vm.height, "preserveAspectRatio": "xMinYMin meet" }, on: { "mousemove": _vm.mouseMove, "mouseup": _vm.mouseUp, "mousedown": _vm.mouseDown } }, [_c("defs", [_c("pattern", { attrs: { "id": "smallGrid", "width": "16", "height": "16", "patternUnits": "userSpaceOnUse" } }, [_c("path", { attrs: { "d": "M 16 0 L 0 0 0 16", "fill": "none", "stroke": "#ccc", "stroke-width": "1" } })]), _c("pattern", { attrs: { "id": "grid", "width": "80", "height": "80", "patternUnits": "userSpaceOnUse" } }, [_c("rect", { attrs: { "width": "80", "height": "80", "fill": "url(#smallGrid)" } }), _c("path", { attrs: { "d": "M 80 0 L 0 0 0 80", "fill": "none", "stroke": "gray", "stroke-width": "1" } })])]), _c("rect", { ref: "grid", staticClass: "svg-pan-zoom_viewport", attrs: { "x": "-5000px", "y": "-5000px", "width": "10000px", "height": "10000px", "fill": "url(#grid)" }, on: { "mousedown": _vm.clearSelection } }), _c("g", { ref: "viewPort", attrs: { "id": "viewport", "x": "50", "y": "50" } }, [_vm._l(_vm.model._model.nodes, function(node, nodeIndex) {
-    return _c("DiagramNode", { ref: "node-" + nodeIndex, refInFor: true, attrs: { "title": node.title, "x": node.x, "y": node.y, "width": node.width, "height": node.height, "color": node.color, "deletable": node.deletable, "ports": node.ports, "selected": _vm.selectedItem.type === "nodes" && _vm.selectedItem.index === nodeIndex, "options": node.options, "index": nodeIndex }, on: { "onStartDrag": _vm.startDragItem, "delete": function($event) {
+    return _c("DiagramNode", { ref: "node-" + nodeIndex, refInFor: true, attrs: { "title": node.title, "x": node.x, "y": node.y, "width": node.width, "height": node.height, "color": node.color, "deletable": node.deletable, "ports": node.ports, "selected": _vm.mainSelectedItem.type === "nodes" && _vm.mainSelectedItem.index === nodeIndex || _vm.secondarySelectedNodes.indexOf(node) !== -1, "options": node.options, "index": nodeIndex }, on: { "onStartDrag": _vm.startDragItem, "delete": function($event) {
       return _vm.model.deleteNode(node);
     } } }, _vm._l(node.ports, function(port, portIndex) {
       return _c("DiagramPort", { ref: "port-" + port.id, refInFor: true, attrs: { "id": port.id, "nodeIndex": nodeIndex, "y": portIndex * 20, "nodeWidth": node.width, "type": port.type, "name": port.name }, on: { "onStartDragNewLink": _vm.startDragNewLink, "mouseUpPort": _vm.mouseUpPort } });
@@ -971,7 +1019,7 @@ var _sfc_render = function render6() {
     return _c("DiagramLink", { ref: "link-" + link.id, refInFor: true, attrs: { "positionFrom": link.positionFrom, "positionTo": link.positionTo, "points": link.points, "id": link.id, "index": index, "options": link.options }, on: { "onStartDrag": _vm.startDragPoint, "onCreatePoint": _vm.createPoint, "delete": function($event) {
       return _vm.model.deleteLink(link);
     } } });
-  }), _vm.newLink ? _c("line", { staticStyle: { "stroke": "rgb(255,0,0)", "stroke-width": "2" }, attrs: { "x1": _vm.getPortHandlePosition(_vm.newLink.startPortId).x, "y1": _vm.getPortHandlePosition(_vm.newLink.startPortId).y, "x2": _vm.convertXYtoViewPort(_vm.mouseX, 0).x, "y2": _vm.convertXYtoViewPort(0, _vm.mouseY).y } }) : _vm._e()], 2)])])], 1);
+  }), _vm.newLink ? _c("line", { staticStyle: { "stroke": "rgb(255,0,0)", "stroke-width": "2" }, attrs: { "x1": _vm.getPortHandlePosition(_vm.newLink.startPortId).x, "y1": _vm.getPortHandlePosition(_vm.newLink.startPortId).y, "x2": _vm.convertXYtoViewPort(_vm.mouseX, 0).x, "y2": _vm.convertXYtoViewPort(0, _vm.mouseY).y } }) : _vm._e(), _vm.mode === "select" && _vm.mouseButtonIsPressed ? _c("rect", { attrs: { "x": _vm.min(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x), "y": _vm.min(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y), "width": _vm.max(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x) - _vm.min(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x), "height": _vm.max(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y) - _vm.min(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y), "fill": "#000000", "fill-opacity": 0.5 } }) : _vm._e()], 2)])])], 1);
 };
 var _sfc_staticRenderFns = [];
 _sfc_render._withStripped = true;
