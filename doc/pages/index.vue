@@ -5,10 +5,8 @@
         <div class="container">
           <h1 class="title"> An easy to use diagram editor component</h1>
           <p>Vue-diagrams makes it a breeze to edit diagrams in a Vue app.</p>
-          <p>This documentation is under construction. </p>
-          <no-ssr>
-            <DiagramDemo />
-          </no-ssr>
+          <p><b>This documentation is under construction.</b></p>
+          <DiagramDemo />
         </div>
       </div>
     </section>
