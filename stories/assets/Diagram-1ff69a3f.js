@@ -63,28 +63,19 @@ const _sfc_main$5 = {
         event2.preventDefault();
       },
       onMouseDown: (event2) => {
-        console.log("onMouseDown", event2);
         const parentContextMenu = event2.target.closest(".diagram-context-menu");
-        const parentDiagramNode = event2.target.closest(".diagram-node");
-        const parentDiagramLink = event2.target.closest(".diagram-link");
+        const parentDiagramElement = event2.target.closest(".has-menu");
         this.menuX = event2.pageX;
         this.menuY = event2.pageY;
         if (parentContextMenu) {
           event2.stopPropagation();
-          this.menuItemClick(event2);
-          this.showMenu = false;
-          this.menuTarget = void 0;
-        } else if (parentDiagramNode && event2.button === 2) {
-          this.menuTarget = parentDiagramNode;
-          this.showMenu = "node";
-          event2.stopPropagation();
-        } else if (parentDiagramLink && event2.button === 2) {
-          this.menuTarget = parentDiagramLink;
-          this.showMenu = "link";
+          this.menuItemClick(event2, this.showMenuComponent);
+          this.showMenuComponent = void 0;
+        } else if (parentDiagramElement && event2.button === 2) {
+          this.showMenuComponent = parentDiagramElement.__vue__;
           event2.stopPropagation();
         } else {
-          this.showMenu = false;
-          this.menuTarget = void 0;
+          this.showMenuComponent = void 0;
         }
         if (!event2.defaultPrevented) {
           this.$parent.$el.dispatchEvent(event2);
@@ -92,22 +83,7 @@ const _sfc_main$5 = {
       },
       menuX: 0,
       menuY: 0,
-      menuTarget: void 0,
-      showMenu: false,
-      menus: {
-        node: [{
-          label: "Delete node",
-          handler(targetComponent) {
-            targetComponent.deleteNode();
-          }
-        }],
-        link: [{
-          label: "Delete link",
-          handler(targetComponent) {
-            targetComponent.deleteLink();
-          }
-        }]
-      }
+      showMenuComponent: void 0
     };
   },
   mounted() {
@@ -119,15 +95,15 @@ const _sfc_main$5 = {
     this.$parent.$el.addEventListener("contextmenu", this.onContextMenu);
   },
   methods: {
-    menuItemClick(event2) {
-      this.menus[event2.target.dataset.menuKey][event2.target.dataset.menuItemKey].handler(this.menuTarget ? this.menuTarget.__vue__ : void 0);
+    menuItemClick(event2, component) {
+      component.menu[event2.target.dataset.menuItemKey].handler.call(component);
     }
   }
 };
 var _sfc_render$5 = function render() {
   var _vm = this, _c = _vm._self._c;
-  return _c("div", [_vm.showMenu ? _c("div", { class: `menu diagram-context-menu menu-${_vm.showMenu}`, style: `left: ${_vm.menuX}px; top: ${_vm.menuY}px` }, _vm._l(_vm.menus[_vm.showMenu], function(menuItem, menuItemKey) {
-    return _c("div", { staticClass: "menu-item", attrs: { "data-menu-key": _vm.showMenu, "data-menu-item-key": menuItemKey } }, [_vm._v(" " + _vm._s(menuItem.label) + " ")]);
+  return _c("div", [_vm.showMenuComponent ? _c("div", { class: `menu diagram-context-menu`, style: `left: ${_vm.menuX}px; top: ${_vm.menuY}px` }, _vm._l(_vm.showMenuComponent.menu, function(menuItem, menuItemKey) {
+    return _c("div", { staticClass: "menu-item", attrs: { "data-menu-item-key": menuItemKey } }, [_vm._v(" " + _vm._s(menuItem.label) + " ")]);
   }), 0) : _vm._e()]);
 };
 var _sfc_staticRenderFns$5 = [];
@@ -148,18 +124,20 @@ const Menu = __component__$5.exports;
 var generateId$2 = function() {
   return Math.trunc(Math.random() * 1e3);
 };
+const diagramFor = {};
 let DiagramNode$1 = class DiagramNode {
   /**
    *  This should not be called directly. Use the "addNode" method from the DiagramModel class
    * @param  {Integer} id [description]
-   * @param  {String} title   [description]
-   * @param  {Integer} x      [description]
-   * @param  {Integer} y      [description]
-   * @param  {Integer} width  [description]
-   * @param  {Integer} height [description]
-   * @param  {Object} options [description]
+   * @param  {String} title
+   * @param  {Integer} x
+   * @param  {Integer} y
+   * @param  {Integer} width
+   * @param  {Integer} height
+   * @param  {Object} options
    */
-  constructor(id, title, x, y, width, height, options) {
+  constructor(diagram, id, title, x, y, width, height, options) {
+    diagramFor[id] = diagram;
     this.id = id;
     this.title = title;
     this.x = x;
@@ -197,6 +175,17 @@ let DiagramNode$1 = class DiagramNode {
     this.ports.push(newPort);
     return newPort.id;
   }
+  removePortLinks(id) {
+    for (let l of diagramFor[id]._model.links) {
+      if (l.from === id || l.to === id) {
+        this.diagram.deleteLink(l);
+      }
+    }
+  }
+  deletePort(id) {
+    this.removePortLinks(id);
+    this.ports = this.ports.filter((p) => p.id !== id);
+  }
 };
 var generateId$1 = function() {
   return Math.trunc(Math.random() * 1e3);
@@ -223,7 +212,7 @@ class DiagramModel {
     if (options === void 0) {
       options = {};
     }
-    const newNode = new DiagramNode$1(generateId$1(), title, x, y, width, height, options);
+    const newNode = new DiagramNode$1(this, generateId$1(), title, x, y, width, height, options);
     if (options.type === "image") {
       newNode.addInPort();
       newNode.addOutPort();
@@ -286,22 +275,23 @@ class ResizeHandles {
   constructor(container, width, height, startDragHandler) {
     this.container = container;
     container.innerHTML = `
-      <rect class="resize-handle" data-direction="nw" x="3" y="10" width="5" height="5" />
-      <rect class="resize-handle" data-direction="n" x="5" y="12" width="${width}" height="3" />
-      <rect class="resize-handle" data-direction="ne" x="${width + 5}" y="10" width="5" height="5" />
-      <rect class="resize-handle" data-direction="e" x="${width + 5}" y="15" width="3" height="${height}" />
-      <rect class="resize-handle" data-direction="se" x="${width + 5}" y="${height + 15}" width="5" height="5" />
-      <rect class="resize-handle" data-direction="s" x="5" y="${height + 15}" width="${width}" height="3" />
-      <rect class="resize-handle" data-direction="sw" x="3" y="${height + 15}" width="5" height="5" />
-      <rect class="resize-handle" data-direction="w" x="2" y="15" width="3" height="${height}" />
+      <rect class="resize-handle edge" data-direction="nw" x="3" y="10" width="5" height="5" />
+      <rect class="resize-handle" data-direction="n" x="5" y="12" height="3" />
+      <rect class="resize-handle edge" data-direction="ne" y="10" width="5" height="5" />
+      <rect class="resize-handle" data-direction="e" y="15" width="3" />
+      <rect class="resize-handle edge" data-direction="se" width="5" height="5" />
+      <rect class="resize-handle" data-direction="s" x="5" height="3" />
+      <rect class="resize-handle edge" data-direction="sw" x="3" width="5" height="5" />
+      <rect class="resize-handle" data-direction="w" x="3" y="15" width="3" />
     `;
     this.startDragHandler = startDragHandler;
     this.mouseDownHandler = this.mouseDownHandler.bind(this);
     for (let d of directions) {
       container.querySelector(`[data-direction="${d}"]`).addEventListener("mousedown", this.mouseDownHandler);
     }
+    this.updatePosition(width, height);
   }
-  updatePosition(x, y, width, height) {
+  updatePosition(width, height) {
     const n = this.container.querySelector('[data-direction="n"]');
     const ne = this.container.querySelector('[data-direction="ne"]');
     const e = this.container.querySelector('[data-direction="e"]');
@@ -341,19 +331,17 @@ const DiagramNode_vue_vue_type_style_index_0_scoped_1c98675c_lang = "";
 const _sfc_main$4 = {
   name: "DiagramNode",
   props: {
-    title: {
-      type: String,
+    index: Number,
+    id: {
+      type: Number,
       required: true
     },
-    index: Number,
     ports: {
       type: Array,
       default: () => {
         return [];
       }
     },
-    x: Number,
-    y: Number,
     width: {
       type: Number,
       required: true
@@ -361,10 +349,6 @@ const _sfc_main$4 = {
     height: {
       type: Number,
       required: true
-    },
-    color: {
-      type: String,
-      default: "#66cc00"
     },
     deletable: {
       type: Boolean,
@@ -374,13 +358,23 @@ const _sfc_main$4 = {
       type: Object,
       default: () => ({})
     },
-    selected: Boolean
+    selected: Boolean,
+    nodeModel: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {
       nodeStrokeWidth: 0,
       titleFillOpacity: 0.25,
-      resizeHandles: void 0
+      resizeHandles: void 0,
+      menu: [{
+        label: "Delete node",
+        handler() {
+          this.deleteNode();
+        }
+      }]
     };
   },
   beforeDestroy() {
@@ -389,18 +383,18 @@ const _sfc_main$4 = {
     }
   },
   watch: {
-    x: "resizeNode",
-    y: "resizeNode",
-    width: "resizeNode",
-    height: "resizeNode",
+    "nodeModel.x": "resizeNode",
+    "nodeModel.y": "resizeNode",
+    "nodeModel.width": "resizeNode",
+    "nodeModel.height": "resizeNode",
     "options.resizable": {
       handler(v) {
         this.$nextTick(() => {
           if (v) {
             this.resizeHandles = new ResizeHandles(
               this.$refs.resizeHandles,
-              this.width,
-              this.height,
+              this.nodeModel.width,
+              this.nodeModel.height,
               this.startDragResizeHandle
             );
           } else if (this.resizeHandles) {
@@ -412,10 +406,21 @@ const _sfc_main$4 = {
       immediate: true
     }
   },
+  computed: {
+    x() {
+      return this.nodeModel.x;
+    },
+    y() {
+      return this.nodeModel.y;
+    },
+    color() {
+      return this.nodeModel.color || "#66cc00";
+    }
+  },
   methods: {
     resizeNode() {
       if (this.resizeHandles) {
-        this.resizeHandles.updatePosition(this.x, this.y, this.width, this.height);
+        this.resizeHandles.updatePosition(this.nodeModel.width, this.nodeModel.height);
       }
     },
     deleteNode() {
@@ -427,8 +432,8 @@ const _sfc_main$4 = {
         this.$emit(
           "onStartDrag",
           { type: "nodes", index: this.index },
-          pos.x - this.x,
-          pos.y - this.y
+          pos.x - this.nodeModel.x,
+          pos.y - this.nodeModel.y
         );
       }
     },
@@ -442,15 +447,15 @@ const _sfc_main$4 = {
       this.$emit(
         "onStartDrag",
         { type: "resizeHandle", index: this.index, direction },
-        event.x - this.x,
-        event.y - this.y
+        event.x - this.nodeModel.x,
+        event.y - this.nodeModel.y
       );
     }
   }
 };
 var _sfc_render$4 = function render2() {
   var _vm = this, _c = _vm._self._c;
-  return _c("svg", { staticClass: "diagram-node", attrs: { "x": _vm.x, "y": _vm.y } }, [_vm.options.type === void 0 ? [_c("rect", { staticClass: "node-dark-background", attrs: { "fill": _vm.color, "stroke": "#000000", "stroke-width": _vm.selected ? 2 : 0, "x": "5", "y": "15", "rx": "3", "ry": "3", "width": _vm.width, "height": _vm.height } }), _c("g", { ref: "resizeHandles" }), _c("svg", { attrs: { "x": "0", "y": "0" }, on: { "mousedown": _vm.mouseDown, "mouseenter": _vm.mouseenter, "mouseleave": _vm.mouseleave } }, [_c("rect", { staticClass: "node-dark-background", attrs: { "fill": "#000000", "fill-opacity": _vm.titleFillOpacity, "x": "7", "y": "17", "rx": "3", "ry": "3", "width": _vm.width - 4, "height": "16" } }), _c("text", { class: _vm.options.editableTitle ? "title-editable" : "", attrs: { "x": 10, "y": 30, "font-size": "14", "font-weight": "bold", "fill": "#000000" } }, [_vm._v(" " + _vm._s(_vm.title) + " ")]), _vm.deletable ? _c("g", { on: { "click": _vm.deleteNode } }, [_c("rect", { attrs: { "x": _vm.width - 12, "y": "18", "width": "14", "height": "14", "rx": "2", "ry": "2", "fill": "#ffffff", "fill-opacity": 0.25 } }), _c("line", { staticStyle: { "stroke": "rgb(0,0,0)" }, attrs: { "x1": _vm.width, "y1": 20, "x2": _vm.width - 10, "y2": 30, "stroke-width": "2" } }), _c("line", { staticStyle: { "stroke": "rgb(0,0,0)" }, attrs: { "x1": _vm.width - 10, "y1": 20, "x2": _vm.width, "y2": 30, "stroke-width": "2" } })]) : _vm._e()]), _c("rect", { staticClass: "node-light-background", attrs: { "fill": "#ffffff", "x": "7", "y": "35", "rx": "3", "ry": "3", "width": _vm.width - 4, "height": _vm.height - 22 } }), _vm._t("default")] : [_c("rect", { staticClass: "node-dark-background", attrs: { "fill": "#ffffff00", "stroke": "#000000", "stroke-width": _vm.selected ? 2 : 0, "x": "10", "y": "0", "rx": "3", "ry": "3", "width": _vm.width - 10, "height": _vm.height } }), _c("g", { on: { "mousedown": _vm.mouseDown, "mouseenter": _vm.mouseenter, "mouseleave": _vm.mouseleave } }, [_c("image", { attrs: { "href": _vm.options.image, "x": "10", "width": _vm.width - 10, "height": _vm.height } })]), _c("text", { class: _vm.options.editableTitle ? "title-editable" : "", attrs: { "x": _vm.width / 2, "width": _vm.width, "text-anchor": "middle", "y": _vm.height + 14, "font-size": "14", "font-weight": "bold", "fill": "#000000" } }, [_vm._v(" " + _vm._s(_vm.title) + " ")]), _vm._t("default")]], 2);
+  return _c("svg", { class: `diagram-node ${_vm.selected ? "selected" : ""} has-menu`, attrs: { "x": _vm.nodeModel.x, "y": _vm.nodeModel.y, "data-node-id": _vm.id } }, [_vm.options.type === void 0 ? [_c("rect", { staticClass: "node-dark-background", attrs: { "fill": _vm.color, "stroke": "#000000", "stroke-width": _vm.selected ? 2 : 0, "x": "5", "y": "15", "rx": "3", "ry": "3", "width": _vm.nodeModel.width, "height": _vm.nodeModel.height } }), _c("g", { ref: "resizeHandles" }), _c("svg", { attrs: { "x": "0", "y": "0" }, on: { "mousedown": _vm.mouseDown, "mouseenter": _vm.mouseenter, "mouseleave": _vm.mouseleave } }, [_c("rect", { staticClass: "node-dark-background", attrs: { "fill": "#000000", "fill-opacity": _vm.titleFillOpacity, "x": "7", "y": "17", "rx": "3", "ry": "3", "width": _vm.nodeModel.width - 4, "height": "16" } }), _c("text", { class: _vm.options.editableTitle ? "title-editable" : "", attrs: { "x": 10, "y": 30, "font-size": "14", "font-weight": "bold", "fill": "#000000" } }, [_vm._v(" " + _vm._s(_vm.nodeModel.title) + " ")]), _vm.deletable ? _c("g", { on: { "click": _vm.deleteNode } }, [_c("rect", { attrs: { "x": _vm.nodeModel.width - 12, "y": "18", "width": "14", "height": "14", "rx": "2", "ry": "2", "fill": "#ffffff", "fill-opacity": 0.25 } }), _c("line", { staticStyle: { "stroke": "rgb(0,0,0)" }, attrs: { "x1": _vm.nodeModel.width, "y1": 20, "x2": _vm.nodeModel.width - 10, "y2": 30, "stroke-width": "2" } }), _c("line", { staticStyle: { "stroke": "rgb(0,0,0)" }, attrs: { "x1": _vm.nodeModel.width - 10, "y1": 20, "x2": _vm.nodeModel.width, "y2": 30, "stroke-width": "2" } })]) : _vm._e()]), _c("rect", { staticClass: "node-light-background", attrs: { "fill": "#ffffff", "x": "7", "y": "35", "rx": "3", "ry": "3", "width": _vm.nodeModel.width - 4, "height": _vm.nodeModel.height - 22 } }), _vm._t("default")] : [_c("rect", { staticClass: "node-dark-background", attrs: { "fill": "#ffffff00", "stroke": "#000000", "stroke-width": _vm.selected ? 2 : 0, "x": "10", "y": "0", "rx": "3", "ry": "3", "width": _vm.nodeModel.width - 10, "height": _vm.nodeModel.height } }), _c("g", { on: { "mousedown": _vm.mouseDown, "mouseenter": _vm.mouseenter, "mouseleave": _vm.mouseleave } }, [_c("image", { attrs: { "href": _vm.options.image, "x": "10", "width": _vm.nodeModel.width - 10, "height": _vm.nodeModel.height } })]), _c("text", { class: _vm.options.editableTitle ? "title-editable" : "", attrs: { "x": _vm.nodeModel.width / 2, "width": _vm.nodeModel.width, "text-anchor": "middle", "y": _vm.nodeModel.height + 14, "font-size": "14", "font-weight": "bold", "fill": "#000000" } }, [_vm._v(" " + _vm._s(_vm.nodeModel.title) + " ")]), _vm._t("default")]], 2);
 };
 var _sfc_staticRenderFns$4 = [];
 _sfc_render$4._withStripped = true;
@@ -469,10 +474,25 @@ _sfc_main$4.__file = "src/components/DiagramNode.vue";
 const DiagramNode2 = __component__$4.exports;
 const _sfc_main$3 = {
   name: "DiagramPoint",
-  props: ["x", "y"],
+  props: {
+    x: {
+      type: Number,
+      required: true
+    },
+    y: {
+      type: Number,
+      required: true
+    }
+  },
   data() {
     return {
-      hover: false
+      hover: false,
+      menu: [{
+        label: "Delete point",
+        handler() {
+          this.$emit("delete");
+        }
+      }]
     };
   },
   methods: {
@@ -486,9 +506,9 @@ const _sfc_main$3 = {
 };
 var _sfc_render$3 = function render3() {
   var _vm = this, _c = _vm._self._c;
-  return _c("circle", { style: _vm.hover ? "stroke:rgba(255,0,0,0.5);" : "stroke:rgba(255,0,0,0.0);", attrs: { "stroke-width": "6", "cx": _vm.x, "cy": _vm.y, "r": "5", "fill": "black" }, on: { "mouseenter": _vm.mouseEnter, "mouseleave": _vm.mouseLeave, "mousedown": function($event) {
+  return _c("g", { staticClass: "has-menu" }, [_c("circle", { style: _vm.hover ? "stroke:rgba(255,0,0,0.5);" : "stroke:rgba(255,0,0,0.0);", attrs: { "stroke-width": "6", "cx": _vm.x, "cy": _vm.y, "r": "5", "fill": "black" }, on: { "mouseenter": _vm.mouseEnter, "mouseleave": _vm.mouseLeave, "mousedown": function($event) {
     return _vm.$emit("mousedown", $event);
-  } } });
+  } } })]);
 };
 var _sfc_staticRenderFns$3 = [];
 _sfc_render$3._withStripped = true;
@@ -517,7 +537,13 @@ const _sfc_main$2 = {
       pointStyleNormal: "stroke:rgba(255,0,0,0.0); stroke-width: 6",
       pointStyleHover: "stroke:rgba(255,0,0,0.5); stroke-width: 6",
       beginCurvePath: void 0,
-      endCurvePath: void 0
+      endCurvePath: void 0,
+      menu: [{
+        label: "Delete link",
+        handler() {
+          this.deleteLink();
+        }
+      }]
     };
   },
   computed: {
@@ -574,7 +600,7 @@ const _sfc_main$2 = {
 };
 var _sfc_render$2 = function render4() {
   var _vm = this, _c = _vm._self._c;
-  return _c("g", { staticClass: "diagram-link" }, [_vm.points && _vm.points.length ? _c("g", { on: { "mouseenter": _vm.mouseEnter, "mouseleave": _vm.mouseLeave, "mousedown": _vm.mouseDown } }, [_vm._l(_vm.points, function(point, index) {
+  return _c("g", { staticClass: "diagram-link has-menu" }, [_vm.points && _vm.points.length ? _c("g", { on: { "mouseenter": _vm.mouseEnter, "mouseleave": _vm.mouseLeave, "mousedown": _vm.mouseDown } }, [_vm._l(_vm.points, function(point, index) {
     return _c("g", { key: index, on: { "mousedown": function($event) {
       return _vm.mouseDownSegment($event, index);
     } } }, [_c("line", { style: _vm.largeStrokeStyle, attrs: { "x1": index === 0 ? _vm.x1 : _vm.points[index - 1].x, "y1": index === 0 ? _vm.y1 : _vm.points[index - 1].y, "x2": point.x, "y2": point.y, "stroke-width": "8" } }), _c("line", { staticStyle: { "stroke": "rgb(0,0,0)" }, attrs: { "x1": index === 0 ? _vm.x1 : _vm.points[index - 1].x, "y1": index === 0 ? _vm.y1 : _vm.points[index - 1].y, "x2": point.x, "y2": point.y, "stroke-width": "2" } })]);
@@ -589,6 +615,8 @@ var _sfc_render$2 = function render4() {
       return _vm.mouseLeavePoint(point);
     }, "mousedown": function($event) {
       return _vm.mouseDownPoint($event, pointIndex);
+    }, "delete": function($event) {
+      return _vm.points.splice(pointIndex, 1);
     } } });
   })], 2);
 };
@@ -612,7 +640,19 @@ const _sfc_main$1 = {
   props: ["id", "y", "type", "name", "nodeWidth", "nodeIndex"],
   data() {
     return {
-      fill: "#666666"
+      fill: "#666666",
+      menu: [{
+        label: "Delete port",
+        handler() {
+          this.$parent.nodeModel.deletePort(this.id);
+          this.$parent.$parent.$parent.updateLinksPositions();
+        }
+      }, {
+        label: "Remove port links",
+        handler() {
+          this.$parent.nodeModel.removePortLinks(this.id);
+        }
+      }]
     };
   },
   computed: {
@@ -637,7 +677,7 @@ const _sfc_main$1 = {
 };
 var _sfc_render$1 = function render5() {
   var _vm = this, _c = _vm._self._c;
-  return _c("g", [_vm.type === "in" ? _c("svg", { attrs: { "y": _vm.y + 55 } }, [_c("rect", { ref: "handle", attrs: { "fill": _vm.fill, "x": "0", "y": "0", "rx": "3", "ry": "3", "width": "10", "height": "10" }, on: { "mouseenter": _vm.enter, "mouseleave": _vm.leave, "mousedown": _vm.startDragNewLink, "mouseup": _vm.mouseup } }), _c("text", { attrs: { "x": "12", "y": "9", "font-size": "8pt", "fill": "#000000" } }, [_vm._v(_vm._s(_vm.name))])]) : _c("svg", { attrs: { "y": _vm.y + 55 } }, [_c("rect", { ref: "handle", attrs: { "fill": _vm.fill, "x": _vm.width, "y": "0", "rx": "3", "ry": "3", "width": "10", "height": "10" }, on: { "mouseenter": _vm.enter, "mouseleave": _vm.leave, "mousedown": _vm.startDragNewLink, "mouseup": _vm.mouseup } }), _c("text", { attrs: { "x": _vm.width - 6, "y": "9", "text-anchor": "end", "font-size": "8pt", "fill": "#000000" } }, [_vm._v(_vm._s(_vm.name))])])]);
+  return _c("g", { staticClass: "diagram-port has-menu" }, [_vm.type === "in" ? _c("svg", { attrs: { "y": _vm.y + 55 } }, [_c("rect", { ref: "handle", attrs: { "fill": _vm.fill, "x": "0", "y": "0", "rx": "3", "ry": "3", "width": "10", "height": "10" }, on: { "mouseenter": _vm.enter, "mouseleave": _vm.leave, "mousedown": _vm.startDragNewLink, "mouseup": _vm.mouseup } }), _c("text", { attrs: { "x": "12", "y": "9", "font-size": "8pt", "fill": "#000000" } }, [_vm._v(_vm._s(_vm.name))])]) : _c("svg", { attrs: { "y": _vm.y + 55 } }, [_c("rect", { ref: "handle", attrs: { "fill": _vm.fill, "x": _vm.width, "y": "0", "rx": "3", "ry": "3", "width": "10", "height": "10" }, on: { "mouseenter": _vm.enter, "mouseleave": _vm.leave, "mousedown": _vm.startDragNewLink, "mouseup": _vm.mouseup } }), _c("text", { attrs: { "x": _vm.width - 6, "y": "9", "text-anchor": "end", "font-size": "8pt", "fill": "#000000" } }, [_vm._v(_vm._s(_vm.name))])])]);
 };
 var _sfc_staticRenderFns$1 = [];
 _sfc_render$1._withStripped = true;
@@ -1014,7 +1054,7 @@ const _sfc_main = {
 var _sfc_render = function render6() {
   var _vm = this, _c = _vm._self._c;
   return _c("div", { staticClass: "vue-diagrams", attrs: { "contenteditable": !!_vm.editedSvgText } }, [_vm.showMenu ? _c("Menu") : _vm._e(), _c("SvgPanZoom", { ref: "svgpanzoom", style: { width: _vm.width + "px", height: _vm.height + "px", border: "1px solid black" }, attrs: { "zoomEnabled": _vm.zoomEnabled, "id": "svgroot", "panEnabled": _vm.panEnabled, "controlIconsEnabled": true, "fit": false, "center": true, "viewportSelector": "#svgroot2", "preventMouseEventsDefault": false, "beforePan": _vm.beforePan } }, [_c("svg", { ref: "dragramRoot", staticClass: "svg-content", attrs: { "id": "svgroot2", "version": "1.1", "xmlns": "http://www.w3.org/2000/svg", "viewBox": "0 0 " + _vm.width + " " + _vm.height, "width": _vm.width, "height": _vm.height, "preserveAspectRatio": "xMinYMin meet" }, on: { "mousemove": _vm.mouseMove, "mouseup": _vm.mouseUp, "mousedown": _vm.mouseDown } }, [_c("defs", [_c("pattern", { attrs: { "id": "smallGrid", "width": "16", "height": "16", "patternUnits": "userSpaceOnUse" } }, [_c("path", { attrs: { "d": "M 16 0 L 0 0 0 16", "fill": "none", "stroke": "#ccc", "stroke-width": "1" } })]), _c("pattern", { attrs: { "id": "grid", "width": "80", "height": "80", "patternUnits": "userSpaceOnUse" } }, [_c("rect", { attrs: { "width": "80", "height": "80", "fill": "url(#smallGrid)" } }), _c("path", { attrs: { "d": "M 80 0 L 0 0 0 80", "fill": "none", "stroke": "gray", "stroke-width": "1" } })])]), _c("rect", { ref: "grid", staticClass: "svg-pan-zoom_viewport", attrs: { "x": "-5000px", "y": "-5000px", "width": "10000px", "height": "10000px", "fill": "url(#grid)" }, on: { "mousedown": _vm.clearSelection } }), _c("g", { ref: "viewPort", attrs: { "id": "viewport", "x": "50", "y": "50" } }, [_vm._l(_vm.model._model.nodes, function(node, nodeIndex) {
-    return _c("DiagramNode", { ref: "node-" + nodeIndex, refInFor: true, attrs: { "title": node.title, "x": node.x, "y": node.y, "width": node.width, "height": node.height, "color": node.color, "deletable": node.deletable, "ports": node.ports, "selected": _vm.mainSelectedItem.type === "nodes" && _vm.mainSelectedItem.index === nodeIndex || _vm.secondarySelectedNodes.indexOf(node) !== -1, "options": node.options, "index": nodeIndex }, on: { "onStartDrag": _vm.startDragItem, "delete": function($event) {
+    return _c("DiagramNode", { ref: "node-" + nodeIndex, refInFor: true, attrs: { "title": node.title, "nodeModel": node, "x": node.x, "y": node.y, "id": node.id, "width": node.width, "height": node.height, "deletable": node.deletable, "ports": node.ports, "selected": _vm.mainSelectedItem.type === "nodes" && _vm.mainSelectedItem.index === nodeIndex || _vm.secondarySelectedNodes.indexOf(node) !== -1, "options": node.options, "index": nodeIndex }, on: { "onStartDrag": _vm.startDragItem, "delete": function($event) {
       return _vm.model.deleteNode(node);
     } } }, _vm._l(node.ports, function(port, portIndex) {
       return _c("DiagramPort", { ref: "port-" + port.id, refInFor: true, attrs: { "id": port.id, "nodeIndex": nodeIndex, "y": portIndex * 20, "nodeWidth": node.width, "type": port.type, "name": port.name }, on: { "onStartDragNewLink": _vm.startDragNewLink, "mouseUpPort": _vm.mouseUpPort } });

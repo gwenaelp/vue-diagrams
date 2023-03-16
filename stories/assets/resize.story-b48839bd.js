@@ -1,4 +1,4 @@
-import { n as normalizeComponent, D as Diagram } from "./Diagram-84eea168.js";
+import { n as normalizeComponent, D as Diagram } from "./Diagram-1ff69a3f.js";
 import "./vendor-12611725.js";
 const _sfc_main = {
   components: {

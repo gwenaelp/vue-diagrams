@@ -45,55 +45,55 @@ const __vitePreload = function preload(baseModule, deps, importerUrl) {
 };
 const Comp0 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./basic.story-9c58daaf.js"
-), true ? ["./basic.story-9c58daaf.js","./Diagram-84eea168.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./basic.story-62e59531.js"
+), true ? ["./basic.story-62e59531.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp1 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./diagram-dimensions.story-e68667e9.js"
-), true ? ["./diagram-dimensions.story-e68667e9.js","./Diagram-84eea168.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./diagram-dimensions.story-50c7f5bb.js"
+), true ? ["./diagram-dimensions.story-50c7f5bb.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp2 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./dropping-node.story-1bee5d17.js"
-), true ? ["./dropping-node.story-1bee5d17.js","./Diagram-84eea168.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./dropping-node.story-f9eda7ee.js"
+), true ? ["./dropping-node.story-f9eda7ee.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp3 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./editable-titles.story-f16a5d37.js"
-), true ? ["./editable-titles.story-f16a5d37.js","./Diagram-84eea168.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./editable-titles.story-cb125fe8.js"
+), true ? ["./editable-titles.story-cb125fe8.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp4 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./grid-snap.story-d96d7fce.js"
-), true ? ["./grid-snap.story-d96d7fce.js","./Diagram-84eea168.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./grid-snap.story-71df1e0b.js"
+), true ? ["./grid-snap.story-71df1e0b.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp5 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./images.story-f2e8d50f.js"
-), true ? ["./images.story-f2e8d50f.js","./Diagram-84eea168.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./images.story-1ecce200.js"
+), true ? ["./images.story-1ecce200.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp6 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./menu.story-e209e086.js"
-), true ? ["./menu.story-e209e086.js","./Diagram-84eea168.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./menu.story-848f948d.js"
+), true ? ["./menu.story-848f948d.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp7 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./modes.story-6899e78d.js"
-), true ? ["./modes.story-6899e78d.js","./Diagram-84eea168.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./modes.story-0bdb6cf1.js"
+), true ? ["./modes.story-0bdb6cf1.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp8 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./resize.story-2264a4b1.js"
-), true ? ["./resize.story-2264a4b1.js","./Diagram-84eea168.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./resize.story-b48839bd.js"
+), true ? ["./resize.story-b48839bd.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp9 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./serialization-deserialization.story-4137459d.js"
-), true ? ["./serialization-deserialization.story-4137459d.js","./Diagram-84eea168.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./serialization-deserialization.story-e3723141.js"
+), true ? ["./serialization-deserialization.story-e3723141.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp10 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./thumbnail.story-b4b2c55a.js"
-), true ? ["./thumbnail.story-b4b2c55a.js","./Diagram-84eea168.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./thumbnail.story-51ffe79d.js"
+), true ? ["./thumbnail.story-51ffe79d.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
 let files = [
   { "id": "stories-basic-story-vue", "path": ["Simple"], "filePath": "stories/basic.story.vue", "story": { "id": "stories-basic-story-vue", "title": "Simple", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 0, component: Comp0, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-basic-story-vue-f7265202.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-diagram-dimensions-story-vue", "path": ["Assigning dimensions"], "filePath": "stories/diagram-dimensions.story.vue", "story": { "id": "stories-diagram-dimensions-story-vue", "title": "Assigning dimensions", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 1, component: Comp1, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-diagram-dimensions-story-vue-b4b4d1d8.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-dropping-node-story-vue", "path": ["Drop to create nodes"], "filePath": "stories/dropping-node.story.vue", "story": { "id": "stories-dropping-node-story-vue", "title": "Drop to create nodes", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 2, component: Comp2, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-dropping-node-story-vue-51d08a91.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-editable-titles-story-vue", "path": ["Editable titles"], "filePath": "stories/editable-titles.story.vue", "story": { "id": "stories-editable-titles-story-vue", "title": "Editable titles", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 3, component: Comp3, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-editable-titles-story-vue-fa1c7eef.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-grid-snap-story-vue", "path": ["Grid snap"], "filePath": "stories/grid-snap.story.vue", "story": { "id": "stories-grid-snap-story-vue", "title": "Grid snap", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 4, component: Comp4, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-grid-snap-story-vue-26a43b9e.js"), true ? [] : void 0, import.meta.url) },
-  { "id": "stories-images-story-vue", "path": ["Image nodes"], "filePath": "stories/images.story.vue", "story": { "id": "stories-images-story-vue", "title": "Image nodes", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 5, component: Comp5, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-images-story-vue-4bbb0ed6.js"), true ? [] : void 0, import.meta.url) },
+  { "id": "stories-images-story-vue", "path": ["Image nodes"], "filePath": "stories/images.story.vue", "story": { "id": "stories-images-story-vue", "title": "Image nodes", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 5, component: Comp5, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-images-story-vue-1ee2159a.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-menu-story-vue", "path": ["Menu", "Basic"], "filePath": "stories/menu.story.vue", "story": { "id": "stories-menu-story-vue", "title": "Basic", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 6, component: Comp6, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-menu-story-vue-9c61cde7.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-modes-story-vue", "path": ["Edit modes"], "filePath": "stories/modes.story.vue", "story": { "id": "stories-modes-story-vue", "title": "Edit modes", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 7, component: Comp7, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-modes-story-vue-1ed25bd6.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-resize-story-vue", "path": ["Resize nodes"], "filePath": "stories/resize.story.vue", "story": { "id": "stories-resize-story-vue", "title": "Resize nodes", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 8, component: Comp8, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-resize-story-vue-4735d264.js"), true ? [] : void 0, import.meta.url) },
@@ -121,12 +121,12 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: () => __vitePreload(() => import("./HomeView.vue-089c5126.js"), true ? ["./HomeView.vue-089c5126.js","./vendor-12611725.js"] : void 0, import.meta.url)
+      component: () => __vitePreload(() => import("./HomeView.vue-cf5e49ec.js"), true ? ["./HomeView.vue-cf5e49ec.js","./vendor-12611725.js"] : void 0, import.meta.url)
     },
     {
       path: "/story/:storyId",
       name: "story",
-      component: () => __vitePreload(() => import("./StoryView.vue-3a92a3ee.js"), true ? ["./StoryView.vue-3a92a3ee.js","./vendor-12611725.js","./MobileOverlay.vue2-618af32e.js","./BaseEmpty.vue-326f2834.js","./state-b0a7e71c.js"] : void 0, import.meta.url)
+      component: () => __vitePreload(() => import("./StoryView.vue-79135ba8.js"), true ? ["./StoryView.vue-79135ba8.js","./vendor-12611725.js","./MobileOverlay.vue2-3f5c0816.js","./BaseEmpty.vue-b9d73b66.js","./state-58688fad.js"] : void 0, import.meta.url)
     }
   ]
 });

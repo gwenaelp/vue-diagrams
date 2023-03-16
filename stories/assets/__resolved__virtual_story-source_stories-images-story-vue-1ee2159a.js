@@ -1,6 +1,6 @@
 const __resolved__virtual_storySource_storiesImagesStoryVue = `<template>
   <Story title="Image nodes">
-    <diagram :model="model" height="300" />
+    <diagram :model="model" height="300"/>
   </Story>
 </template>
 <script>

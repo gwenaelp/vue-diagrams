@@ -2890,7 +2890,7 @@ a.is-active[data-v-9d91c643] {
 .menu[data-v-e065371e] {
   position: fixed;
   font-size: 13px;
-  width: 120px;
+  width: 140px;
   box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);
   z-index: 200;
   background: white;
@@ -2913,8 +2913,19 @@ body: {
   background: green;
 }
 .resize-handle {
-  fill: red;
+  fill: blue;
   fill-opacity: 0;
+}
+.resize-handle:hover {
+  fill-opacity: 0.8;
+}
+.selected .resize-handle {
+  fill-opacity: 1;
+}
+.selected .resize-handle.edge {
+  fill: white;
+  stroke: blue;
+  stroke-width: 3px;
 }
 .resize-handle[data-direction="nw"] {
   cursor: nw-resize;
