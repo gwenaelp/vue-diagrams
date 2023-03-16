@@ -1,5 +1,5 @@
   <template>
-  <g class="diagram-link">
+  <g class="diagram-link has-menu">
     <g
       v-if="points && points.length"
       @mouseenter="mouseEnter"
@@ -67,7 +67,8 @@
       @mouseleave="mouseLeavePoint(point)"
       @mousedown="mouseDownPoint($event, pointIndex)"
       :x="point.x" :y="point.y"
-      />
+      @delete="points.splice(pointIndex, 1)"
+    />
   </g>
 </template>
 <script>
@@ -88,6 +89,12 @@ export default {
       pointStyleHover: "stroke:rgba(255,0,0,0.5); stroke-width: 6",
       beginCurvePath: undefined,
       endCurvePath: undefined,
+      menu: [{
+        label: 'Delete link',
+        handler() {
+          this.deleteLink();
+        },
+      }],
     };
   },
   computed: {

@@ -1,6 +1,6 @@
 <template>
   <Story title="Image nodes">
-    <diagram :model="model" height="300" />
+    <diagram :model="model" height="300"/>
   </Story>
 </template>
 <script>

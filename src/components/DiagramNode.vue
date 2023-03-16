@@ -1,5 +1,5 @@
 <template>
-  <svg :x="x" :y="y" class="diagram-node">
+  <svg :x="nodeModel.x" :y="nodeModel.y" :class="`diagram-node ${selected ? 'selected': ''} has-menu`" :data-node-id="id">
     <template v-if="options.type === undefined">
       <rect
         :fill="color"
@@ -7,7 +7,7 @@
         :stroke-width="selected ? 2 : 0"
         x="5" y="15"
         rx="3" ry="3"
-        :width="width" :height="height"
+        :width="nodeModel.width" :height="nodeModel.height"
         class="node-dark-background">
       </rect>
       <g ref="resizeHandles" />
@@ -22,7 +22,7 @@
           :fill-opacity="titleFillOpacity"
           x="7" y="17"
           rx="3" ry="3"
-          :width="width-4" height="16"
+          :width="nodeModel.width-4" height="16"
           class="node-dark-background"
         />
         <text
@@ -32,11 +32,11 @@
           font-weight="bold"
           fill="#000000"
         >
-          {{title}}
+          {{nodeModel.title}}
         </text>
         <g v-if="deletable" @click="deleteNode">
           <rect
-            :x="width - 12"
+            :x="nodeModel.width - 12"
             y="18"
             width="14"
             height="14"
@@ -45,14 +45,14 @@
             :fill-opacity="0.25"
           />
           <line
-            :x1="width" :y1="20"
-            :x2="width - 10" :y2="30"
+            :x1="nodeModel.width" :y1="20"
+            :x2="nodeModel.width - 10" :y2="30"
             style="stroke:rgb(0,0,0);"
             stroke-width="2"
           />
           <line
-            :x1="width - 10" :y1="20"
-            :x2="width" :y2="30"
+            :x1="nodeModel.width - 10" :y1="20"
+            :x2="nodeModel.width" :y2="30"
             style="stroke:rgb(0,0,0);"
             stroke-width="2"
           />
@@ -62,7 +62,8 @@
         fill="#ffffff"
         x="7" y="35"
         rx="3" ry="3"
-        :width="width-4" :height="height - 22"
+        :width="nodeModel.width - 4"
+        :height="nodeModel.height - 22"
         class="node-light-background"
       />
       <slot />
@@ -73,8 +74,8 @@
         :stroke-width="selected ? 2 : 0"
         x="10" y="0"
         rx="3" ry="3"
-        :width="width - 10"
-        :height="height"
+        :width="nodeModel.width - 10"
+        :height="nodeModel.height"
         class="node-dark-background"
       />
       <g
@@ -82,19 +83,19 @@
         @mouseenter="mouseenter"
         @mouseleave="mouseleave"
       >
-        <image :href="options.image" x="10" :width="width - 10" :height="height" />
+        <image :href="options.image" x="10" :width="nodeModel.width - 10" :height="nodeModel.height" />
       </g>
       <text
         :class="options.editableTitle ? 'title-editable': ''"
-        :x="width/2"
-        :width="width"
+        :x="nodeModel.width / 2"
+        :width="nodeModel.width"
         text-anchor="middle"
-        :y="height + 14"
+        :y="nodeModel.height + 14"
         font-size="14"
         font-weight="bold"
         fill="#000000"
       >
-        {{title}}
+        {{nodeModel.title}}
       </text>
       <slot />
     </template>
@@ -107,19 +108,17 @@ export default {
   name: 'DiagramNode',
 
   props: {
-    title: {
-      type: String,
-      required: true
-    },
     index: Number,
+    id: {
+      type: Number,
+      required: true,
+    },
     ports: {
       type: Array,
       default: () => {
         return [];
       }
     },
-    x: Number,
-    y: Number,
     width: {
       type: Number,
       required: true,
@@ -127,10 +126,6 @@ export default {
     height: {
       type: Number,
       required: true,
-    },
-    color: {
-      type: String,
-      default: "#66cc00"
     },
     deletable: {
       type: Boolean,
@@ -141,6 +136,10 @@ export default {
       default: () => ({}),
     },
     selected: Boolean,
+    nodeModel: {
+      type: Object,
+      required: true,
+    },
   },
 
   data() {
@@ -148,6 +147,10 @@ export default {
       nodeStrokeWidth: 0,
       titleFillOpacity: 0.25,
       resizeHandles: undefined,
+      menu: [{
+        label: 'Delete node',
+        handler() { this.deleteNode(); },
+      }],
     };
   },
   beforeDestroy () {
@@ -156,18 +159,18 @@ export default {
     }
   },
   watch: {
-    x: 'resizeNode',
-    y: 'resizeNode',
-    width: 'resizeNode',
-    height: 'resizeNode',
+    'nodeModel.x': 'resizeNode',
+    'nodeModel.y': 'resizeNode',
+    'nodeModel.width': 'resizeNode',
+    'nodeModel.height': 'resizeNode',
     'options.resizable': {
       handler(v) {
         this.$nextTick(() => {
           if (v) {
             this.resizeHandles = new ResizeHandles(
               this.$refs.resizeHandles,
-              this.width,
-              this.height,
+              this.nodeModel.width,
+              this.nodeModel.height,
               this.startDragResizeHandle,
             );
           } else if(this.resizeHandles) {
@@ -179,10 +182,21 @@ export default {
       immediate: true,
     }
   },
+  computed: {
+    x () {
+      return this.nodeModel.x;
+    },
+    y () {
+      return this.nodeModel.y;
+    },
+    color () {
+      return this.nodeModel.color || '#66cc00';
+    }
+  },
   methods: {
     resizeNode() {
       if(this.resizeHandles) {
-        this.resizeHandles.updatePosition(this.x, this.y, this.width, this.height);
+        this.resizeHandles.updatePosition(this.nodeModel.width, this.nodeModel.height);
       }
     },
     deleteNode () {
@@ -195,8 +209,8 @@ export default {
         this.$emit(
           'onStartDrag',
           { type: 'nodes', index: this.index, },
-          pos.x - this.x,
-          pos.y - this.y
+          pos.x - this.nodeModel.x,
+          pos.y - this.nodeModel.y
         );
       }
     },
@@ -209,12 +223,12 @@ export default {
       this.titleFillOpacity = 0.25;
     },
     startDragResizeHandle(direction) {
-        this.$emit(
-          'onStartDrag',
-          { type: "resizeHandle", index: this.index, direction },
-          event.x - this.x,
-          event.y - this.y
-        );
+      this.$emit(
+        'onStartDrag',
+        { type: "resizeHandle", index: this.index, direction },
+        event.x - this.nodeModel.x,
+        event.y - this.nodeModel.y
+      );
     },
   }
 };

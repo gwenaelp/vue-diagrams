@@ -30,7 +30,7 @@ class DiagramModel {
     if (options === undefined) {
       options = {};
     }
-    const newNode = new DiagramNode(generateId(), title, x, y, width, height, options);
+    const newNode = new DiagramNode(this, generateId(), title, x, y, width, height, options);
     if (options.type === 'image') {
       newNode.addInPort();
       newNode.addOutPort();
@@ -47,10 +47,7 @@ class DiagramModel {
       for (var i = 0; i < node.ports.length; i++) {
         const currentPort = node.ports[i];
 
-        if (
-          currentLink.from === currentPort.id ||
-          currentLink.to === currentPort.id
-        ) {
+        if (currentLink.from === currentPort.id || currentLink.to === currentPort.id) {
           this.deleteLink(currentLink);
           j--;
         }

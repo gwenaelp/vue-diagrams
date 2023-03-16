@@ -1,14 +1,13 @@
 <template>
   <div>
     <div
-      :class="`menu diagram-context-menu menu-${showMenu}`"
-      v-if="showMenu"
+      :class="`menu diagram-context-menu`"
+      v-if="showMenuComponent"
       :style="`left: ${menuX}px; top: ${menuY}px`"
     >
       <div
-        v-for="(menuItem, menuItemKey) in menus[showMenu]"
+        v-for="(menuItem, menuItemKey) in showMenuComponent.menu"
         class="menu-item"
-        :data-menu-key="showMenu"
         :data-menu-item-key="menuItemKey"
       >
         {{menuItem.label}}
@@ -24,28 +23,19 @@ export default {
         event.preventDefault();
       },
       onMouseDown: (event) => {
-        console.log('onMouseDown', event);
         const parentContextMenu = event.target.closest('.diagram-context-menu');
-        const parentDiagramNode = event.target.closest('.diagram-node');
-        const parentDiagramLink = event.target.closest('.diagram-link');
+        const parentDiagramElement = event.target.closest('.has-menu');
         this.menuX = event.pageX;
         this.menuY = event.pageY;
         if (parentContextMenu) {
           event.stopPropagation();
-          this.menuItemClick(event);
-          this.showMenu = false;
-          this.menuTarget = undefined;
-        } else if (parentDiagramNode && event.button === 2) {
-          this.menuTarget = parentDiagramNode;
-          this.showMenu = 'node';
-          event.stopPropagation();
-        } else if (parentDiagramLink && event.button === 2) {
-          this.menuTarget = parentDiagramLink;
-          this.showMenu = 'link';
+          this.menuItemClick(event, this.showMenuComponent);
+          this.showMenuComponent = undefined;
+        } else if (parentDiagramElement && event.button === 2) {
+          this.showMenuComponent = parentDiagramElement.__vue__;
           event.stopPropagation();
         } else {
-          this.showMenu = false;
-          this.menuTarget = undefined;
+          this.showMenuComponent = undefined;
         }
         if (!event.defaultPrevented) {
           this.$parent.$el.dispatchEvent(event);
@@ -53,22 +43,7 @@ export default {
       },
       menuX: 0,
       menuY: 0,
-      menuTarget: undefined,
-      showMenu: false,
-      menus: {
-        node: [{
-          label: 'Delete node',
-          handler(targetComponent) {
-            targetComponent.deleteNode();
-          },
-        }],
-        link: [{
-          label: 'Delete link',
-          handler(targetComponent) {
-            targetComponent.deleteLink();
-          },
-        }],
-      }
+      showMenuComponent: undefined,
     };
   },
   mounted () {
@@ -80,9 +55,9 @@ export default {
     this.$parent.$el.addEventListener('contextmenu', this.onContextMenu);
   },
   methods: {
-    menuItemClick(event) {
-      this.menus[event.target.dataset.menuKey][event.target.dataset.menuItemKey].handler(this.menuTarget ? this.menuTarget.__vue__ : undefined);
-    }
+    menuItemClick(event, component) {
+      component.menu[event.target.dataset.menuItemKey].handler.call(component);
+    },
   }
 }
 </script>
@@ -90,7 +65,7 @@ export default {
 .menu {
   position: fixed;
   font-size: 13px;
-  width: 120px;
+  width: 140px;
   box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);
   z-index: 200;
   background: white;

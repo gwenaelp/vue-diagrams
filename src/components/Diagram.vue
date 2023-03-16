@@ -43,11 +43,12 @@
           <DiagramNode
             :ref="'node-' + nodeIndex"
             :title="node.title"
+            :nodeModel="node"
             :x="node.x"
             :y="node.y"
+            :id="node.id"
             :width="node.width"
             :height="node.height"
-            :color="node.color"
             :deletable="node.deletable"
             :ports="node.ports"
             :selected="(mainSelectedItem.type === 'nodes' && mainSelectedItem.index === nodeIndex) || secondarySelectedNodes.indexOf(node) !== -1"

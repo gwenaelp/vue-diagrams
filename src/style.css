@@ -2,8 +2,19 @@ body: {
   background: green;
 }
 .resize-handle {
-  fill: red;
+  fill: blue;
   fill-opacity: 0;
+}
+.resize-handle:hover {
+  fill-opacity: 0.8;
+}
+.selected .resize-handle {
+  fill-opacity: 1;
+}
+.selected .resize-handle.edge {
+  fill: white;
+  stroke: blue;
+  stroke-width: 3px;
 }
 .resize-handle[data-direction="nw"] {
   cursor: nw-resize;

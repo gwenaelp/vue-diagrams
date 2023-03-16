@@ -1,5 +1,5 @@
 <template>
-  <g>
+  <g class="diagram-port has-menu">
     <svg :y="y + 55" v-if="type === 'in'">
       <rect
         :fill="fill"
@@ -30,7 +30,17 @@ export default {
   props: ["id", "y", "type", "name", "nodeWidth", "nodeIndex"],
   data() {
     return {
-      fill: "#666666"
+      fill: "#666666",
+      menu: [{
+        label: 'Delete port',
+        handler() {
+          this.$parent.nodeModel.deletePort(this.id);
+          this.$parent.$parent.$parent.updateLinksPositions();
+        },
+      }, {
+        label: 'Remove port links',
+        handler() { this.$parent.nodeModel.removePortLinks(this.id); },
+      }],
     };
   },
   computed: {
@@ -52,7 +62,7 @@ export default {
     },
     startDragNewLink() {
       this.$emit("onStartDragNewLink", this.id);
-    }
+    },
   }
 };
 </script>

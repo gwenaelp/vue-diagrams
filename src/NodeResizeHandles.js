@@ -8,14 +8,14 @@ class ResizeHandles {
   constructor(container, width, height, startDragHandler) {
     this.container = container;
     container.innerHTML = `
-      <rect class="resize-handle" data-direction="nw" x="3" y="10" width="5" height="5" />
-      <rect class="resize-handle" data-direction="n" x="5" y="12" width="${width}" height="3" />
-      <rect class="resize-handle" data-direction="ne" x="${width + 5}" y="10" width="5" height="5" />
-      <rect class="resize-handle" data-direction="e" x="${width + 5}" y="15" width="3" height="${height}" />
-      <rect class="resize-handle" data-direction="se" x="${width + 5}" y="${height + 15}" width="5" height="5" />
-      <rect class="resize-handle" data-direction="s" x="5" y="${height + 15}" width="${width}" height="3" />
-      <rect class="resize-handle" data-direction="sw" x="3" y="${height + 15}" width="5" height="5" />
-      <rect class="resize-handle" data-direction="w" x="2" y="15" width="3" height="${height}" />
+      <rect class="resize-handle edge" data-direction="nw" x="3" y="10" width="5" height="5" />
+      <rect class="resize-handle" data-direction="n" x="5" y="12" height="3" />
+      <rect class="resize-handle edge" data-direction="ne" y="10" width="5" height="5" />
+      <rect class="resize-handle" data-direction="e" y="15" width="3" />
+      <rect class="resize-handle edge" data-direction="se" width="5" height="5" />
+      <rect class="resize-handle" data-direction="s" x="5" height="3" />
+      <rect class="resize-handle edge" data-direction="sw" x="3" width="5" height="5" />
+      <rect class="resize-handle" data-direction="w" x="3" y="15" width="3" />
     `;
 
     this.startDragHandler = startDragHandler;
@@ -23,8 +23,9 @@ class ResizeHandles {
     for (let d of directions) {
       container.querySelector(`[data-direction="${d}"]`).addEventListener('mousedown', this.mouseDownHandler);
     }
+    this.updatePosition(width, height);
   }
-  updatePosition(x, y, width, height) {
+  updatePosition(width, height) {
     const n = this.container.querySelector('[data-direction="n"]');
     const ne = this.container.querySelector('[data-direction="ne"]');
     const e = this.container.querySelector('[data-direction="e"]');
@@ -32,6 +33,7 @@ class ResizeHandles {
     const s = this.container.querySelector('[data-direction="s"]');
     const sw = this.container.querySelector('[data-direction="sw"]');
     const w = this.container.querySelector('[data-direction="w"]');
+
     n.setAttribute('width', width);
     ne.setAttribute('x', width + 5);
     e.setAttribute('x', width + 5);
