@@ -45,48 +45,48 @@ const __vitePreload = function preload(baseModule, deps, importerUrl) {
 };
 const Comp0 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./basic.story-62e59531.js"
-), true ? ["./basic.story-62e59531.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./basic.story-b162be52.js"
+), true ? ["./basic.story-b162be52.js","./Diagram-a0c77da9.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp1 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./diagram-dimensions.story-50c7f5bb.js"
-), true ? ["./diagram-dimensions.story-50c7f5bb.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./diagram-dimensions.story-826f21de.js"
+), true ? ["./diagram-dimensions.story-826f21de.js","./Diagram-a0c77da9.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp2 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./dropping-node.story-f9eda7ee.js"
-), true ? ["./dropping-node.story-f9eda7ee.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./dropping-node.story-284f65f5.js"
+), true ? ["./dropping-node.story-284f65f5.js","./Diagram-a0c77da9.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp3 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./editable-titles.story-cb125fe8.js"
-), true ? ["./editable-titles.story-cb125fe8.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./editable-titles.story-100d85cb.js"
+), true ? ["./editable-titles.story-100d85cb.js","./Diagram-a0c77da9.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp4 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./grid-snap.story-71df1e0b.js"
-), true ? ["./grid-snap.story-71df1e0b.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./grid-snap.story-39749bdf.js"
+), true ? ["./grid-snap.story-39749bdf.js","./Diagram-a0c77da9.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp5 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./images.story-1ecce200.js"
-), true ? ["./images.story-1ecce200.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./images.story-e2a20e6c.js"
+), true ? ["./images.story-e2a20e6c.js","./Diagram-a0c77da9.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp6 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./menu.story-848f948d.js"
-), true ? ["./menu.story-848f948d.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./menu.story-154844f3.js"
+), true ? ["./menu.story-154844f3.js","./Diagram-a0c77da9.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp7 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./modes.story-0bdb6cf1.js"
-), true ? ["./modes.story-0bdb6cf1.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./modes.story-a419a3c3.js"
+), true ? ["./modes.story-a419a3c3.js","./Diagram-a0c77da9.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp8 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./resize.story-b48839bd.js"
-), true ? ["./resize.story-b48839bd.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./resize.story-35438d28.js"
+), true ? ["./resize.story-35438d28.js","./Diagram-a0c77da9.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp9 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./serialization-deserialization.story-e3723141.js"
-), true ? ["./serialization-deserialization.story-e3723141.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./serialization-deserialization.story-9e161468.js"
+), true ? ["./serialization-deserialization.story-9e161468.js","./Diagram-a0c77da9.js","./vendor-12611725.js"] : void 0, import.meta.url);
 const Comp10 = () => __vitePreload(() => import(
   /* @vite-ignore */
-  "./thumbnail.story-51ffe79d.js"
-), true ? ["./thumbnail.story-51ffe79d.js","./Diagram-1ff69a3f.js","./vendor-12611725.js"] : void 0, import.meta.url);
+  "./thumbnail.story-82376584.js"
+), true ? ["./thumbnail.story-82376584.js","./Diagram-a0c77da9.js","./vendor-12611725.js"] : void 0, import.meta.url);
 let files = [
   { "id": "stories-basic-story-vue", "path": ["Simple"], "filePath": "stories/basic.story.vue", "story": { "id": "stories-basic-story-vue", "title": "Simple", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 0, component: Comp0, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-basic-story-vue-f7265202.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-diagram-dimensions-story-vue", "path": ["Assigning dimensions"], "filePath": "stories/diagram-dimensions.story.vue", "story": { "id": "stories-diagram-dimensions-story-vue", "title": "Assigning dimensions", "group": null, "layout": { "type": "single", "iframe": true }, "icon": null, "iconColor": null, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue2", "index": 1, component: Comp1, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-diagram-dimensions-story-vue-b4b4d1d8.js"), true ? [] : void 0, import.meta.url) },
@@ -121,12 +121,12 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: () => __vitePreload(() => import("./HomeView.vue-cf5e49ec.js"), true ? ["./HomeView.vue-cf5e49ec.js","./vendor-12611725.js"] : void 0, import.meta.url)
+      component: () => __vitePreload(() => import("./HomeView.vue-8688c184.js"), true ? ["./HomeView.vue-8688c184.js","./vendor-12611725.js"] : void 0, import.meta.url)
     },
     {
       path: "/story/:storyId",
       name: "story",
-      component: () => __vitePreload(() => import("./StoryView.vue-79135ba8.js"), true ? ["./StoryView.vue-79135ba8.js","./vendor-12611725.js","./MobileOverlay.vue2-3f5c0816.js","./BaseEmpty.vue-b9d73b66.js","./state-58688fad.js"] : void 0, import.meta.url)
+      component: () => __vitePreload(() => import("./StoryView.vue-96b676de.js"), true ? ["./StoryView.vue-96b676de.js","./vendor-12611725.js","./MobileOverlay.vue2-38b0f870.js","./BaseEmpty.vue-ad7c5667.js","./state-a3c4b8e1.js"] : void 0, import.meta.url)
     }
   ]
 });
