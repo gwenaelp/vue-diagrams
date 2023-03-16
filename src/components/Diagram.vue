@@ -114,7 +114,15 @@
           :fill="node.color || '#66cc00'"
           :key="node.id"
         />
-
+        <DiagramLink
+          :positionFrom="link.positionFrom"
+          :positionTo="link.positionTo"
+          :points="link.points"
+          :id="link.id"
+          :index="index"
+          :options="link.options"
+          v-for="(link, index) in model._model.links"
+        />
       </svg>
     </SvgPanZoom>
   </div>
