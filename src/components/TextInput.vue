@@ -64,7 +64,7 @@ export default {
 </script>
 <style scoped>
 .text-input {
-  position: absolute;
+  position: fixed;
   font-weight: bold;
   outline: none;
   border: none;

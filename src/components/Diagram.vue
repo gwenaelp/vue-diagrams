@@ -260,6 +260,8 @@ export default {
   },
   methods: {
     editText(object, property, element) {
+      if (!this.editable) return;
+
       this.$refs.textInput.editText(object, property, element);
     },
     min (a, b) {

@@ -130,6 +130,8 @@ export default {
     },
 
     mouseDown (event) {
+      if (!this.$parent.$parent.editable) return;
+
       if (!event.target.classList.contains('title-editable') && event.target.closest('.prevent-node-drag') === null) {
         const pos = this.$parent.$parent.convertXYtoViewPort(event.x, event.y);
         this.$emit(
@@ -149,6 +151,8 @@ export default {
       this.titleFillOpacity = 0.25;
     },
     startDragResizeHandle(direction) {
+      if (!this.$parent.$parent.editable) return;
+
       this.$emit(
         'onStartDrag',
         { type: "resizeHandle", index: this.index, direction },
