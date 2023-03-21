@@ -4,7 +4,7 @@
       fill="#00000000"
       stroke="#000000"
       :stroke-width="selected ? 2 : 0"
-      x="5" y="15"
+      x="0" y="0"
       rx="3" ry="3"
       :width="nodeModel.width" :height="nodeModel.height"
       class="node-dark-background"
@@ -136,7 +136,7 @@ export default {
         const pos = this.$parent.$parent.convertXYtoViewPort(event.x, event.y);
         this.$emit(
           'onStartDrag',
-          { type: 'nodes', index: this.index, },
+          { type: 'nodes', index: this.index, node: this.nodeModel },
           pos.x - this.nodeModel.x,
           pos.y - this.nodeModel.y
         );
@@ -155,7 +155,7 @@ export default {
 
       this.$emit(
         'onStartDrag',
-        { type: "resizeHandle", index: this.index, direction },
+        { type: "resizeHandle", index: this.index, node: this.nodeModel, direction },
         event.x - this.nodeModel.x,
         event.y - this.nodeModel.y
       );
@@ -164,6 +164,9 @@ export default {
 };
 </script>
 <style scoped>
+  .diagram-node {
+    overflow: visible;
+  }
   .diagram-node >>> .title-editable:hover {
     fill: blue;
     cursor: pointer;

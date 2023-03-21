@@ -4,6 +4,8 @@ body: {
 .resize-handle {
   fill: blue;
   fill-opacity: 0;
+  margin-left: -5px;
+  margin-top: -15px;
 }
 .resize-handle:hover {
   fill-opacity: 0.8;

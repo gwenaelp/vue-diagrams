@@ -109,6 +109,16 @@
             fill="#000000"
             :fill-opacity="0.5"
           />
+          <rect
+            v-if="draggedItem && a.show"
+            :x="a.x || '-5000px'"
+            :y="a.y || '-5000px'"
+            :width="a.x ? '1px': '10000px'"
+            :height="a.y ? '1px': '10000px'"
+            fill="#29B6F2"
+            :fill-opacity="1"
+            v-for="(a, i) in magnetismAnchors"
+          />
         </g>
       </svg>
       <svg v-if="showThumbnail" slot="thumbnail" class="thumbViewClass">
@@ -129,6 +139,7 @@
           :index="index"
           :options="link.options"
           v-for="(link, index) in model._model.links"
+          :key="index"
         />
       </svg>
     </SvgPanZoom>
@@ -147,12 +158,11 @@ import DiagramLink from './DiagramLink.vue';
 import DiagramPort from './DiagramPort.vue';
 import '../style.css';
 
-
-var generateId = function() {
+const generateId = () => {
   return Math.trunc(Math.random() * 1000);
 };
 
-function getAbsoluteXY(element) {
+const getAbsoluteXY = (element) => {
   var viewportElement = document.documentElement;
   var box = element.getBoundingClientRect();
   var scrollLeft = viewportElement.scrollLeft;
@@ -162,7 +172,7 @@ function getAbsoluteXY(element) {
   return { x, y };
 }
 
-function snapToGrip(val, gridSize) {
+const snapToGrip = (val, gridSize) => {
   return gridSize * Math.round(val / gridSize);
 }
 
@@ -216,6 +226,7 @@ export default {
       mouseX: 0,
       mouseY: 0,
       viewPosition: undefined,
+      magnetismAnchors: [],
     };
   },
   components: {
@@ -342,10 +353,10 @@ export default {
         let x;
         let y;
         if (portComponent.port.type === "in") {
-          x = node.x + 10;
+          x = node.x + 5;
           y = node.y + portComponent.displayedY + 9;
         } else {
-          x = node.x + node.width + 10;
+          x = node.x + node.width + 5;
           y = node.y + portComponent.displayedY + 9;
         }
 
@@ -374,6 +385,29 @@ export default {
 
           coords.x = snapToGrip(coords.x, this.gridSnap) - this.gridSnap / 2;
           coords.y = snapToGrip(coords.y, this.gridSnap);
+
+          for (let a of this.magnetismAnchors) {
+            a.show = false;
+            if(a.x && (Math.abs(a.x - (coords.x - this.initialDragX)) < 10)) {
+              coords.x = a.x + this.initialDragX;
+              a.show = true;
+            }
+            if(a.y && (Math.abs(a.y - (coords.y - this.initialDragY)) < 10)) {
+              coords.y = a.y + this.initialDragY;
+              a.show = true;
+            }
+
+            if (this.draggedItem.node) {
+              if(a.x && (Math.abs(a.x - (coords.x - this.initialDragX + this.draggedItem.node.width)) < 10)) {
+                coords.x = a.x + this.initialDragX - this.draggedItem.node.width;
+                a.show = true;
+              }
+              if(a.y && (Math.abs(a.y - (coords.y - this.initialDragY + this.draggedItem.node.height)) < 10)) {
+                coords.y = a.y + this.initialDragY - this.draggedItem.node.height;
+                a.show = true;
+              }
+            }
+          }
 
           if (type === 'points') {
             const linkIndex = this.draggedItem.linkIndex;
@@ -521,6 +555,22 @@ export default {
       this.mainSelectedItem = item;
       this.initialDragX = x;
       this.initialDragY = y;
+      this.listMagnetismAnchors();
+    },
+
+    listMagnetismAnchors() {
+      const anchors = [];
+
+      for (let n of this.model._model.nodes) {
+        if (n.id !== this.draggedItem.node.id) {
+          anchors.push({ x: n.x || 0, node: n });
+          anchors.push({ y: n.y || 0, node: n });
+
+          anchors.push({ x: n.x + n.width || 0, node: n });
+          anchors.push({ y: n.y + n.height || 0, node: n });
+        }
+      }
+      this.magnetismAnchors = anchors;
     }
   },
 };

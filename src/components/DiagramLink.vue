@@ -149,7 +149,7 @@ export default {
     },
     mouseDown(pos) {},
     mouseDownSegment(pos, segmentIndex) {
-      if(!this.$parent.editable) return;
+      if(!this.$parent.$parent.editable) return;
 
       this.createPoint(pos.x, pos.y, segmentIndex);
       this.mouseDownPoint(pos, segmentIndex);

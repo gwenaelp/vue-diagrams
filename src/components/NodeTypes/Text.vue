@@ -1,7 +1,7 @@
 <template>
   <g>
     <text
-      :class="nodeModel.options.editableTitle ? 'title-editable': ''"
+      :class="options.editableTitle ? 'title-editable': ''"
       :x="nodeModel.width / 2"
       :y="nodeModel.height / 2"
       :width="nodeModel.width"
@@ -10,7 +10,8 @@
       font-size="14"
       font-weight="bold"
       fill="#000000"
-      @click="nodeModel.options.editableTitle ? $parent.$parent.$parent.editText(nodeModel, 'title', $refs.title) : undefined"
+      :style="options.titleStyle || ''"
+      @click="options.editableTitle ? $parent.$parent.$parent.editText(nodeModel, 'title', $refs.title) : undefined"
     >
       {{nodeModel.title}}
     </text>
@@ -25,6 +26,11 @@ export default {
     nodeModel: {
       type: Object,
     }
+  },
+  computed: {
+    options () {
+      return this.nodeModel.options || {};
+    },
   },
 };
 </script>

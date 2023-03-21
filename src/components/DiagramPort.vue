@@ -1,10 +1,10 @@
 <template>
   <g class="diagram-port has-menu">
-    <svg :y="displayedY" v-if="port.type === 'in'">
+    <svg :y="displayedY" v-if="port.type === 'in'" style="overflow: visible;">
       <rect
         :fill="fill"
         ref="handle"
-        x="0" y="0"
+        x="-5" y="0"
         rx="3" ry="3"
         width="10" height="10"
         @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
@@ -15,7 +15,7 @@
       <rect
         :fill="fill"
         ref="handle"
-        :x="width" y="0"
+        :x="width - 5" y="0"
         rx="3" ry="3"
         width="10" height="10"
         @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
@@ -51,7 +51,7 @@ export default {
       if(this.port.options && this.port.options.y) {
         return this.port.options.y;
       } else {
-        return this.y + 55;
+        return this.y + 40;
       }
     },
   },

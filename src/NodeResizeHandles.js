@@ -8,14 +8,14 @@ class ResizeHandles {
   constructor(container, width, height, startDragHandler) {
     this.container = container;
     container.innerHTML = `
-      <rect class="resize-handle edge" data-direction="nw" x="3" y="10" width="5" height="5" />
-      <rect class="resize-handle" data-direction="n" x="5" y="12" height="3" />
-      <rect class="resize-handle edge" data-direction="ne" y="10" width="5" height="5" />
-      <rect class="resize-handle" data-direction="e" y="15" width="3" />
+      <rect class="resize-handle edge" data-direction="nw" x="-2" y="-5" width="5" height="5" />
+      <rect class="resize-handle" data-direction="n" x="0" y="-3" height="3" />
+      <rect class="resize-handle edge" data-direction="ne" y="-5" width="5" height="5" />
+      <rect class="resize-handle" data-direction="e" y="0" width="3" />
       <rect class="resize-handle edge" data-direction="se" width="5" height="5" />
-      <rect class="resize-handle" data-direction="s" x="5" height="3" />
-      <rect class="resize-handle edge" data-direction="sw" x="3" width="5" height="5" />
-      <rect class="resize-handle" data-direction="w" x="3" y="15" width="3" />
+      <rect class="resize-handle" data-direction="s" x="0" height="3" />
+      <rect class="resize-handle edge" data-direction="sw" x="-2" width="5" height="5" />
+      <rect class="resize-handle" data-direction="w" x="-2" y="0" width="3" />
     `;
 
     this.startDragHandler = startDragHandler;
@@ -35,14 +35,14 @@ class ResizeHandles {
     const w = this.container.querySelector('[data-direction="w"]');
 
     n.setAttribute('width', width);
-    ne.setAttribute('x', width + 5);
-    e.setAttribute('x', width + 5);
+    ne.setAttribute('x', width);
+    e.setAttribute('x', width);
     e.setAttribute('height', height);
-    se.setAttribute('x', width + 5);
-    se.setAttribute('y', height + 15);
-    s.setAttribute('y', height + 15);
+    se.setAttribute('x', width);
+    se.setAttribute('y', height);
+    s.setAttribute('y', height);
     s.setAttribute('width', width);
-    sw.setAttribute('y', height + 15);
+    sw.setAttribute('y', height);
     w.setAttribute('height', height);
   }
   unmount() {
