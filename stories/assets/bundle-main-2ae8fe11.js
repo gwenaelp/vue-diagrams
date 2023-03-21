@@ -1,6 +1,6 @@
 import { d as defineComponent, u as useCssVars, a as unref, c as computed, b as useRoute, r as ref, o as openBlock, e as createElementBlock, f as createVNode, w as withCtx, g as createBaseVNode, I as Icon, n as normalizeClass, t as toDisplayString, h as createCommentVNode, i as defineStore, j as useStorage, k as watch, l as resolveComponent, m as withKeys, F as Fragment, p as renderList, q as createBlock, s as useEventListener, v as isRef, x as resolveDirective, y as withDirectives, z as createTextVNode, A as pushScopeId, B as popScopeId, C as defineAsyncComponent, D as vShow, E as reactive, G as normalizeStyle, T as Transition, H as useTitle, J as onMounted, K as createApp, L as createPinia, M as plugin } from "./vendor-538b7fd7.js";
-import { i as isDark, h as histoireConfig, c as customLogos, t as toggleDark, r as router, _ as __vitePreload, f as files, m as mapFile, a as tree, b as _sfc_main$c } from "./GenericMountStory.vue2-6d5e7a55.js";
-import { u as useScrollOnActive, B as BaseListItemLink, _ as _export_sfc, a as useStoryStore, b as _sfc_main$b, i as isMobile, c as BaseSplitPane } from "./MobileOverlay.vue2-4bddcd0b.js";
+import { i as isDark, h as histoireConfig, c as customLogos, t as toggleDark, r as router, _ as __vitePreload, f as files, m as mapFile, a as tree, b as _sfc_main$c } from "./GenericMountStory.vue2-f4f1604d.js";
+import { u as useScrollOnActive, B as BaseListItemLink, _ as _export_sfc, a as useStoryStore, b as _sfc_main$b, i as isMobile, c as BaseSplitPane } from "./MobileOverlay.vue2-b6af7a5e.js";
 const style$1 = "";
 const style = "";
 const __resolved__virtual_$histoireTheme = "";
@@ -610,7 +610,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   },
   setup(__props, { emit }) {
     const SearchPane = defineAsyncComponent({
-      loader: () => __vitePreload(() => import("./SearchPane.vue-8d695f8b.js"), true ? ["./SearchPane.vue-8d695f8b.js","./GenericMountStory.vue2-6d5e7a55.js","./vendor-538b7fd7.js","./MobileOverlay.vue2-4bddcd0b.js","./BaseEmpty.vue-bf7abbe7.js"] : void 0, import.meta.url),
+      loader: () => __vitePreload(() => import("./SearchPane.vue-7db81d45.js"), true ? ["./SearchPane.vue-7db81d45.js","./GenericMountStory.vue2-f4f1604d.js","./vendor-538b7fd7.js","./MobileOverlay.vue2-b6af7a5e.js","./BaseEmpty.vue-ad7f8395.js"] : void 0, import.meta.url),
       loadingComponent: _sfc_main$3,
       delay: 0
     });

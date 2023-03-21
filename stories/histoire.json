@@ -385,6 +385,32 @@
       "markdownFile": null
     },
     {
+      "id": "stories-nodes-styles-story-vue",
+      "title": "Styles",
+      "group": null,
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "icon": null,
+      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/nodes/styles.story.vue",
+      "supportPluginId": "vue2",
+      "treePath": [
+        "Nodes",
+        "Styles"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
       "id": "stories-nodes-text-nodes-story-vue",
       "title": "Text nodes",
       "group": null,

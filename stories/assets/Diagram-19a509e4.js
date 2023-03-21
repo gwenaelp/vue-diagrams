@@ -356,14 +356,14 @@ class ResizeHandles {
   constructor(container, width, height, startDragHandler) {
     this.container = container;
     container.innerHTML = `
-      <rect class="resize-handle edge" data-direction="nw" x="3" y="10" width="5" height="5" />
-      <rect class="resize-handle" data-direction="n" x="5" y="12" height="3" />
-      <rect class="resize-handle edge" data-direction="ne" y="10" width="5" height="5" />
-      <rect class="resize-handle" data-direction="e" y="15" width="3" />
+      <rect class="resize-handle edge" data-direction="nw" x="-2" y="-5" width="5" height="5" />
+      <rect class="resize-handle" data-direction="n" x="0" y="-3" height="3" />
+      <rect class="resize-handle edge" data-direction="ne" y="-5" width="5" height="5" />
+      <rect class="resize-handle" data-direction="e" y="0" width="3" />
       <rect class="resize-handle edge" data-direction="se" width="5" height="5" />
-      <rect class="resize-handle" data-direction="s" x="5" height="3" />
-      <rect class="resize-handle edge" data-direction="sw" x="3" width="5" height="5" />
-      <rect class="resize-handle" data-direction="w" x="3" y="15" width="3" />
+      <rect class="resize-handle" data-direction="s" x="0" height="3" />
+      <rect class="resize-handle edge" data-direction="sw" x="-2" width="5" height="5" />
+      <rect class="resize-handle" data-direction="w" x="-2" y="0" width="3" />
     `;
     this.startDragHandler = startDragHandler;
     this.mouseDownHandler = this.mouseDownHandler.bind(this);
@@ -381,14 +381,14 @@ class ResizeHandles {
     const sw = this.container.querySelector('[data-direction="sw"]');
     const w = this.container.querySelector('[data-direction="w"]');
     n.setAttribute("width", width);
-    ne.setAttribute("x", width + 5);
-    e.setAttribute("x", width + 5);
+    ne.setAttribute("x", width);
+    e.setAttribute("x", width);
     e.setAttribute("height", height);
-    se.setAttribute("x", width + 5);
-    se.setAttribute("y", height + 15);
-    s.setAttribute("y", height + 15);
+    se.setAttribute("x", width);
+    se.setAttribute("y", height);
+    s.setAttribute("y", height);
     s.setAttribute("width", width);
-    sw.setAttribute("y", height + 15);
+    sw.setAttribute("y", height);
     w.setAttribute("height", height);
   }
   unmount() {
@@ -413,12 +413,17 @@ const _sfc_main$7 = {
     nodeModel: {
       type: Object
     }
+  },
+  computed: {
+    options() {
+      return this.nodeModel.options || {};
+    }
   }
 };
 var _sfc_render$7 = function render3() {
   var _vm = this, _c = _vm._self._c;
-  return _c("g", [_c("text", { ref: "title", class: _vm.nodeModel.options.editableTitle ? "title-editable" : "", attrs: { "x": _vm.nodeModel.width / 2, "y": _vm.nodeModel.height / 2, "width": _vm.nodeModel.width, "text-anchor": "middle", "font-size": "14", "font-weight": "bold", "fill": "#000000" }, on: { "click": function($event) {
-    _vm.nodeModel.options.editableTitle ? _vm.$parent.$parent.$parent.editText(_vm.nodeModel, "title", _vm.$refs.title) : void 0;
+  return _c("g", [_c("text", { ref: "title", class: _vm.options.editableTitle ? "title-editable" : "", style: _vm.options.titleStyle || "", attrs: { "x": _vm.nodeModel.width / 2, "y": _vm.nodeModel.height / 2, "width": _vm.nodeModel.width, "text-anchor": "middle", "font-size": "14", "font-weight": "bold", "fill": "#000000" }, on: { "click": function($event) {
+    _vm.options.editableTitle ? _vm.$parent.$parent.$parent.editText(_vm.nodeModel, "title", _vm.$refs.title) : void 0;
   } } }, [_vm._v(" " + _vm._s(_vm.nodeModel.title) + " ")]), _c("g", { staticClass: "prevent-node-drag" }, [_vm._t("default")], 2)]);
 };
 var _sfc_staticRenderFns$7 = [];
@@ -441,12 +446,17 @@ const _sfc_main$6 = {
     nodeModel: {
       type: Object
     }
+  },
+  computed: {
+    options() {
+      return this.nodeModel.options || {};
+    }
   }
 };
 var _sfc_render$6 = function render4() {
   var _vm = this, _c = _vm._self._c;
-  return _c("g", [_c("image", { attrs: { "href": _vm.nodeModel.options.image, "x": "10", "width": _vm.nodeModel.width - 10, "height": _vm.nodeModel.height } }), _c("text", { ref: "title", class: _vm.nodeModel.options.editableTitle ? "title-editable" : "", attrs: { "x": _vm.nodeModel.width / 2, "y": _vm.nodeModel.height + 14, "width": _vm.nodeModel.width, "text-anchor": "middle", "font-size": "14", "font-weight": "bold", "fill": "#000000" }, on: { "click": function($event) {
-    _vm.nodeModel.options.editableTitle ? _vm.$parent.$parent.$parent.editText(_vm.nodeModel, "title", _vm.$refs.title) : void 0;
+  return _c("g", [_c("image", { attrs: { "href": _vm.options.image, "x": "5", "width": _vm.nodeModel.width - 10, "height": _vm.nodeModel.height } }), _c("text", { ref: "title", class: _vm.options.editableTitle ? "title-editable" : "", style: _vm.options.titleStyle || "", attrs: { "x": _vm.nodeModel.width / 2, "y": _vm.nodeModel.height + 14, "width": _vm.nodeModel.width, "text-anchor": "middle", "font-size": "14", "font-weight": "bold", "fill": "#000000" }, on: { "click": function($event) {
+    _vm.options.editableTitle ? _vm.$parent.$parent.$parent.editText(_vm.nodeModel, "title", _vm.$refs.title) : void 0;
   } } }, [_vm._v(" " + _vm._s(_vm.nodeModel.title) + " ")]), _c("g", { staticClass: "prevent-node-drag" }, [_vm._t("default")], 2)]);
 };
 var _sfc_staticRenderFns$6 = [];
@@ -480,6 +490,9 @@ const _sfc_main$5 = {
     };
   },
   computed: {
+    options() {
+      return this.nodeModel.options || {};
+    },
     color() {
       return this.nodeModel.color || "#66cc00";
     }
@@ -487,11 +500,11 @@ const _sfc_main$5 = {
 };
 var _sfc_render$5 = function render5() {
   var _vm = this, _c = _vm._self._c;
-  return _c("g", [_c("rect", { staticClass: "node-dark-background", attrs: { "fill": _vm.color, "x": "5", "y": "15", "rx": "3", "ry": "3", "width": _vm.nodeModel.width, "height": _vm.nodeModel.height } }), _c("rect", { staticClass: "node-dark-background", attrs: { "fill": "#000000", "fill-opacity": _vm.titleFillOpacity, "x": "7", "y": "17", "rx": "3", "ry": "3", "width": _vm.nodeModel.width - 4, "height": "16" } }), _c("text", { ref: "title", class: _vm.nodeModel.options.editableTitle ? "title-editable" : "", attrs: { "x": 10, "y": 30, "font-size": "14", "font-weight": "bold", "fill": "#000000" }, on: { "click": function($event) {
+  return _c("g", [_c("rect", { staticClass: "node-dark-background", attrs: { "fill": _vm.color, "x": "0", "y": "0", "rx": "3", "ry": "3", "width": _vm.nodeModel.width, "height": _vm.nodeModel.height } }), _c("rect", { staticClass: "node-dark-background", attrs: { "fill": "#000000", "fill-opacity": _vm.titleFillOpacity, "x": "2", "y": "2", "rx": "3", "ry": "3", "width": _vm.nodeModel.width - 4, "height": "16" } }), _c("text", { ref: "title", class: _vm.nodeModel.options.editableTitle ? "title-editable" : "", style: _vm.options.titleStyle || "", attrs: { "x": "5", "y": "15", "font-size": "14", "font-weight": "bold", "fill": "#000000" }, on: { "click": function($event) {
     _vm.nodeModel.options.editableTitle ? _vm.$parent.$parent.$parent.editText(_vm.nodeModel, "title", _vm.$refs.title) : void 0;
   } } }, [_vm._v(" " + _vm._s(_vm.nodeModel.title) + " ")]), _vm.nodeModel.deletable ? _c("g", { on: { "click": function($event) {
     return _vm.$emit("deleteNode");
-  } } }, [_c("rect", { attrs: { "x": _vm.nodeModel.width - 12, "y": "18", "width": "14", "height": "14", "rx": "2", "ry": "2", "fill": "#ffffff", "fill-opacity": 0.25 } }), _c("line", { staticStyle: { "stroke": "rgb(0,0,0)" }, attrs: { "x1": _vm.nodeModel.width, "y1": 20, "x2": _vm.nodeModel.width - 10, "y2": 30, "stroke-width": "2" } }), _c("line", { staticStyle: { "stroke": "rgb(0,0,0)" }, attrs: { "x1": _vm.nodeModel.width - 10, "y1": 20, "x2": _vm.nodeModel.width, "y2": 30, "stroke-width": "2" } })]) : _vm._e(), _c("rect", { staticClass: "node-light-background", attrs: { "fill": "#ffffff", "x": "7", "y": "35", "rx": "3", "ry": "3", "width": _vm.nodeModel.width - 4, "height": _vm.nodeModel.height - 22 } }), _c("g", { staticClass: "prevent-node-drag" }, [_vm._t("default")], 2)]);
+  } } }, [_c("rect", { attrs: { "x": _vm.nodeModel.width - 12, "y": "3", "width": "14", "height": "14", "rx": "2", "ry": "2", "fill": "#ffffff", "fill-opacity": 0.25 } }), _c("line", { staticStyle: { "stroke": "rgb(0,0,0)" }, attrs: { "x1": _vm.nodeModel.width, "y1": 5, "x2": _vm.nodeModel.width - 10, "y2": 15, "stroke-width": "2" } }), _c("line", { staticStyle: { "stroke": "rgb(0,0,0)" }, attrs: { "x1": _vm.nodeModel.width - 10, "y1": 5, "x2": _vm.nodeModel.width, "y2": 15, "stroke-width": "2" } })]) : _vm._e(), _c("rect", { staticClass: "node-light-background", attrs: { "fill": "#ffffff", "x": "2", "y": "20", "rx": "3", "ry": "3", "width": _vm.nodeModel.width - 4, "height": _vm.nodeModel.height - 22 } }), _c("g", { staticClass: "prevent-node-drag" }, [_vm._t("default")], 2)]);
 };
 var _sfc_staticRenderFns$5 = [];
 _sfc_render$5._withStripped = true;
@@ -614,7 +627,7 @@ const _sfc_main$4 = {
         const pos = this.$parent.$parent.convertXYtoViewPort(event2.x, event2.y);
         this.$emit(
           "onStartDrag",
-          { type: "nodes", index: this.index },
+          { type: "nodes", index: this.index, node: this.nodeModel },
           pos.x - this.nodeModel.x,
           pos.y - this.nodeModel.y
         );
@@ -631,7 +644,7 @@ const _sfc_main$4 = {
         return;
       this.$emit(
         "onStartDrag",
-        { type: "resizeHandle", index: this.index, direction },
+        { type: "resizeHandle", index: this.index, node: this.nodeModel, direction },
         event.x - this.nodeModel.x,
         event.y - this.nodeModel.y
       );
@@ -640,7 +653,7 @@ const _sfc_main$4 = {
 };
 var _sfc_render$4 = function render6() {
   var _vm = this, _c = _vm._self._c;
-  return _c("svg", { class: `diagram-node ${_vm.selected ? "selected" : ""} has-menu`, attrs: { "x": _vm.nodeModel.x, "y": _vm.nodeModel.y, "data-node-id": _vm.id } }, [_c("rect", { staticClass: "node-dark-background", attrs: { "fill": "#00000000", "stroke": "#000000", "stroke-width": _vm.selected ? 2 : 0, "x": "5", "y": "15", "rx": "3", "ry": "3", "width": _vm.nodeModel.width, "height": _vm.nodeModel.height } }), _c("g", { ref: "resizeHandles" }), _c("g", { on: { "mousedown": _vm.mouseDown, "mouseenter": _vm.mouseenter, "mouseleave": _vm.mouseleave } }, [_c(`vue-diagrams-node-${_vm.options.type || "shader"}`, { tag: "component", attrs: { "nodeModel": _vm.nodeModel, "selected": _vm.selected }, on: { "deleteNode": _vm.deleteNode } }, [_vm._t("default")], 2)], 1)]);
+  return _c("svg", { class: `diagram-node ${_vm.selected ? "selected" : ""} has-menu`, attrs: { "x": _vm.nodeModel.x, "y": _vm.nodeModel.y, "data-node-id": _vm.id } }, [_c("rect", { staticClass: "node-dark-background", attrs: { "fill": "#00000000", "stroke": "#000000", "stroke-width": _vm.selected ? 2 : 0, "x": "0", "y": "0", "rx": "3", "ry": "3", "width": _vm.nodeModel.width, "height": _vm.nodeModel.height } }), _c("g", { ref: "resizeHandles" }), _c("g", { on: { "mousedown": _vm.mouseDown, "mouseenter": _vm.mouseenter, "mouseleave": _vm.mouseleave } }, [_c(`vue-diagrams-node-${_vm.options.type || "shader"}`, { tag: "component", attrs: { "nodeModel": _vm.nodeModel, "selected": _vm.selected }, on: { "deleteNode": _vm.deleteNode } }, [_vm._t("default")], 2)], 1)]);
 };
 var _sfc_staticRenderFns$4 = [];
 _sfc_render$4._withStripped = true;
@@ -775,7 +788,7 @@ const _sfc_main$2 = {
     mouseDown(pos) {
     },
     mouseDownSegment(pos, segmentIndex) {
-      if (!this.$parent.editable)
+      if (!this.$parent.$parent.editable)
         return;
       this.createPoint(pos.x, pos.y, segmentIndex);
       this.mouseDownPoint(pos, segmentIndex);
@@ -850,7 +863,7 @@ const _sfc_main$1 = {
       if (this.port.options && this.port.options.y) {
         return this.port.options.y;
       } else {
-        return this.y + 55;
+        return this.y + 40;
       }
     }
   },
@@ -872,7 +885,7 @@ const _sfc_main$1 = {
 };
 var _sfc_render$1 = function render9() {
   var _vm = this, _c = _vm._self._c;
-  return _c("g", { staticClass: "diagram-port has-menu" }, [_vm.port.type === "in" ? _c("svg", { attrs: { "y": _vm.displayedY } }, [_c("rect", { ref: "handle", attrs: { "fill": _vm.fill, "x": "0", "y": "0", "rx": "3", "ry": "3", "width": "10", "height": "10" }, on: { "mouseenter": _vm.enter, "mouseleave": _vm.leave, "mousedown": _vm.startDragNewLink, "mouseup": _vm.mouseup } }), _c("text", { attrs: { "x": "12", "y": "9", "font-size": "8pt", "fill": "#000000" } }, [_vm._v(_vm._s(_vm.port.name))])]) : _c("svg", { attrs: { "y": _vm.displayedY } }, [_c("rect", { ref: "handle", attrs: { "fill": _vm.fill, "x": _vm.width, "y": "0", "rx": "3", "ry": "3", "width": "10", "height": "10" }, on: { "mouseenter": _vm.enter, "mouseleave": _vm.leave, "mousedown": _vm.startDragNewLink, "mouseup": _vm.mouseup } }), _c("text", { attrs: { "x": _vm.width - 6, "y": "9", "text-anchor": "end", "font-size": "8pt", "fill": "#000000" } }, [_vm._v(_vm._s(_vm.port.name))])])]);
+  return _c("g", { staticClass: "diagram-port has-menu" }, [_vm.port.type === "in" ? _c("svg", { staticStyle: { "overflow": "visible" }, attrs: { "y": _vm.displayedY } }, [_c("rect", { ref: "handle", attrs: { "fill": _vm.fill, "x": "-5", "y": "0", "rx": "3", "ry": "3", "width": "10", "height": "10" }, on: { "mouseenter": _vm.enter, "mouseleave": _vm.leave, "mousedown": _vm.startDragNewLink, "mouseup": _vm.mouseup } }), _c("text", { attrs: { "x": "12", "y": "9", "font-size": "8pt", "fill": "#000000" } }, [_vm._v(_vm._s(_vm.port.name))])]) : _c("svg", { attrs: { "y": _vm.displayedY } }, [_c("rect", { ref: "handle", attrs: { "fill": _vm.fill, "x": _vm.width - 5, "y": "0", "rx": "3", "ry": "3", "width": "10", "height": "10" }, on: { "mouseenter": _vm.enter, "mouseleave": _vm.leave, "mousedown": _vm.startDragNewLink, "mouseup": _vm.mouseup } }), _c("text", { attrs: { "x": _vm.width - 6, "y": "9", "text-anchor": "end", "font-size": "8pt", "fill": "#000000" } }, [_vm._v(_vm._s(_vm.port.name))])])]);
 };
 var _sfc_staticRenderFns$1 = [];
 _sfc_render$1._withStripped = true;
@@ -891,10 +904,10 @@ _sfc_main$1.__file = "src/components/DiagramPort.vue";
 const DiagramPort = __component__$1.exports;
 const style = "";
 const Diagram_vue_vue_type_style_index_0_scoped_2c52bd4f_lang = "";
-var generateId = function() {
+const generateId = () => {
   return Math.trunc(Math.random() * 1e3);
 };
-function getAbsoluteXY(element) {
+const getAbsoluteXY = (element) => {
   var viewportElement = document.documentElement;
   var box = element.getBoundingClientRect();
   var scrollLeft = viewportElement.scrollLeft;
@@ -902,10 +915,10 @@ function getAbsoluteXY(element) {
   var x = box.left + scrollLeft;
   var y = box.top + scrollTop;
   return { x, y };
-}
-function snapToGrip(val, gridSize) {
+};
+const snapToGrip = (val, gridSize) => {
   return gridSize * Math.round(val / gridSize);
-}
+};
 const _sfc_main = {
   name: "Diagram",
   Model: DiagramModel,
@@ -954,7 +967,8 @@ const _sfc_main = {
       newLink: void 0,
       mouseX: 0,
       mouseY: 0,
-      viewPosition: void 0
+      viewPosition: void 0,
+      magnetismAnchors: []
     };
   },
   components: {
@@ -1075,10 +1089,10 @@ const _sfc_main = {
         let x;
         let y;
         if (portComponent.port.type === "in") {
-          x = node.x + 10;
+          x = node.x + 5;
           y = node.y + portComponent.displayedY + 9;
         } else {
-          x = node.x + node.width + 10;
+          x = node.x + node.width + 5;
           y = node.y + portComponent.displayedY + 9;
         }
         return { x, y };
@@ -1103,6 +1117,27 @@ const _sfc_main = {
           let coords = this.convertXYtoViewPort(this.mouseX, this.mouseY);
           coords.x = snapToGrip(coords.x, this.gridSnap) - this.gridSnap / 2;
           coords.y = snapToGrip(coords.y, this.gridSnap);
+          for (let a of this.magnetismAnchors) {
+            a.show = false;
+            if (a.x && Math.abs(a.x - (coords.x - this.initialDragX)) < 10) {
+              coords.x = a.x + this.initialDragX;
+              a.show = true;
+            }
+            if (a.y && Math.abs(a.y - (coords.y - this.initialDragY)) < 10) {
+              coords.y = a.y + this.initialDragY;
+              a.show = true;
+            }
+            if (this.draggedItem.node) {
+              if (a.x && Math.abs(a.x - (coords.x - this.initialDragX + this.draggedItem.node.width)) < 10) {
+                coords.x = a.x + this.initialDragX - this.draggedItem.node.width;
+                a.show = true;
+              }
+              if (a.y && Math.abs(a.y - (coords.y - this.initialDragY + this.draggedItem.node.height)) < 10) {
+                coords.y = a.y + this.initialDragY - this.draggedItem.node.height;
+                a.show = true;
+              }
+            }
+          }
           if (type === "points") {
             const linkIndex = this.draggedItem.linkIndex;
             const pointIndex = this.draggedItem.pointIndex;
@@ -1240,6 +1275,19 @@ const _sfc_main = {
       this.mainSelectedItem = item;
       this.initialDragX = x;
       this.initialDragY = y;
+      this.listMagnetismAnchors();
+    },
+    listMagnetismAnchors() {
+      const anchors = [];
+      for (let n of this.model._model.nodes) {
+        if (n.id !== this.draggedItem.node.id) {
+          anchors.push({ x: n.x || 0, node: n });
+          anchors.push({ y: n.y || 0, node: n });
+          anchors.push({ x: n.x + n.width || 0, node: n });
+          anchors.push({ y: n.y + n.height || 0, node: n });
+        }
+      }
+      this.magnetismAnchors = anchors;
     }
   }
 };
@@ -1255,10 +1303,12 @@ var _sfc_render = function render10() {
     } } }, _vm._l(node.ports, function(port, portIndex) {
       return _c("DiagramPort", { ref: "port-" + port.id, refInFor: true, attrs: { "id": port.id, "nodeIndex": nodeIndex, "y": portIndex * 20, "node": node, "port": port }, on: { "onStartDragNewLink": _vm.startDragNewLink, "mouseUpPort": _vm.mouseUpPort } });
     }), 1);
-  }), _vm.mode === "select" && _vm.mouseButtonIsPressed ? _c("rect", { attrs: { "x": _vm.min(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x), "y": _vm.min(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y), "width": _vm.max(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x) - _vm.min(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x), "height": _vm.max(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y) - _vm.min(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y), "fill": "#000000", "fill-opacity": 0.5 } }) : _vm._e()], 2)]), _vm.showThumbnail ? _c("svg", { staticClass: "thumbViewClass", attrs: { "slot": "thumbnail" }, slot: "thumbnail" }, [_vm._l(_vm.model._model.nodes, function(node, nodeIndex) {
+  }), _vm.mode === "select" && _vm.mouseButtonIsPressed ? _c("rect", { attrs: { "x": _vm.min(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x), "y": _vm.min(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y), "width": _vm.max(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x) - _vm.min(_vm.viewportMousePos.x, _vm.mouseDownViewportPos.x), "height": _vm.max(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y) - _vm.min(_vm.viewportMousePos.y, _vm.mouseDownViewportPos.y), "fill": "#000000", "fill-opacity": 0.5 } }) : _vm._e(), _vm._l(_vm.magnetismAnchors, function(a, i) {
+    return _vm.draggedItem && a.show ? _c("rect", { attrs: { "x": a.x || "-5000px", "y": a.y || "-5000px", "width": a.x ? "1px" : "10000px", "height": a.y ? "1px" : "10000px", "fill": "#29B6F2", "fill-opacity": 1 } }) : _vm._e();
+  })], 2)]), _vm.showThumbnail ? _c("svg", { staticClass: "thumbViewClass", attrs: { "slot": "thumbnail" }, slot: "thumbnail" }, [_vm._l(_vm.model._model.nodes, function(node, nodeIndex) {
     return _c("rect", { key: node.id, attrs: { "x": node.x, "y": node.y, "width": node.width, "height": node.height, "fill": node.color || "#66cc00" } });
   }), _vm._l(_vm.model._model.links, function(link, index) {
-    return _c("DiagramLink", { attrs: { "positionFrom": link.positionFrom, "positionTo": link.positionTo, "points": link.points, "id": link.id, "index": index, "options": link.options } });
+    return _c("DiagramLink", { key: index, attrs: { "positionFrom": link.positionFrom, "positionTo": link.positionTo, "points": link.points, "id": link.id, "index": index, "options": link.options } });
   })], 2) : _vm._e()])], 1);
 };
 var _sfc_staticRenderFns = [];
