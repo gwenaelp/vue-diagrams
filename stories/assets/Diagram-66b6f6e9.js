@@ -608,6 +608,8 @@ const _sfc_main$4 = {
       this.$emit("delete");
     },
     mouseDown(event2) {
+      if (!this.$parent.$parent.editable)
+        return;
       if (!event2.target.classList.contains("title-editable") && event2.target.closest(".prevent-node-drag") === null) {
         const pos = this.$parent.$parent.convertXYtoViewPort(event2.x, event2.y);
         this.$emit(
@@ -625,6 +627,8 @@ const _sfc_main$4 = {
       this.titleFillOpacity = 0.25;
     },
     startDragResizeHandle(direction) {
+      if (!this.$parent.$parent.editable)
+        return;
       this.$emit(
         "onStartDrag",
         { type: "resizeHandle", index: this.index, direction },
@@ -995,6 +999,8 @@ const _sfc_main = {
   },
   methods: {
     editText(object, property, element) {
+      if (!this.editable)
+        return;
       this.$refs.textInput.editText(object, property, element);
     },
     min(a, b) {

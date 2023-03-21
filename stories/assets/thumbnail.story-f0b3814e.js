@@ -1,4 +1,4 @@
-import { n as normalizeComponent, D as Diagram } from "./Diagram-6fbf1a70.js";
+import { n as normalizeComponent, D as Diagram } from "./Diagram-66b6f6e9.js";
 import "./vendor-538b7fd7.js";
 const thumbnail_story_vue_vue_type_style_index_0_scoped_76565ac9_lang = "";
 const _sfc_main = {

@@ -2905,7 +2905,7 @@ a.is-active[data-v-3f93d910] {
 }
 
 .text-input[data-v-d8d9f755] {
-  position: absolute;
+  position: fixed;
   font-weight: bold;
   outline: none;
   border: none;

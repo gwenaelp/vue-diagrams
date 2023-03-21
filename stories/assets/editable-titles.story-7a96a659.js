@@ -1,4 +1,4 @@
-import { n as normalizeComponent, D as Diagram } from "./Diagram-6fbf1a70.js";
+import { n as normalizeComponent, D as Diagram } from "./Diagram-66b6f6e9.js";
 import "./vendor-538b7fd7.js";
 const _sfc_main = {
   components: {
@@ -22,7 +22,7 @@ const _sfc_main = {
 };
 var _sfc_render = function render() {
   var _vm = this, _c = _vm._self._c;
-  return _c("Story", { attrs: { "title": "Editable titles" } }, [_c("diagram", { attrs: { "model": _vm.model, "height": "300" } })], 1);
+  return _c("Story", { attrs: { "title": "Editable titles" } }, [_c("div", { staticStyle: { "padding-top": "800px" } }, [_c("diagram", { attrs: { "model": _vm.model, "height": "300" } })], 1)]);
 };
 var _sfc_staticRenderFns = [];
 _sfc_render._withStripped = true;
