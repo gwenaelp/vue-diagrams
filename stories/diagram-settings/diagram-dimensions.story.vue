@@ -1,10 +1,10 @@
 <template>
-  <Story title="Assigning dimensions">
+  <Story title="Diagram settings/Assigning dimensions">
     <diagram :model="model" width="200" height="200" />
   </Story>
 </template>
 <script>
-import Diagram from "../src/components/Diagram.vue";
+import Diagram from "../../src/components/Diagram.vue";
 export default {
   components: {
     Diagram,

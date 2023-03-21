@@ -1,6 +1,6 @@
 <template>
   <g class="diagram-port has-menu">
-    <svg :y="y + 55" v-if="type === 'in'">
+    <svg :y="displayedY" v-if="port.type === 'in'">
       <rect
         :fill="fill"
         ref="handle"
@@ -9,9 +9,9 @@
         width="10" height="10"
         @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
       </rect>
-      <text x="12" y="9" font-size="8pt" fill="#000000">{{name}}</text>
+      <text x="12" y="9" font-size="8pt" fill="#000000">{{port.name}}</text>
     </svg>
-    <svg :y="y + 55" v-else>
+    <svg :y="displayedY" v-else>
       <rect
         :fill="fill"
         ref="handle"
@@ -20,17 +20,17 @@
         width="10" height="10"
         @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
       </rect>
-      <text :x="width - 6" y="9" text-anchor="end" font-size="8pt" fill="#000000">{{name}}</text>
+      <text :x="width - 6" y="9" text-anchor="end" font-size="8pt" fill="#000000">{{port.name}}</text>
     </svg>
   </g>
 </template>
 <script>
 export default {
-  name: "DiagramPort",
-  props: ["id", "y", "type", "name", "nodeWidth", "nodeIndex"],
+  name: 'DiagramPort',
+  props: ['id', 'y', 'node', 'nodeIndex', 'port'],
   data() {
     return {
-      fill: "#666666",
+      fill: '#666666',
       menu: [{
         label: 'Delete port',
         handler() {
@@ -45,7 +45,14 @@ export default {
   },
   computed: {
     width () {
-      return this.nodeWidth || 72;
+      return this.node.width || 72;
+    },
+    displayedY () {
+      if(this.port.options && this.port.options.y) {
+        return this.port.options.y;
+      } else {
+        return this.y + 55;
+      }
     },
   },
   methods: {
@@ -58,6 +65,7 @@ export default {
     },
 
     leave() {
+      console.log('leave', this.id);
       this.fill = "#666666";
     },
     startDragNewLink() {

@@ -1,10 +1,10 @@
 <template>
-  <Story title="Grid snap">
+  <Story title="Diagram settings/Grid snap">
     <diagram :model="model" gridSnap="16" />
   </Story>
 </template>
 <script>
-import Diagram from "../src/components/Diagram.vue";
+import Diagram from "../../src/components/Diagram.vue";
 
 export default {
   components: {

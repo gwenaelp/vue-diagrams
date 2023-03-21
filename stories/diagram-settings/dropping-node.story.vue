@@ -1,5 +1,5 @@
 <template>
-  <Story title="Drop to create nodes">
+  <Story title="Diagram settings/Drop to create nodes">
     <div class="node" draggable="true">Drop this node</div>
     <div @drop="onDrop" @dragover.prevent @dragenter.prevent>
       <diagram :model="model" width="400" height="400" ref="diagram" />
@@ -7,7 +7,7 @@
   </Story>
 </template>
 <script>
-import Diagram from "../src/components/Diagram.vue";
+import Diagram from "../../src/components/Diagram.vue";
 
 export default {
   components: {

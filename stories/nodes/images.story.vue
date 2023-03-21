@@ -1,10 +1,11 @@
 <template>
-  <Story title="Image nodes">
+  <Story title="Nodes/Image nodes">
     <diagram :model="model" height="300"/>
   </Story>
 </template>
 <script>
-import Diagram from "../src/components/Diagram.vue";
+import Diagram from "../../src/components/Diagram.vue";
+
 export default {
   components: {
     Diagram,
@@ -21,6 +22,10 @@ export default {
       type: 'image',
       image: 'https://www.google.fr/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png'
     });
+
+    const inPort = node1.addInPort();
+    const outPort = node2.addOutPort();
+    diagramModel.addLink(outPort, inPort);
 
     return {
       model: diagramModel

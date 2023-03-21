@@ -40,3 +40,7 @@ body: {
 .resize-handle[data-direction="w"] {
   cursor: w-resize;
 }
+
+.opacity-0 {
+  fill: #00000000;
+}

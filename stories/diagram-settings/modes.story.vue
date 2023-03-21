@@ -1,16 +1,16 @@
 <template>
-  <Story title="Edit modes">
+  <Story title="Diagram settings/Edit modes">
     <a :class="mode === 'move' ? 'is-active': ''" @click="mode = 'move'">
       Move
     </a>
     <a :class="mode === 'select' ? 'is-active': ''" @click="mode = 'select'">
       Select
     </a>
-    <diagram ref="diagram" :model="model" height="400" :mode="mode" />
+    <diagram ref="diagram" :model="model" height="400" />
   </Story>
 </template>
 <script>
-import Diagram from "../src/components/Diagram.vue";
+import Diagram from "../../src/components/Diagram.vue";
 
 export default {
   components: {

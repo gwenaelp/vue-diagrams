@@ -1,6 +1,7 @@
 <template>
-  <div class="vue-diagrams" :contenteditable="!!editedSvgText">
+  <div class="vue-diagrams">
     <Menu v-if="showMenu" />
+    <TextInput ref="textInput" />
     <SvgPanZoom
       ref="svgpanzoom"
       :style="{ width: width + 'px', height: height + 'px', border:'1px solid black'}"
@@ -38,39 +39,17 @@
           </pattern>
         </defs>
 
-        <rect x="-5000px" y="-5000px" width="10000px" height="10000px" fill="url(#grid)" @mousedown="clearSelection" ref="grid" class="svg-pan-zoom_viewport"/>
+        <rect
+          ref="grid"
+          class="svg-pan-zoom_viewport"
+          x="-5000px"
+          y="-5000px"
+          width="10000px"
+          height="10000px"
+          fill="url(#grid)"
+          @mousedown="clearSelection"
+        />
         <g ref="viewPort" id="viewport" x="50" y="50">
-          <DiagramNode
-            :ref="'node-' + nodeIndex"
-            :title="node.title"
-            :nodeModel="node"
-            :x="node.x"
-            :y="node.y"
-            :id="node.id"
-            :width="node.width"
-            :height="node.height"
-            :deletable="node.deletable"
-            :ports="node.ports"
-            :selected="(mainSelectedItem.type === 'nodes' && mainSelectedItem.index === nodeIndex) || secondarySelectedNodes.indexOf(node) !== -1"
-            :options="node.options"
-            :index="nodeIndex"
-            v-for="(node, nodeIndex) in model._model.nodes"
-            @onStartDrag="startDragItem"
-            @delete="model.deleteNode(node)"
-          >
-            <DiagramPort
-              v-for="(port, portIndex) in node.ports"
-              :ref="'port-' + port.id"
-              :id="port.id"
-              :nodeIndex="nodeIndex"
-              :y="portIndex * 20"
-              :nodeWidth="node.width"
-              :type="port.type"
-              :name="port.name"
-              @onStartDragNewLink="startDragNewLink"
-              @mouseUpPort="mouseUpPort"
-            />
-          </DiagramNode>
           <DiagramLink
             :ref="'link-' + link.id"
             :positionFrom="link.positionFrom"
@@ -92,6 +71,35 @@
             style="stroke:rgb(255,0,0);stroke-width:2"
             v-if="newLink"
           />
+          <DiagramNode
+            :ref="'node-' + nodeIndex"
+            :title="node.title"
+            :nodeModel="node"
+            :x="node.x"
+            :y="node.y"
+            :id="node.id"
+            :width="node.width"
+            :height="node.height"
+            :ports="node.ports"
+            :selected="(mainSelectedItem.type === 'nodes' && mainSelectedItem.index === nodeIndex) || secondarySelectedNodes.indexOf(node) !== -1"
+            :options="node.options"
+            :index="nodeIndex"
+            v-for="(node, nodeIndex) in model._model.nodes"
+            @onStartDrag="startDragItem"
+            @delete="model.deleteNode(node)"
+          >
+            <DiagramPort
+              v-for="(port, portIndex) in node.ports"
+              :ref="'port-' + port.id"
+              :id="port.id"
+              :nodeIndex="nodeIndex"
+              :y="portIndex * 20"
+              :node="node"
+              :port="port"
+              @onStartDragNewLink="startDragNewLink"
+              @mouseUpPort="mouseUpPort"
+            />
+          </DiagramNode>
           <rect
             v-if="mode === 'select' && mouseButtonIsPressed"
             :x="min(viewportMousePos.x, mouseDownViewportPos.x)"
@@ -100,7 +108,6 @@
             :height="max(viewportMousePos.y, mouseDownViewportPos.y) - min(viewportMousePos.y, mouseDownViewportPos.y)"
             fill="#000000"
             :fill-opacity="0.5"
-
           />
         </g>
       </svg>
@@ -131,6 +138,8 @@
 import SvgPanZoom from 'vue-svg-pan-zoom';
 
 import Menu from './Menu.vue';
+
+import TextInput from './TextInput.vue';
 
 import DiagramModel from './../DiagramModel';
 import DiagramNode from './DiagramNode.vue';
@@ -181,13 +190,16 @@ export default {
       type: Boolean,
       default: false,
     },
+    editable: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     this.updateLinksPositions();
 
     return {
       mode: 'move',
-      editedSvgText: undefined,
       document,
       zoomEnabled: true,
       panEnabled: true,
@@ -208,6 +220,7 @@ export default {
   },
   components: {
     Menu,
+    TextInput,
     DiagramNode,
     DiagramLink,
     DiagramPort,
@@ -235,19 +248,6 @@ export default {
       },
       immediate: true,
     },
-    editedSvgText(v) {
-      if (v) {
-        this.$refs.svgpanzoom.spz.disablePan();
-        this.$refs.svgpanzoom.spz.disableZoom();
-      } else {
-        if (this.zoomEnabled) {
-          this.$refs.svgpanzoom.spz.enableZoom();
-        }
-        if (this.panEnabled) {
-          this.$refs.svgpanzoom.spz.enablePan();
-        }
-      }
-    },
     "model._model": {
       handler () {
         this.$emit('model-updated', this.model._model);
@@ -259,6 +259,9 @@ export default {
     },
   },
   methods: {
+    editText(object, property, element) {
+      this.$refs.textInput.editText(object, property, element);
+    },
     min (a, b) {
       return Math.min(a, b);
     },
@@ -324,22 +327,24 @@ export default {
     },
 
     startDragNewLink(startPortId) {
+      if (!this.editable) return;
+
       this.panEnabled = false;
       this.newLink = { startPortId };
     },
 
     getPortHandlePosition(portId) {
       if (this.$refs["port-" + portId] && this.$refs["port-" + portId][0]) {
-        var port = this.$refs["port-" + portId][0];
-        var node = this.$refs["node-" + port.nodeIndex][0];
-        var x;
-        var y;
-        if (port.type === "in") {
+        const portComponent = this.$refs["port-" + portId][0];
+        const node = this.$refs["node-" + portComponent.nodeIndex][0];
+        let x;
+        let y;
+        if (portComponent.port.type === "in") {
           x = node.x + 10;
-          y = node.y + port.y + 64;
+          y = node.y + portComponent.displayedY + 9;
         } else {
           x = node.x + node.width + 10;
-          y = node.y + port.y + 64;
+          y = node.y + portComponent.displayedY + 9;
         }
 
         return { x, y };
@@ -352,6 +357,8 @@ export default {
     },
 
     mouseMove(pos) {
+      if (!this.editable) return;
+
       const links = this.model._model.links;
       this.mouseX = pos.x;
       this.mouseY = pos.y;
@@ -415,21 +422,16 @@ export default {
       }
     },
     mouseDown (event) {
+      if (!this.editable) return;
+
       this.mouseButtonIsPressed = true;
-      if (event.target.classList.contains('title-editable')) {
-        this.editedSvgText = event.target;
-      } else {
-        if (this.editedSvgText && this.editedSvgText.closest('.diagram-node')) {
-          const nodeComponent = this.editedSvgText.closest('.diagram-node').__vue__;
-          this.model._model.nodes[nodeComponent.index].title = this.editedSvgText.innerHTML;
-        }
-        this.editedSvgText = undefined;
-        if (this.mode === 'select') {
-          this.mouseDownViewportPos = this.convertXYtoViewPort(event.x, event.y);
-        }
+      if (!event.target.classList.contains('title-editable')) {
+        this.$refs.textInput.editText();
       }
     },
     mouseUp() {
+      if (!this.editable) return;
+
       this.mouseButtonIsPressed = false;
       if (this.mode === 'move') {
         if(this.secondarySelectedNodes && this.secondarySelectedNodes.length)
@@ -455,6 +457,8 @@ export default {
     },
 
     mouseUpPort(portId) {
+      if (!this.editable) return;
+
       var links = this.model._model.links;
 
       if (this.draggedItem && this.draggedItem.type === "points") {
@@ -486,7 +490,7 @@ export default {
             positionTo: {},
             points: []
           });
-        } else if (port2.type === "in" && port1.type === "out") {
+        } else if (port2.port.type === "in" && port1.port.type === "out") {
           links.push({
             id: generateId(),
             from: port1.id,

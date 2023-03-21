@@ -13,7 +13,7 @@ class DiagramModel {
   constructor() {
     this._model = {
       nodes: [],
-      links: []
+      links: [],
     };
   }
 
@@ -24,6 +24,7 @@ class DiagramModel {
    * @param {Integer} y      Y Coordinate
    * @param {Integer} width  Width
    * @param {Integer} height Height
+   * @param {Object} options Optional
    * @return {Node} The node created
    */
   addNode(title, x, y, width, height, options) {
@@ -31,10 +32,6 @@ class DiagramModel {
       options = {};
     }
     const newNode = new DiagramNode(this, generateId(), title, x, y, width, height, options);
-    if (options.type === 'image') {
-      newNode.addInPort();
-      newNode.addOutPort();
-    }
     this._model.nodes.push(newNode);
     return newNode;
   }
@@ -66,6 +63,7 @@ class DiagramModel {
    * @param {Integer} from   Port id. Must be an out port
    * @param {Integer} to     Port id. Must be an in port
    * @param {Array}  points  Optional. Array of points to make the link represented as a segmented line
+   * @param {Object} options Optional
    */
   addLink(from, to, points = [], options = {}) {
     this._model.links.push({
