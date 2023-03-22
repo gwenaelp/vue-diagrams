@@ -1,9 +1,15 @@
 <template>
   <Story title="Layouts">
-    <a @click="doLayout">
-      Tree layout
-    </a>
-    <diagram v-if="displayed" :model="model" height="700" />
+    <button @click="doLayout">
+      Tree layout (naive)
+    </button>
+    <button @click="doLayout2">
+      Tree layout (other intent)
+    </button>
+    <div class="node" draggable="true">Drop this node</div>
+    <div @drop="onDrop" @dragover.prevent @dragenter.prevent>
+      <diagram v-if="displayed" :model="model" height="700" ref="diagram" />
+    </div>
   </Story>
 </template>
 <script>
@@ -14,7 +20,6 @@ export default {
   },
   data() {
     const diagramModel = new Diagram.Model();
-
     const node1 = diagramModel.addNode("test2", 300, 200);
     const node1IP = node1.addInPort("in");
 
@@ -55,8 +60,10 @@ export default {
 
     diagramModel.addLink(node3OP, node7IP);
     diagramModel.addLink(node3OP, node8IP);
+    /*
 
-
+    diagramModel.deserialize('{"nodes":[{"id":966,"title":"Glucklich","x":300,"y":20,"width":72,"height":100,"ports":[{"id":225,"type":"in","name":"in"},{"id":898,"type":"out","name":"out"}]},{"id":37,"title":"Pluchon","x":300,"y":100,"width":72,"height":100,"ports":[{"id":790,"type":"in","name":"in"},{"id":8,"type":"out","name":"out"}]},{"id":790,"title":"Tabares","x":300,"y":180,"width":72,"height":100,"ports":[{"id":820,"type":"in","name":"in"},{"id":243,"type":"out","name":"out"}]},{"id":248,"title":"TANGUY","x":300,"y":260,"width":72,"height":100,"ports":[{"id":692,"type":"in","name":"in"},{"id":883,"type":"out","name":"out"}]},{"id":960,"title":"BLANC","x":300,"y":340,"width":72,"height":100,"ports":[{"id":757,"type":"in","name":"in"},{"id":341,"type":"out","name":"out"}]},{"id":362,"title":"NEIGE","x":300,"y":420,"width":72,"height":100,"ports":[{"id":935,"type":"in","name":"in"},{"id":764,"type":"out","name":"out"}]}],"links":[{"id":433,"from":243,"to":225,"positionFrom":{"x":377,"y":249},"positionTo":{"x":305,"y":69}},{"id":581,"from":243,"to":790,"positionFrom":{"x":377,"y":249},"positionTo":{"x":305,"y":149}},{"id":851,"from":898,"to":692,"positionFrom":{"x":377,"y":89},"positionTo":{"x":305,"y":309}},{"id":424,"from":898,"to":757,"positionFrom":{"x":377,"y":89},"positionTo":{"x":305,"y":389}},{"id":488,"from":8,"to":935,"positionFrom":{"x":377,"y":169},"positionTo":{"x":305,"y":469}}]}');
+    */
 
     return {
       displayed: true,
@@ -64,6 +71,15 @@ export default {
     };
   },
   methods: {
+    onDrop(event) {
+      const pan = this.$refs.diagram.$refs.svgpanzoom.spz.getPan();
+      const zoom = this.$refs.diagram.$refs.svgpanzoom.spz.getZoom();
+      const x = pan.x * (1/zoom) * -1;
+      const y = pan.y * (1/zoom) * -1;
+      const n = this.model.addNode('Node', x, y);
+      n.addInPort('In');
+      n.addOutPort('Out')
+    },
     doLayout() {
     function treeLayout(model) {
       const nodes = model.nodes;
@@ -97,10 +113,13 @@ export default {
       // Recursively set the position of child nodes
       const setChildNodePosition = (parentNode, y) => {
         let lastChildYByNode = {};
+        console.log('setChildNodePosition', links, nodes)
         for (let i = 0; i < links.length; i++) {
           const link = links[i];
-          if (link.from === parentNode.ports[0].id) {
+          const isLinkFromParent = parentNode.ports.filter(p => p.id === link.from).length;
+          if (isLinkFromParent) {
             const childNode = nodes.find((node) => {
+              console.log('find children', link.to, node.ports)
               return node.ports.some((port) => port.id === link.to);
             });
             if (childNode) {
@@ -133,7 +152,110 @@ export default {
       })
     })
     },
-  }
+    doLayout2() {
+      let nodeSpacing = 20,
+          horizontalSpacing = 20;
+      function treeLayout(nodes) {
+        // Create a mapping of nodes to their children
+
+        // Create a mapping of node IDs to their depths in the tree
+        const depthMap = { byId: {}, byDepth: [], maxWidth: [] };
+        const calculateDepth = (node, depth) => {
+          console.log('depth', depth, node.title);
+          depthMap.byId[node.id] = depth;
+          if(depthMap.byDepth[depth] === undefined) {
+            depthMap.byDepth[depth] = [];
+          }
+          depthMap.byDepth[depth].push(node);
+          if(!depthMap.maxWidth[depth] || depthMap.maxWidth[depth] < node.width) {
+            depthMap.maxWidth[depth] = node.width;
+          }
+          if(node.children) {
+            node.children.forEach(childId => {
+              calculateDepth(nodesMap[childId], depth + 1);
+            });
+          }
+        };
+
+        const rootNode = nodes.find(node => !node.parent);
+        calculateDepth(rootNode, 0);
+
+        const maxDepth = depthMap.byDepth.length - 1;
+        const parentGroups = {};
+        for (let d = maxDepth; d >= 0; d--) {
+          const nodesByDepth = depthMap.byDepth[d];
+          parentGroups[d] = {};
+          for (let n of nodesByDepth) {
+            if(parentGroups[d][n.parent] === undefined) {
+              parentGroups[d][n.parent] = { nodes: [] };
+            }
+            parentGroups[d][n.parent].nodes.push(n);
+          }
+        }
+        let currentY = 0;
+        /*let currentX = 0;
+        for (let d = 0; d < maxDepth; d++) {
+          console.log('??currentX', depthMap[d], depthMap.maxWidth[d])
+          currentX += depthMap.maxWidth[d] + horizontalSpacing;
+        }*/
+        let currentX = maxDepth * 160;
+        for (let d = maxDepth; d >= 0; d--) {
+          const nodesByDepth = depthMap.byDepth[d];
+          currentX -= 160;
+          for (let n of nodesByDepth) {
+            if(parentGroups[d+1] && parentGroups[d+1][n.id]) {
+              let avg = 0;
+              for(let n2 of parentGroups[d+1][n.id].nodes){
+                avg += n2.y;
+              }
+              avg = avg / parentGroups[d+1][n.id].nodes.length;
+              n.y = avg;
+            } else {
+              n.y = currentY;
+              currentY += n.width + nodeSpacing;
+            }
+            n.x = currentX;
+          }
+        }
+      }
+      const portsNodesMap = {};
+      const nodesMap = {};
+      for(let n of this.model._model.nodes) {
+        nodesMap[n.id] = n;
+        for(let p of n.ports) {
+          portsNodesMap[p.id] = n.id;
+        }
+      }
+      for(let l of this.model._model.links) {
+        const to = nodesMap[portsNodesMap[l.to]];
+        const from = nodesMap[portsNodesMap[l.from]];
+        if(from.children === undefined) {
+          from.children = [];
+        }
+        to.parent = from.id;
+        from.children.push(to.id);
+      }
+      this.displayed = false;
+      this.$nextTick(() => {
+        treeLayout(this.model._model.nodes)
+        this.$nextTick(() => {
+          this.displayed = true;
+        })
+      });
+    },
+  },
 };
 
 </script>
+<style scoped>
+  .node {
+    display: block;
+    width: 72px;
+    height: 100px;
+    border: 2px solid black;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-bottom: 20px;
+    cursor: grab;
+  }
+</style>

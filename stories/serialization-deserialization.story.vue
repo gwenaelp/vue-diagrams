@@ -2,8 +2,9 @@
   <Story title="serialization deserialization">
     <div>
       <diagram :model="model"></diagram>
-      <button @click="console.log(model.serialize())">serialize</button>
-      <button @click="model.deserialize(serializedModel)">deserialize</button>
+      <button @click="model.serialize(textareaValue))">serialize</button>
+      <button @click="textareaValue = model.deserialize(serializedModel)">deserialize</button>
+      <textarea v-model="textareaValue" />
     </div>
   </Story>
 </template>
@@ -35,7 +36,8 @@ export default {
     return {
       console,
       serializedModel: diagramModel.serialize(),
-      model: diagramModel
+      model: diagramModel,
+      textareaValue: '',
     };
   },
 };

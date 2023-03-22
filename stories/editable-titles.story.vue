@@ -1,8 +1,6 @@
 <template>
   <Story title="Editable titles">
-    <div style="padding-top: 800px">
-      <diagram :model="model" height="300" />
-    </div>
+    <diagram :model="model" height="300" />
   </Story>
 </template>
 <script>

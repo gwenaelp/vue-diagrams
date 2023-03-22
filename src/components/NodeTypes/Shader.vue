@@ -17,13 +17,13 @@
     />
     <text
       x="5" y="15"
-      :class="nodeModel.options.editableTitle ? 'title-editable': ''"
+      :class="options.editableTitle ? 'title-editable': ''"
       font-size="14"
       font-weight="bold"
       fill="#000000"
       ref="title"
       :style="options.titleStyle || ''"
-      @click="nodeModel.options.editableTitle ? $parent.$parent.$parent.editText(nodeModel, 'title', $refs.title) : undefined"
+      @click="options.editableTitle ? $parent.$parent.$parent.editText(nodeModel, 'title', $refs.title) : undefined"
     >
       {{nodeModel.title}}
     </text>
