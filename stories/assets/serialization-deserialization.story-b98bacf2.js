@@ -1,4 +1,4 @@
-import { n as normalizeComponent, D as Diagram } from "./Diagram-19a509e4.js";
+import { n as normalizeComponent, D as Diagram } from "./Diagram-f325a641.js";
 import "./vendor-538b7fd7.js";
 const _sfc_main = {
   components: {
@@ -26,7 +26,7 @@ const _sfc_main = {
 };
 var _sfc_render = function render() {
   var _vm = this, _c = _vm._self._c;
-  return _c("Story", { attrs: { "title": "serialization deserialization" } }, [_c("div", [_c("diagram", { attrs: { "model": _vm.model } }), _c("button", { on: { "click": function($event) {
+  return _c("Story", { attrs: { "title": "serialization/deserialization" } }, [_c("div", [_c("diagram", { attrs: { "model": _vm.model } }), _c("button", { on: { "click": function($event) {
     _vm.console.log(_vm.model.serialize());
   } } }, [_vm._v("serialize")]), _c("button", { on: { "click": function($event) {
     return _vm.model.deserialize(_vm.serializedModel);

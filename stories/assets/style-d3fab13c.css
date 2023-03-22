@@ -2858,6 +2858,17 @@ body {
   min-height: 100%;
 }
 
+.node[data-v-037acf99] {
+  display: block;
+  width: 72px;
+  height: 100px;
+  border: 2px solid black;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-bottom: 20px;
+  cursor: grab;
+}
+
 .node[data-v-86da32fc] {
   display: block;
   width: 72px;
