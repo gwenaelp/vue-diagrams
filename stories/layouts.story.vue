@@ -60,10 +60,6 @@ export default {
 
     diagramModel.addLink(node3OP, node7IP);
     diagramModel.addLink(node3OP, node8IP);
-    /*
-
-    diagramModel.deserialize('{"nodes":[{"id":966,"title":"Glucklich","x":300,"y":20,"width":72,"height":100,"ports":[{"id":225,"type":"in","name":"in"},{"id":898,"type":"out","name":"out"}]},{"id":37,"title":"Pluchon","x":300,"y":100,"width":72,"height":100,"ports":[{"id":790,"type":"in","name":"in"},{"id":8,"type":"out","name":"out"}]},{"id":790,"title":"Tabares","x":300,"y":180,"width":72,"height":100,"ports":[{"id":820,"type":"in","name":"in"},{"id":243,"type":"out","name":"out"}]},{"id":248,"title":"TANGUY","x":300,"y":260,"width":72,"height":100,"ports":[{"id":692,"type":"in","name":"in"},{"id":883,"type":"out","name":"out"}]},{"id":960,"title":"BLANC","x":300,"y":340,"width":72,"height":100,"ports":[{"id":757,"type":"in","name":"in"},{"id":341,"type":"out","name":"out"}]},{"id":362,"title":"NEIGE","x":300,"y":420,"width":72,"height":100,"ports":[{"id":935,"type":"in","name":"in"},{"id":764,"type":"out","name":"out"}]}],"links":[{"id":433,"from":243,"to":225,"positionFrom":{"x":377,"y":249},"positionTo":{"x":305,"y":69}},{"id":581,"from":243,"to":790,"positionFrom":{"x":377,"y":249},"positionTo":{"x":305,"y":149}},{"id":851,"from":898,"to":692,"positionFrom":{"x":377,"y":89},"positionTo":{"x":305,"y":309}},{"id":424,"from":898,"to":757,"positionFrom":{"x":377,"y":89},"positionTo":{"x":305,"y":389}},{"id":488,"from":8,"to":935,"positionFrom":{"x":377,"y":169},"positionTo":{"x":305,"y":469}}]}');
-    */
 
     return {
       displayed: true,
@@ -113,13 +109,11 @@ export default {
       // Recursively set the position of child nodes
       const setChildNodePosition = (parentNode, y) => {
         let lastChildYByNode = {};
-        console.log('setChildNodePosition', links, nodes)
         for (let i = 0; i < links.length; i++) {
           const link = links[i];
           const isLinkFromParent = parentNode.ports.filter(p => p.id === link.from).length;
           if (isLinkFromParent) {
             const childNode = nodes.find((node) => {
-              console.log('find children', link.to, node.ports)
               return node.ports.some((port) => port.id === link.to);
             });
             if (childNode) {
@@ -153,31 +147,30 @@ export default {
     })
     },
     doLayout2() {
-      let nodeSpacing = 20,
+      let nodeSpacing = 40,
           horizontalSpacing = 20;
       function treeLayout(nodes) {
         // Create a mapping of nodes to their children
 
         // Create a mapping of node IDs to their depths in the tree
         const depthMap = { byId: {}, byDepth: [], maxWidth: [] };
-        const calculateDepth = (node, depth) => {
-          console.log('depth', depth, node.title);
-          depthMap.byId[node.id] = depth;
+        const calculateDepth = (nodeMapItem, depth) => {
+          depthMap.byId[nodeMapItem.node.id] = depth;
           if(depthMap.byDepth[depth] === undefined) {
             depthMap.byDepth[depth] = [];
           }
-          depthMap.byDepth[depth].push(node);
-          if(!depthMap.maxWidth[depth] || depthMap.maxWidth[depth] < node.width) {
-            depthMap.maxWidth[depth] = node.width;
+          depthMap.byDepth[depth].push(nodeMapItem);
+          if(!depthMap.maxWidth[depth] || depthMap.maxWidth[depth] < nodeMapItem.node.width) {
+            depthMap.maxWidth[depth] = nodeMapItem.node.width;
           }
-          if(node.children) {
-            node.children.forEach(childId => {
+          if(nodeMapItem.children) {
+            nodeMapItem.children.forEach(childId => {
               calculateDepth(nodesMap[childId], depth + 1);
             });
           }
         };
 
-        const rootNode = nodes.find(node => !node.parent);
+        const rootNode = Object.values(nodesMap).find(nodeMapItem => !nodeMapItem.parent);
         calculateDepth(rootNode, 0);
 
         const maxDepth = depthMap.byDepth.length - 1;
@@ -193,35 +186,31 @@ export default {
           }
         }
         let currentY = 0;
-        /*let currentX = 0;
-        for (let d = 0; d < maxDepth; d++) {
-          console.log('??currentX', depthMap[d], depthMap.maxWidth[d])
-          currentX += depthMap.maxWidth[d] + horizontalSpacing;
-        }*/
-        let currentX = maxDepth * 160;
+        let currentX = depthMap.maxWidth.reduce((partialSum, a) => partialSum + a, 0) + 100;
+
         for (let d = maxDepth; d >= 0; d--) {
           const nodesByDepth = depthMap.byDepth[d];
-          currentX -= 160;
+          currentX -= depthMap.maxWidth[d] + horizontalSpacing;
           for (let n of nodesByDepth) {
-            if(parentGroups[d+1] && parentGroups[d+1][n.id]) {
+            if(parentGroups[d+1] && parentGroups[d+1][n.node.id]) {
               let avg = 0;
-              for(let n2 of parentGroups[d+1][n.id].nodes){
-                avg += n2.y;
+              for(let n2 of parentGroups[d+1][n.node.id].nodes){
+                avg += n2.node.y;
               }
-              avg = avg / parentGroups[d+1][n.id].nodes.length;
-              n.y = avg;
+              avg = avg / parentGroups[d+1][n.node.id].nodes.length;
+              n.node.y = avg;
             } else {
-              n.y = currentY;
-              currentY += n.width + nodeSpacing;
+              n.node.y = currentY;
+              currentY += n.node.height + nodeSpacing;
             }
-            n.x = currentX;
+            n.node.x = currentX;
           }
         }
       }
       const portsNodesMap = {};
       const nodesMap = {};
       for(let n of this.model._model.nodes) {
-        nodesMap[n.id] = n;
+        nodesMap[n.id] = { node: n };
         for(let p of n.ports) {
           portsNodesMap[p.id] = n.id;
         }
@@ -232,16 +221,11 @@ export default {
         if(from.children === undefined) {
           from.children = [];
         }
-        to.parent = from.id;
-        from.children.push(to.id);
+        to.parent = from.node.id;
+        from.children.push(to.node.id);
       }
-      this.displayed = false;
-      this.$nextTick(() => {
-        treeLayout(this.model._model.nodes)
-        this.$nextTick(() => {
-          this.displayed = true;
-        })
-      });
+      treeLayout(this.model._model.nodes)
+      this.$refs.diagram.updateLinksPositions();
     },
   },
 };
