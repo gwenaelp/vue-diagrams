@@ -933,12 +933,9 @@ const generateId = () => {
   return Math.trunc(Math.random() * 1e3);
 };
 const getAbsoluteXY = (element) => {
-  var viewportElement = document.documentElement;
   var box = element.getBoundingClientRect();
-  var scrollLeft = viewportElement.scrollLeft;
-  var scrollTop = viewportElement.scrollTop;
-  var x = box.left + scrollLeft;
-  var y = box.top + scrollTop;
+  var x = box.left;
+  var y = box.top;
   return { x, y };
 };
 const snapToGrip = (val, gridSize) => {
@@ -1052,7 +1049,7 @@ const _sfc_main = {
       let rootelt = document.getElementById("svgroot2");
       let rec = document.getElementById("viewport");
       let point = rootelt.createSVGPoint();
-      let rooteltPosition = getAbsoluteXY(rootelt);
+      let rooteltPosition = getAbsoluteXY(this.$el);
       point.x = x - rooteltPosition.x;
       point.y = y - rooteltPosition.y;
       let ctm = rec.getCTM().inverse();
@@ -1132,8 +1129,9 @@ const _sfc_main = {
       if (!this.editable)
         return;
       const links = this.model._model.links;
-      this.mouseX = pos.x;
-      this.mouseY = pos.y;
+      this.$el.getBoundingClientRect();
+      this.mouseX = pos.clientX;
+      this.mouseY = pos.clientY;
       this.viewportMousePos = this.convertXYtoViewPort(pos.x, pos.y);
       if (this.mode === "move") {
         if (this.draggedItem) {

@@ -1,4 +1,4 @@
-import { n as normalizeComponent, D as Diagram } from "./Diagram-b5ba9389.js";
+import { n as normalizeComponent, D as Diagram } from "./Diagram-5ab0b843.js";
 import "./vendor-538b7fd7.js";
 const _sfc_main = {
   components: {
@@ -25,7 +25,7 @@ const _sfc_main = {
 };
 var _sfc_render = function render() {
   var _vm = this, _c = _vm._self._c;
-  return _c("Story", { attrs: { "title": "Simple" } }, [_c("diagram", { attrs: { "model": _vm.model, "height": "300" } })], 1);
+  return _c("Story", { attrs: { "title": "Menu/Basic" } }, [_c("div", { staticStyle: { "background": "whitesmoke", "padding": "20px", "margin-bottom": "20px" } }, [_vm._v(" Right click on nodes and link to show the edit menu ")]), _c("diagram", { attrs: { "model": _vm.model, "height": "300", "show-menu": "" } })], 1);
 };
 var _sfc_staticRenderFns = [];
 _sfc_render._withStripped = true;
@@ -39,9 +39,9 @@ var __component__ = /* @__PURE__ */ normalizeComponent(
   null,
   null
 );
-__component__.options.__file = "/home/runner/work/vue-diagrams/vue-diagrams/stories/basic.story.vue";
-_sfc_main.__file = "stories/basic.story.vue";
-const basic_story = __component__.exports;
+__component__.options.__file = "/home/runner/work/vue-diagrams/vue-diagrams/stories/menu.story.vue";
+_sfc_main.__file = "stories/menu.story.vue";
+const menu_story = __component__.exports;
 export {
-  basic_story as default
+  menu_story as default
 };

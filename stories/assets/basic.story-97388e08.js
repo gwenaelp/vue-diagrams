@@ -1,4 +1,4 @@
-import { n as normalizeComponent, D as Diagram } from "./Diagram-b5ba9389.js";
+import { n as normalizeComponent, D as Diagram } from "./Diagram-5ab0b843.js";
 import "./vendor-538b7fd7.js";
 const _sfc_main = {
   components: {
@@ -25,7 +25,7 @@ const _sfc_main = {
 };
 var _sfc_render = function render() {
   var _vm = this, _c = _vm._self._c;
-  return _c("Story", { attrs: { "title": "Diagram settings/Edit locked" } }, [_c("diagram", { attrs: { "model": _vm.model, "height": "300", "editable": false } })], 1);
+  return _c("Story", { attrs: { "title": "Simple" } }, [_c("diagram", { attrs: { "model": _vm.model, "height": "300" } })], 1);
 };
 var _sfc_staticRenderFns = [];
 _sfc_render._withStripped = true;
@@ -39,9 +39,9 @@ var __component__ = /* @__PURE__ */ normalizeComponent(
   null,
   null
 );
-__component__.options.__file = "/home/runner/work/vue-diagrams/vue-diagrams/stories/diagram-settings/edit-locked.story.vue";
-_sfc_main.__file = "stories/diagram-settings/edit-locked.story.vue";
-const editLocked_story = __component__.exports;
+__component__.options.__file = "/home/runner/work/vue-diagrams/vue-diagrams/stories/basic.story.vue";
+_sfc_main.__file = "stories/basic.story.vue";
+const basic_story = __component__.exports;
 export {
-  editLocked_story as default
+  basic_story as default
 };
