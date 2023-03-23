@@ -1,4 +1,4 @@
-import { n as normalizeComponent, D as Diagram } from "./Diagram-f325a641.js";
+import { n as normalizeComponent, D as Diagram } from "./Diagram-b5ba9389.js";
 import { ap as Vue } from "./vendor-538b7fd7.js";
 const _sfc_main$1 = {
   props: {

@@ -2898,7 +2898,7 @@ a.is-active[data-v-3f93d910] {
   top: 5px;
 }
 
-.menu[data-v-e065371e] {
+.menu[data-v-e065371e], .menu-item-children-container[data-v-e065371e] {
   position: fixed;
   font-size: 13px;
   width: 140px;
@@ -2913,6 +2913,20 @@ a.is-active[data-v-3f93d910] {
 }
 .menu-item[data-v-e065371e]:hover {
   background: whitesmoke;
+}
+.menu-item.separator[data-v-e065371e] {
+  padding: 0;
+  border-bottom: 1px solid #ccc;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.menu-item-children-container[data-v-e065371e] {
+  position: absolute;
+  display: none;
+  left: 100%;
+}
+.menu-item:hover .menu-item-children-container[data-v-e065371e] {
+  display: unset;
 }
 
 .text-input[data-v-d8d9f755] {

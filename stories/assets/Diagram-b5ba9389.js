@@ -96,14 +96,21 @@ const _sfc_main$9 = {
   },
   methods: {
     menuItemClick(event2, component) {
-      component.menu[event2.target.dataset.menuItemKey].handler.call(component);
+      const dataset = event2.target.dataset;
+      if (dataset.childItemKey) {
+        component.menu[dataset.menuItemKey].children[dataset.childItemKey].handler.call(component);
+      } else {
+        component.menu[dataset.menuItemKey].handler.call(component);
+      }
     }
   }
 };
 var _sfc_render$9 = function render() {
   var _vm = this, _c = _vm._self._c;
   return _c("div", [_vm.showMenuComponent ? _c("div", { class: `menu diagram-context-menu`, style: `left: ${_vm.menuX}px; top: ${_vm.menuY}px` }, _vm._l(_vm.showMenuComponent.menu, function(menuItem, menuItemKey) {
-    return _c("div", { staticClass: "menu-item", attrs: { "data-menu-item-key": menuItemKey } }, [_vm._v(" " + _vm._s(menuItem.label) + " ")]);
+    return _c("div", { key: menuItemKey, class: `menu-item ${menuItem.classes ? menuItem.classes.join(" ") : ""}`, attrs: { "data-menu-item-key": menuItemKey } }, [_vm._v(" " + _vm._s(menuItem.label) + " "), menuItem.children ? _c("span", { staticStyle: { "float": "right" } }, [_vm._v(" > ")]) : _vm._e(), menuItem.children ? _c("div", { staticClass: "menu-item-children-container" }, _vm._l(menuItem.children, function(childItem, childItemKey) {
+      return _c("div", { class: `menu-item child-menu-item ${childItem.classes ? childItem.classes.join(" ") : ""}`, attrs: { "data-menu-item-key": menuItemKey, "data-child-item-key": childItemKey } }, [_vm._v(" " + _vm._s(childItem.label) + " ")]);
+    }), 0) : _vm._e()]);
   }), 0) : _vm._e()]);
 };
 var _sfc_staticRenderFns$9 = [];
@@ -601,6 +608,24 @@ const _sfc_main$4 = {
         });
       },
       immediate: true
+    },
+    "options.type": {
+      handler() {
+        this.menu = this.menu.filter((menuItem) => menuItem.from !== "nodeType");
+        console.log("this.$refs.nodeType.menu?", this.$refs.nodeType ? this.$refs.nodeType.menu : this.$refs.nodeType);
+        this.$nextTick(() => {
+          if (this.$refs.nodeType && this.$refs.nodeType.menu) {
+            console.log("add elements to menu", this.$refs.nodeType.menu);
+            if (this.$refs.nodeType.menu.length) {
+              this.menu.unshift({ classes: ["separator"], from: "nodeType" });
+            }
+            for (let mi of this.$refs.nodeType.menu) {
+              this.menu.unshift({ ...mi, from: "nodeType" });
+            }
+          }
+        });
+      },
+      immediate: true
     }
   },
   computed: {
@@ -653,7 +678,7 @@ const _sfc_main$4 = {
 };
 var _sfc_render$4 = function render6() {
   var _vm = this, _c = _vm._self._c;
-  return _c("svg", { class: `diagram-node ${_vm.selected ? "selected" : ""} has-menu`, attrs: { "x": _vm.nodeModel.x, "y": _vm.nodeModel.y, "data-node-id": _vm.id } }, [_c("rect", { staticClass: "node-dark-background", attrs: { "fill": "#00000000", "stroke": "#000000", "stroke-width": _vm.selected ? 2 : 0, "x": "0", "y": "0", "rx": "3", "ry": "3", "width": _vm.nodeModel.width, "height": _vm.nodeModel.height } }), _c("g", { ref: "resizeHandles" }), _c("g", { on: { "mousedown": _vm.mouseDown, "mouseenter": _vm.mouseenter, "mouseleave": _vm.mouseleave } }, [_c(`vue-diagrams-node-${_vm.options.type || "shader"}`, { tag: "component", attrs: { "nodeModel": _vm.nodeModel, "selected": _vm.selected }, on: { "deleteNode": _vm.deleteNode } }, [_vm._t("default")], 2)], 1)]);
+  return _c("svg", { class: `diagram-node ${_vm.selected ? "selected" : ""} has-menu`, attrs: { "x": _vm.nodeModel.x, "y": _vm.nodeModel.y, "data-node-id": _vm.id } }, [_c("rect", { staticClass: "node-dark-background", attrs: { "fill": "#00000000", "stroke": "#000000", "stroke-width": _vm.selected ? 2 : 0, "x": "0", "y": "0", "rx": "3", "ry": "3", "width": _vm.nodeModel.width, "height": _vm.nodeModel.height } }), _c("g", { ref: "resizeHandles" }), _c("g", { on: { "mousedown": _vm.mouseDown, "mouseenter": _vm.mouseenter, "mouseleave": _vm.mouseleave } }, [_c(`vue-diagrams-node-${_vm.options.type || "shader"}`, { ref: "nodeType", tag: "component", attrs: { "nodeModel": _vm.nodeModel, "selected": _vm.selected }, on: { "deleteNode": _vm.deleteNode } }, [_vm._t("default")], 2)], 1)]);
 };
 var _sfc_staticRenderFns$4 = [];
 _sfc_render$4._withStripped = true;
