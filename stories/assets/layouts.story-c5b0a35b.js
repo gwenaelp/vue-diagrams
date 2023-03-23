@@ -76,13 +76,11 @@ const _sfc_main = {
         rootNode.y = 0;
         const setChildNodePosition = (parentNode, y) => {
           let lastChildYByNode = {};
-          console.log("setChildNodePosition", links, nodes);
           for (let i = 0; i < links.length; i++) {
             const link = links[i];
             const isLinkFromParent = parentNode.ports.filter((p) => p.id === link.from).length;
             if (isLinkFromParent) {
               const childNode = nodes.find((node) => {
-                console.log("find children", link.to, node.ports);
                 return node.ports.some((port) => port.id === link.to);
               });
               if (childNode) {
@@ -111,26 +109,25 @@ const _sfc_main = {
       });
     },
     doLayout2() {
-      let nodeSpacing = 20;
+      let nodeSpacing = 40, horizontalSpacing = 20;
       function treeLayout(nodes) {
         const depthMap = { byId: {}, byDepth: [], maxWidth: [] };
-        const calculateDepth = (node, depth) => {
-          console.log("depth", depth, node.title);
-          depthMap.byId[node.id] = depth;
+        const calculateDepth = (nodeMapItem, depth) => {
+          depthMap.byId[nodeMapItem.node.id] = depth;
           if (depthMap.byDepth[depth] === void 0) {
             depthMap.byDepth[depth] = [];
           }
-          depthMap.byDepth[depth].push(node);
-          if (!depthMap.maxWidth[depth] || depthMap.maxWidth[depth] < node.width) {
-            depthMap.maxWidth[depth] = node.width;
+          depthMap.byDepth[depth].push(nodeMapItem);
+          if (!depthMap.maxWidth[depth] || depthMap.maxWidth[depth] < nodeMapItem.node.width) {
+            depthMap.maxWidth[depth] = nodeMapItem.node.width;
           }
-          if (node.children) {
-            node.children.forEach((childId) => {
+          if (nodeMapItem.children) {
+            nodeMapItem.children.forEach((childId) => {
               calculateDepth(nodesMap[childId], depth + 1);
             });
           }
         };
-        const rootNode = nodes.find((node) => !node.parent);
+        const rootNode = Object.values(nodesMap).find((nodeMapItem) => !nodeMapItem.parent);
         calculateDepth(rootNode, 0);
         const maxDepth = depthMap.byDepth.length - 1;
         const parentGroups = {};
@@ -145,30 +142,30 @@ const _sfc_main = {
           }
         }
         let currentY = 0;
-        let currentX = maxDepth * 160;
+        let currentX = depthMap.maxWidth.reduce((partialSum, a) => partialSum + a, 0) + 100;
         for (let d = maxDepth; d >= 0; d--) {
           const nodesByDepth = depthMap.byDepth[d];
-          currentX -= 160;
+          currentX -= depthMap.maxWidth[d] + horizontalSpacing;
           for (let n of nodesByDepth) {
-            if (parentGroups[d + 1] && parentGroups[d + 1][n.id]) {
+            if (parentGroups[d + 1] && parentGroups[d + 1][n.node.id]) {
               let avg = 0;
-              for (let n2 of parentGroups[d + 1][n.id].nodes) {
-                avg += n2.y;
+              for (let n2 of parentGroups[d + 1][n.node.id].nodes) {
+                avg += n2.node.y;
               }
-              avg = avg / parentGroups[d + 1][n.id].nodes.length;
-              n.y = avg;
+              avg = avg / parentGroups[d + 1][n.node.id].nodes.length;
+              n.node.y = avg;
             } else {
-              n.y = currentY;
-              currentY += n.width + nodeSpacing;
+              n.node.y = currentY;
+              currentY += n.node.height + nodeSpacing;
             }
-            n.x = currentX;
+            n.node.x = currentX;
           }
         }
       }
       const portsNodesMap = {};
       const nodesMap = {};
       for (let n of this.model._model.nodes) {
-        nodesMap[n.id] = n;
+        nodesMap[n.id] = { node: n };
         for (let p of n.ports) {
           portsNodesMap[p.id] = n.id;
         }
@@ -179,16 +176,11 @@ const _sfc_main = {
         if (from.children === void 0) {
           from.children = [];
         }
-        to.parent = from.id;
-        from.children.push(to.id);
+        to.parent = from.node.id;
+        from.children.push(to.node.id);
       }
-      this.displayed = false;
-      this.$nextTick(() => {
-        treeLayout(this.model._model.nodes);
-        this.$nextTick(() => {
-          this.displayed = true;
-        });
-      });
+      treeLayout(this.model._model.nodes);
+      this.$refs.diagram.updateLinksPositions();
     }
   }
 };
