@@ -7,10 +7,24 @@
     >
       <div
         v-for="(menuItem, menuItemKey) in showMenuComponent.menu"
-        class="menu-item"
+        :key="menuItemKey"
+        :class="`menu-item ${menuItem.classes ? menuItem.classes.join(' ') : ''}`"
         :data-menu-item-key="menuItemKey"
       >
         {{menuItem.label}}
+        <span v-if="menuItem.children" style="float: right">
+          &gt;
+        </span>
+        <div v-if="menuItem.children" class="menu-item-children-container">
+          <div
+            v-for="(childItem, childItemKey) in menuItem.children"
+            :class="`menu-item child-menu-item ${childItem.classes ? childItem.classes.join(' ') : ''}`"
+            :data-menu-item-key="menuItemKey"
+            :data-child-item-key="childItemKey"
+          >
+            {{childItem.label}}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -56,13 +70,18 @@ export default {
   },
   methods: {
     menuItemClick(event, component) {
-      component.menu[event.target.dataset.menuItemKey].handler.call(component);
+      const dataset = event.target.dataset
+      if(dataset.childItemKey) {
+        component.menu[dataset.menuItemKey].children[dataset.childItemKey].handler.call(component);
+      } else {
+        component.menu[dataset.menuItemKey].handler.call(component);
+      }
     },
   }
 }
 </script>
 <style scoped>
-.menu {
+.menu, .menu-item-children-container {
   position: fixed;
   font-size: 13px;
   width: 140px;
@@ -77,5 +96,19 @@ export default {
 }
 .menu-item:hover {
   background: whitesmoke;
+}
+.menu-item.separator {
+  padding: 0;
+  border-bottom: 1px solid #ccc;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.menu-item-children-container {
+  position: absolute;
+  display: none;
+  left: 100%;
+}
+.menu-item:hover .menu-item-children-container {
+  display: unset;
 }
 </style>

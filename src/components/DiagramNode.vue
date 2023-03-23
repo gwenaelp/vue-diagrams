@@ -17,6 +17,7 @@
     >
       <component
         :is="`vue-diagrams-node-${options.type || 'shader'}`"
+        ref="nodeType"
         :nodeModel="nodeModel"
         :selected="selected"
         @deleteNode="deleteNode"
@@ -105,6 +106,24 @@ export default {
           } else if(this.resizeHandles) {
             this.resizeHandles.unmount();
             this.resizeHandles = undefined;
+          }
+        });
+      },
+      immediate: true,
+    },
+    'options.type': {
+      handler() {
+        this.menu = this.menu.filter(menuItem => menuItem.from !== 'nodeType');
+        console.log('this.$refs.nodeType.menu?', this.$refs.nodeType ? this.$refs.nodeType.menu: this.$refs.nodeType);
+        this.$nextTick(() => {
+          if (this.$refs.nodeType && this.$refs.nodeType.menu) {
+            console.log('add elements to menu', this.$refs.nodeType.menu)
+            if(this.$refs.nodeType.menu.length) {
+              this.menu.unshift({ classes:['separator'], from: 'nodeType' });
+            }
+            for(let mi of this.$refs.nodeType.menu) {
+              this.menu.unshift({ ...mi, from: 'nodeType' });
+            }
           }
         });
       },
