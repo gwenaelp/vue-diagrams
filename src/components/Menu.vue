@@ -64,7 +64,7 @@ export default {
     this.$parent.$el.addEventListener('mousedown', this.onMouseDown, true);
     this.$parent.$el.addEventListener('contextmenu', this.onContextMenu);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.$parent.$el.removeEventListener('mousedown', this.onMouseDown);
     this.$parent.$el.addEventListener('contextmenu', this.onContextMenu);
   },

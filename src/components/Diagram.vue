@@ -14,6 +14,7 @@
       viewportSelector="#svgroot2"
       :preventMouseEventsDefault="false"
       :beforePan="beforePan"
+      @created="spzCreated"
     >
       <svg
         id="svgroot2"
@@ -90,6 +91,7 @@
           >
             <DiagramPort
               v-for="(port, portIndex) in node.ports"
+              :key="portIndex"
               :ref="'port-' + port.id"
               :id="port.id"
               :nodeIndex="nodeIndex"
@@ -108,16 +110,6 @@
             :height="max(viewportMousePos.y, mouseDownViewportPos.y) - min(viewportMousePos.y, mouseDownViewportPos.y)"
             fill="#000000"
             :fill-opacity="0.5"
-          />
-          <rect
-            v-if="draggedItem && a.show"
-            :x="a.x || '-5000px'"
-            :y="a.y || '-5000px'"
-            :width="a.x ? '1px': '10000px'"
-            :height="a.y ? '1px': '10000px'"
-            fill="#29B6F2"
-            :fill-opacity="1"
-            v-for="(a, i) in magnetismAnchors"
           />
         </g>
       </svg>
@@ -146,7 +138,7 @@
   </div>
 </template>
 <script>
-import SvgPanZoom from 'vue-svg-pan-zoom';
+import { SvgPanZoom } from 'vue-svg-pan-zoom';
 
 import Menu from './Menu.vue';
 
@@ -202,6 +194,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    controlIconsEnabled: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     this.updateLinksPositions();
@@ -225,6 +221,7 @@ export default {
       mouseY: 0,
       viewPosition: undefined,
       magnetismAnchors: [],
+      spz: undefined,
     };
   },
   components: {
@@ -246,12 +243,12 @@ export default {
         this.$nextTick(() => {
           if (v === 'move') {
             if (this.panEnabled) {
-              this.$refs.svgpanzoom.spz.enablePan();
+              this.spz.enablePan();
             } else {
-              this.$refs.svgpanzoom.spz.disablePan();
+              this.spz.disablePan();
             }
           } else {
-            this.$refs.svgpanzoom.spz.disablePan();
+            this.spz.disablePan();
           }
         });
       },
@@ -268,6 +265,10 @@ export default {
     },
   },
   methods: {
+    spzCreated(spz) {
+      this.spz = spz;
+      spz.setBeforePan((...args) => { return this.beforePan(...args); });
+    },
     editText(object, property, element) {
       if (!this.editable) return;
 
@@ -290,8 +291,9 @@ export default {
       return point.matrixTransform(ctm);
     },
     beforePan() {
-      if (this.mainSelectedItem.type || this.draggedItem || this.newLink)
+      if (this.mainSelectedItem.type || this.draggedItem || this.newLink) {
         return false;
+      }
       else return true;
     },
     createPoint(x, y, linkIndex, pointIndex) {
@@ -351,10 +353,10 @@ export default {
         let x;
         let y;
         if (portComponent.port.type === "in") {
-          x = node.x + 5;
+          x = node.x + portComponent.displayedX + 5;
           y = node.y + portComponent.displayedY + 9;
         } else {
-          x = node.x + node.width + 5;
+          x = node.x + portComponent.displayedX + 5;
           y = node.y + portComponent.displayedY + 9;
         }
 

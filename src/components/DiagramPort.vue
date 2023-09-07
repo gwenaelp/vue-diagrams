@@ -4,7 +4,7 @@
       <rect
         :fill="fill"
         ref="handle"
-        x="-5" y="0"
+        :x="displayedX" y="0"
         rx="3" ry="3"
         width="10" height="10"
         @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
@@ -15,7 +15,7 @@
       <rect
         :fill="fill"
         ref="handle"
-        :x="width - 5" y="0"
+        :x="displayedX" y="0"
         rx="3" ry="3"
         width="10" height="10"
         @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
@@ -27,7 +27,7 @@
 <script>
 export default {
   name: 'DiagramPort',
-  props: ['id', 'y', 'node', 'nodeIndex', 'port'],
+  props: ['id', 'x', 'y', 'node', 'nodeIndex', 'port'],
   data() {
     return {
       fill: '#666666',
@@ -54,6 +54,16 @@ export default {
         return this.y + 40;
       }
     },
+    displayedX () {
+      if(this.port.options && this.port.options.x) {
+        return this.port.options.x;
+      }
+      if(this.port.type === 'out') {
+        return this.width - 5;
+      } else {
+        return -5
+      }
+    }
   },
   methods: {
     mouseup() {

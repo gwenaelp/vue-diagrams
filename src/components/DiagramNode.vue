@@ -83,7 +83,7 @@ export default {
       }],
     };
   },
-  beforeDestroy () {
+  beforeUnmount () {
     if (this.resizeHandles) {
       this.resizeHandles.unmount();
     }

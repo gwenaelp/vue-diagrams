@@ -4,7 +4,9 @@
   "version": "0.0.1-development",
   "license": "MIT",
   "main": "src/index.js",
-  "files": [ "src" ],
+  "files": [
+    "src"
+  ],
   "author": "Gwenael Pluchon",
   "repository": {
     "type": "git",
@@ -41,12 +43,11 @@
     "babel-plugin-module-resolver": "^3.0.0",
     "babel-preset-vue-app": "^2.0.0",
     "babel-preset-vue2": "^1.0.1",
-    "histoire": "^0.15.8",
+    "histoire": "^0.17.0",
     "jest": "^22.0.4",
     "jest-serializer-html": "^5.0.0",
     "jest-serializer-vue": "^0.3.0",
     "jest-vue-preprocessor": "^1.3.1",
-    "vue": "^2.5.13",
     "vue-jest": "^1.4.0",
     "vue-loader": "^17.0.1",
     "vue-template-compiler": "^2.7.14",
@@ -54,12 +55,15 @@
   },
   "dependencies": {
     "@babel/preset-env": "7.12.13",
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@histoire/plugin-vue": "^0.17.1",
+    "@vitejs/plugin-vue": "^4.3.4",
     "@vitejs/plugin-vue2": "^2.2.0",
+    "@vue/compiler-sfc": "^3.3.4",
     "draggable-vue-directive": "^1.1.0",
     "svg-pan-zoom": "^3.6.1",
     "vite": "^4.1.4",
-    "vue-svg-pan-zoom": "1.1.0",
+    "vue": "^3.3.4",
+    "vue-svg-pan-zoom": "^2.1.0",
     "webpack": "^5.76.0"
   }
 }
