@@ -32,6 +32,7 @@ import ResizeHandles from '../NodeResizeHandles';
 import TextNode from './NodeTypes/Text.vue';
 import ImageNode from './NodeTypes/Image.vue';
 import ShaderNode from './NodeTypes/Shader.vue';
+import DiagramElement from '../mixins/DiagramElement';
 
 export default {
   name: 'DiagramNode',
@@ -74,6 +75,7 @@ export default {
     'vue-diagrams-node-image': ImageNode,
     'vue-diagrams-node-shader': ShaderNode,
   },
+  mixins: [DiagramElement],
   data() {
     return {
       resizeHandles: undefined,

@@ -1,6 +1,6 @@
 <template>
   <div class="vue-diagrams">
-    <Menu v-if="showMenu" />
+    <Menu ref="menu" v-if="showMenu" />
     <TextInput ref="textInput" />
     <SvgPanZoom
       ref="svgpanzoom"
@@ -581,6 +581,9 @@ export default {
     font-family: Helvetica;
   }
   .thumbViewClass {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100px;
     height: 70px;
   }

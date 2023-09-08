@@ -12,6 +12,8 @@
   </g>
 </template>
 <script>
+import DiagramElement from '../mixins/DiagramElement';
+
 export default {
   name: 'DiagramPoint',
   props: {
@@ -24,6 +26,7 @@ export default {
       required: true,
     },
   },
+  mixins: [DiagramElement],
   data() {
     return {
       hover: false,

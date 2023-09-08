@@ -41,18 +41,16 @@ export default {
         const parentDiagramElement = event.target.closest('.has-menu');
         this.menuX = event.pageX;
         this.menuY = event.pageY;
+
         if (parentContextMenu) {
           event.stopPropagation();
           this.menuItemClick(event, this.showMenuComponent);
           this.showMenuComponent = undefined;
         } else if (parentDiagramElement && event.button === 2) {
-          this.showMenuComponent = parentDiagramElement.__vue__;
+          this.showMenuComponent = parentDiagramElement.vueComponent;
           event.stopPropagation();
         } else {
           this.showMenuComponent = undefined;
-        }
-        if (!event.defaultPrevented) {
-          this.$parent.$el.dispatchEvent(event);
         }
       },
       menuX: 0,
@@ -61,7 +59,7 @@ export default {
     };
   },
   mounted () {
-    this.$parent.$el.addEventListener('mousedown', this.onMouseDown, true);
+    this.$parent.$el.addEventListener('mousedown', this.onMouseDown, { capture: true });
     this.$parent.$el.addEventListener('contextmenu', this.onContextMenu);
   },
   beforeUnmount() {

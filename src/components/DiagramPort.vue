@@ -25,6 +25,8 @@
   </g>
 </template>
 <script>
+import DiagramElement from '../mixins/DiagramElement';
+
 export default {
   name: 'DiagramPort',
   props: ['id', 'x', 'y', 'node', 'nodeIndex', 'port'],
@@ -43,6 +45,7 @@ export default {
       }],
     };
   },
+  mixins: [DiagramElement],
   computed: {
     width () {
       return this.node.width || 72;
