@@ -5,7 +5,7 @@
         <div class="container">
           <h1 class="title"> An easy to use diagram editor component</h1>
           <p>Diagram component for vue.js, inspired by react-diagrams</p>
-          <p><b>This documentation is under construction.</b></p>
+          <p class="vue-versions">For Vue <a href="https://github.com/gwenaelp/vue-diagrams">2</a> & <a href="https://github.com/gwenaelp/vue-diagrams/tree/vue3">3</a>!</p>
           <DiagramDemo />
         </div>
       </div>
@@ -67,5 +67,16 @@ h1 {
 .feature {
   border-bottom: 1px solid #ccc;
   padding: 20px;
+}
+.vue-versions {
+  border-radius: 8px;
+  border: 1px solid white;
+  display: inline-block;
+  padding: 10px;
+  margin: auto;
+}
+.vue-versions a {
+  color: white;
+  font-weight: bold;
 }
 </style>
