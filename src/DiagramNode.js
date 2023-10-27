@@ -1,3 +1,4 @@
+// @ts-check
 var generateId = function() {
   return Math.trunc(Math.random() * 1000);
 };
@@ -10,19 +11,21 @@ const diagramFor = {};
 class DiagramNode {
   /**
    *  This should not be called directly. Use the "addNode" method from the DiagramModel class
-   * @param  {Integer} id [description]
-   * @param  {String} title
-   * @param  {Integer} x
-   * @param  {Integer} y
-   * @param  {Integer} width
-   * @param  {Integer} height
-   * @param  {Object} options
+   * @param {Object} diagram
+   * @param {number} id
+   * @param {String} title
+   * @param {number} x
+   * @param {number} y
+   * @param {number} width
+   * @param {number} height
+   * @param {Object} options
    */
   constructor(diagram, id, title, x, y, width, height, options) {
     //This is done like that to avoid circular deps and keep this class to work with stringify :)
     diagramFor[id] = diagram;
     this.id = id;
     this.title = title;
+    this.diagram = diagram;
     this.x = x;
     this.y = y;
     this.width = width || 72;
@@ -34,7 +37,7 @@ class DiagramNode {
   /**
    * Adds a new "in" port into the node.
    * @param {String} name
-   * @return {Integer} The port id
+   * @return {number} The port id
    */
   addInPort(name, options) {
     let newPort = {
@@ -52,7 +55,7 @@ class DiagramNode {
   /**
    * Adds a new "out" port into the node.
    * @param {String} name
-   * @return {Integer} The port id
+   * @return {number} The port id
    */
   addOutPort(name, options) {
     let newPort = {
@@ -79,6 +82,7 @@ class DiagramNode {
     this.removePortLinks(id);
     this.ports = this.ports.filter(p => p.id !== id);
   }
+
 }
 
 export default DiagramNode;

@@ -24,10 +24,11 @@
     </svg>
   </g>
 </template>
-<script>
+<script lang="ts">
 import DiagramElement from '../mixins/DiagramElement';
+import { defineComponent } from 'vue'
 
-export default {
+export default defineComponent({
   name: 'DiagramPort',
   props: ['id', 'x', 'y', 'node', 'nodeIndex', 'port'],
   data() {
@@ -85,5 +86,5 @@ export default {
       this.$emit("onStartDragNewLink", this.id);
     },
   }
-};
+});
 </script>

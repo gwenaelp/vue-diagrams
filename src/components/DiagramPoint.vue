@@ -11,10 +11,11 @@
     />
   </g>
 </template>
-<script>
+<script lang="ts">
 import DiagramElement from '../mixins/DiagramElement';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DiagramPoint',
   props: {
     x: {
@@ -44,5 +45,5 @@ export default {
       this.hover = false;
     },
   },
-};
+});
 </script>

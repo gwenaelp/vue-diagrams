@@ -23,7 +23,7 @@
       fill="#000000"
       ref="title"
       :style="options.titleStyle || ''"
-      @click="options.editableTitle ? $parent.$parent.$parent.editText(nodeModel, 'title', $refs.title) : undefined"
+      @click="options.editableTitle ? parentDiagram.editText(nodeModel, 'title', $refs.title) : undefined"
     >
       {{nodeModel.title}}
     </text>
@@ -63,8 +63,10 @@
     </g>
   </g>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   props: {
     nodeModel: {
       type: Object,
@@ -86,6 +88,9 @@ export default {
     color () {
       return this.nodeModel.color || '#66cc00';
     },
+    parentDiagram() {
+      return this.$parent.$parent.$parent;
+    },
   },
-};
+});
 </script>

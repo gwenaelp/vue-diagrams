@@ -27,14 +27,15 @@
     </g>
   </svg>
 </template>
-<script>
+<script lang="ts">
 import ResizeHandles from '../NodeResizeHandles';
 import TextNode from './NodeTypes/Text.vue';
 import ImageNode from './NodeTypes/Image.vue';
 import ShaderNode from './NodeTypes/Shader.vue';
 import DiagramElement from '../mixins/DiagramElement';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DiagramNode',
   props: {
     index: Number,
@@ -150,7 +151,7 @@ export default {
       this.$emit('delete');
     },
 
-    mouseDown (event) {
+    mouseDown (event: ClickEvent) {
       if (!this.$parent.$parent.editable) return;
 
       if (!event.target.classList.contains('title-editable') && event.target.closest('.prevent-node-drag') === null) {
@@ -177,12 +178,12 @@ export default {
       this.$emit(
         'onStartDrag',
         { type: "resizeHandle", index: this.index, node: this.nodeModel, direction },
-        event.x - this.nodeModel.x,
-        event.y - this.nodeModel.y
+        0 /*event.x*/ - this.nodeModel.x,
+        0 /*event.y*/ - this.nodeModel.y
       );
     },
   }
-};
+});
 </script>
 <style scoped>
   .diagram-node {

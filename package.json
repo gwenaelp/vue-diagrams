@@ -31,7 +31,8 @@
     "doc:build": "cd doc && yarn && yarn generate && rm ./dist -Rf && mkdir ./dist && mv .output/public/* ./dist && touch dist/.nojekyll && cd .. && yarn story:build",
     "test": "npm run lint && jest --verbose --coverage",
     "test:update": "jest --verbose --updateSnapshot",
-    "test:watch": "jest --verbose --watchAll --notify"
+    "test:watch": "jest --verbose --watchAll --notify",
+    "type-check": "vue-tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
     "@histoire/plugin-vue2": "^0.15.8",
@@ -61,9 +62,11 @@
     "@vue/compiler-sfc": "^3.3.4",
     "draggable-vue-directive": "^1.1.0",
     "svg-pan-zoom": "^3.6.1",
+    "typescript": "^5.2.2",
     "vite": "^4.1.4",
     "vue": "^3.3.4",
     "vue-svg-pan-zoom": "^2.1.0",
+    "vue-tsc": "^1.8.13",
     "webpack": "^5.76.0"
   }
 }

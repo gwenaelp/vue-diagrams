@@ -1,3 +1,4 @@
+// @ts-check
 import DiagramNode from "./DiagramNode";
 
 var generateId = function() {
@@ -20,12 +21,12 @@ class DiagramModel {
   /**
    * Adds a node to the diagram
    * @param {String} title  The title of the node
-   * @param {Integer} x      X coordinate
-   * @param {Integer} y      Y Coordinate
-   * @param {Integer} width  Width
-   * @param {Integer} height Height
+   * @param {number} x      X coordinate
+   * @param {number} y      Y Coordinate
+   * @param {number} width  Width
+   * @param {number} height Height
    * @param {Object} options Optional
-   * @return {Node} The node created
+   * @return {DiagramNode} The node created
    */
   addNode(title, x, y, width, height, options) {
     if (options === undefined) {
@@ -60,8 +61,8 @@ class DiagramModel {
 
   /**
    * Adds a link between two ports
-   * @param {Integer} from   Port id. Must be an out port
-   * @param {Integer} to     Port id. Must be an in port
+   * @param {number} from   Port id. Must be an out port
+   * @param {number} to     Port id. Must be an in port
    * @param {Array}  points  Optional. Array of points to make the link represented as a segmented line
    * @param {Object} options Optional
    */

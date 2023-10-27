@@ -71,10 +71,11 @@
     />
   </g>
 </template>
-<script>
+<script lang="ts">
 import DiagramPoint from "./DiagramPoint.vue";
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DiagramLink',
   props: ['positionFrom', 'positionTo', 'id', 'index', 'points', 'options'],
 
@@ -140,6 +141,8 @@ export default {
     mouseLeave() {
       this.largeStrokeStyle = "stroke:rgba(255,0,0,0.0);";
     },
+    mouseEnterPoint(point) {},
+    mouseLeavePoint(point) {},
     mouseDownPoint(pos, pointIndex) {
       this.$emit("onStartDrag", {
         type: "points",
@@ -158,5 +161,5 @@ export default {
       this.$emit("onCreatePoint", x, y, this.index, pointIndex);
     }
   },
-};
+});
 </script>

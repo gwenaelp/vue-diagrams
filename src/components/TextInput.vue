@@ -1,8 +1,10 @@
 <template>
   <input type="text" class="text-input" :style="style" v-model="value" />
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   data () {
     return {
       style: 'display: none;',
@@ -60,7 +62,7 @@ export default {
       //this.object[this.property] = this.value;
     }
   },
-}
+});
 </script>
 <style scoped>
 .text-input {

@@ -29,8 +29,10 @@
     </div>
   </div>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   data () {
     return {
       onContextMenu: (event) => {
@@ -76,7 +78,7 @@ export default {
       }
     },
   }
-}
+});
 </script>
 <style scoped>
 .menu, .menu-item-children-container {

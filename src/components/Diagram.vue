@@ -113,31 +113,33 @@
           />
         </g>
       </svg>
-      <svg v-if="showThumbnail" slot="thumbnail" class="thumbViewClass">
-        <rect
-          v-for="(node, nodeIndex) in model._model.nodes"
-          :x="node.x"
-          :y="node.y"
-          :width="node.width"
-          :height="node.height"
-          :fill="node.color || '#66cc00'"
-          :key="node.id"
-        />
-        <DiagramLink
-          :positionFrom="link.positionFrom"
-          :positionTo="link.positionTo"
-          :points="link.points"
-          :id="link.id"
-          :index="index"
-          :options="link.options"
-          v-for="(link, index) in model._model.links"
-          :key="index"
-        />
-      </svg>
+      <template v-if="showThumbnail" #thumbnail>
+        <svg class="thumbViewClass">
+          <rect
+            v-for="(node, nodeIndex) in model._model.nodes"
+            :x="node.x"
+            :y="node.y"
+            :width="node.width"
+            :height="node.height"
+            :fill="node.color || '#66cc00'"
+            :key="node.id"
+          />
+          <DiagramLink
+            :positionFrom="link.positionFrom"
+            :positionTo="link.positionTo"
+            :points="link.points"
+            :id="link.id"
+            :index="index"
+            :options="link.options"
+            v-for="(link, index) in model._model.links"
+            :key="index"
+          />
+        </svg>
+      </template>
     </SvgPanZoom>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { SvgPanZoom } from 'vue-svg-pan-zoom';
 
 import Menu from './Menu.vue';
@@ -171,6 +173,7 @@ export default {
   Model: DiagramModel,
   props: {
     model: {
+      type: Object,
       required: true
     },
     width: {
@@ -208,14 +211,22 @@ export default {
       zoomEnabled: true,
       panEnabled: true,
       draggedItem: undefined,
-      mainSelectedItem: {},
+      mainSelectedItem: {
+        index: undefined,
+        type: undefined,
+      },
       secondarySelectedNodes: [],
       initialDragX: 0,
       initialDragY: 0,
-      initialDragY: 0,
       mouseButtonIsPressed: false,
-      mouseDownViewportPos: {},
-      viewportMousePos: {},
+      mouseDownViewportPos: {
+        x: undefined,
+        y: undefined,
+      },
+      viewportMousePos: {
+        x: undefined,
+        y: undefined,
+      },
       newLink: undefined,
       mouseX: 0,
       mouseY: 0,
@@ -281,8 +292,8 @@ export default {
       return Math.max(a, b);
     },
     convertXYtoViewPort(x, y) {
-      let rootelt = document.getElementById('svgroot2');
-      let rec = document.getElementById('viewport');
+      let rootelt:SvgInHtml = document.getElementById('svgroot2') as SvgInHtml;
+      let rec:SvgInHtml = document.getElementById('viewport') as SvgInHtml;
       let point = rootelt.createSVGPoint();
       let rooteltPosition = getAbsoluteXY(this.$el);
       point.x = x - rooteltPosition.x;
@@ -346,7 +357,7 @@ export default {
       this.newLink = { startPortId };
     },
 
-    getPortHandlePosition(portId) {
+    getPortHandlePosition(portId: number): Point {
       if (this.$refs["port-" + portId] && this.$refs["port-" + portId][0]) {
         const portComponent = this.$refs["port-" + portId][0];
         const node = this.$refs["node-" + portComponent.nodeIndex][0];
@@ -365,7 +376,7 @@ export default {
         console.warn(
           `port "${portId}" not found. you must call this method after the first render`
         );
-        return 0;
+        return undefined;
       }
     },
 
@@ -582,9 +593,28 @@ export default {
   }
   .thumbViewClass {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100px;
     height: 70px;
+    background: white;
+    border: 1px solid black;
+  }
+  .vue-diagrams :deep(.svg-pan-zoom__scope) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 120;
+  }
+  .vue-diagrams :deep(.svg-pan-zoom__thumbnail) {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+  .vue-diagrams :deep(.svg-pan-zoom__scope .scope) {
+    fill: red;
+    fill-opacity: 0.1;
+    stroke: red;
+    stroke-width: 2px;
   }
 </style>

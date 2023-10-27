@@ -1,10 +1,20 @@
+// @ts-check
 //We could have put this in a Vue component, but I try to make the lib framework agnostic over time :)
 
 let startDragHandler = undefined;
 
 const directions = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
 
-class ResizeHandles {
+/**
+ * @class ResizeHandles
+ */
+ class ResizeHandles {
+    /**
+   * @param  {Object} container
+   * @param  {number} width
+   * @param  {number} height
+   * @param  {Function} startDragHandler
+   */
   constructor(container, width, height, startDragHandler) {
     this.container = container;
     container.innerHTML = `
@@ -25,6 +35,10 @@ class ResizeHandles {
     }
     this.updatePosition(width, height);
   }
+    /**
+   * @param  {number} width
+   * @param  {number} height
+   */
   updatePosition(width, height) {
     const n = this.container.querySelector('[data-direction="n"]');
     const ne = this.container.querySelector('[data-direction="ne"]');
@@ -46,7 +60,6 @@ class ResizeHandles {
     w.setAttribute('height', height);
   }
   unmount() {
-    console.log('unmount', this.startDragHandler);
     if (this.startDragHandler) {
       for (let d of directions) {
         this.container.querySelector(`[data-direction="${d}"]`).removeEventListener('mousedown', this.mouseDownHandler);
