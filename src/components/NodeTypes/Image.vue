@@ -1,11 +1,11 @@
 <template>
   <g>
-    <image :href="options.image" x="5" :width="nodeModel.width - 10" :height="nodeModel.height" />
+    <image :href="options.image" x="5" :width="nodeModel?.width - 10" :height="nodeModel?.height" />
     <text
       :class="options.editableTitle ? 'title-editable': ''"
-      :x="nodeModel.width / 2"
-      :y="nodeModel.height + 14"
-      :width="nodeModel.width"
+      :x="nodeModel?.width / 2"
+      :y="nodeModel?.height + 14"
+      :width="nodeModel?.width"
       ref="title"
       text-anchor="middle"
       font-size="14"
@@ -14,7 +14,7 @@
       :style="options.titleStyle || ''"
       @click="options.editableTitle ? parentDiagram.editText(nodeModel, 'title', $refs.title) : undefined"
     >
-      {{nodeModel.title}}
+      {{nodeModel?.title}}
     </text>
     <g class="prevent-node-drag">
       <slot />
@@ -32,10 +32,10 @@ export default defineComponent({
   },
   computed: {
     options () {
-      return this.nodeModel.options || {};
+      return this.nodeModel?.options || {};
     },
-    parentDiagram() {
-      return this.$parent.$parent.$parent;
+    parentDiagram (): any {
+      return this.$parent?.$parent?.$parent;
     },
   },
 });

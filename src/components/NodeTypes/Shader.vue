@@ -25,11 +25,11 @@
       :style="options.titleStyle || ''"
       @click="options.editableTitle ? parentDiagram.editText(nodeModel, 'title', $refs.title) : undefined"
     >
-      {{nodeModel.title}}
+      {{nodeModel?.title}}
     </text>
-    <g v-if="nodeModel.deletable" @click="$emit('deleteNode')">
+    <g v-if="nodeModel?.deletable" @click="$emit('deleteNode')">
       <rect
-        :x="nodeModel.width - 12"
+        :x="nodeModel?.width - 12"
         y="3"
         width="14"
         height="14"
@@ -38,14 +38,14 @@
         :fill-opacity="0.25"
       />
       <line
-        :x1="nodeModel.width" :y1="5"
-        :x2="nodeModel.width - 10" :y2="15"
+        :x1="nodeModel?.width" :y1="5"
+        :x2="nodeModel?.width - 10" :y2="15"
         style="stroke:rgb(0,0,0);"
         stroke-width="2"
       />
       <line
-        :x1="nodeModel.width - 10" :y1="5"
-        :x2="nodeModel.width" :y2="15"
+        :x1="nodeModel?.width - 10" :y1="5"
+        :x2="nodeModel?.width" :y2="15"
         style="stroke:rgb(0,0,0);"
         stroke-width="2"
       />
@@ -54,8 +54,8 @@
       fill="#ffffff"
       x="2" y="20"
       rx="3" ry="3"
-      :width="nodeModel.width - 4"
-      :height="nodeModel.height - 22"
+      :width="nodeModel?.width - 4"
+      :height="nodeModel?.height - 22"
       class="node-light-background"
     />
     <g class="prevent-node-drag">
@@ -88,7 +88,7 @@ export default defineComponent({
     color () {
       return this.nodeModel?.color || '#66cc00';
     },
-    parentDiagram() {
+    parentDiagram () : any {
       return this.$parent?.$parent?.$parent;
     },
   },
