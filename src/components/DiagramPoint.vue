@@ -33,7 +33,7 @@ export default defineComponent({
       hover: false,
       menu: [{
         label: 'Delete point',
-        handler() { this.$emit('delete'); },
+        handler: () => { this.$emit('delete'); },
       }],
     };
   },

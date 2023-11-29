@@ -1,98 +1,75 @@
 // @ts-check
 import DiagramNode from "./DiagramNode";
-
-var generateId = function() {
-  return Math.trunc(Math.random() * 1000);
+var generateId = function () {
+    return Math.trunc(Math.random() * 1000);
 };
-
 /**
  * @class DiagramModel
  */
 class DiagramModel {
-  /**
-   */
-  constructor() {
-    this._model = {
-      nodes: [],
-      links: [],
-    };
-  }
-
-  /**
-   * Adds a node to the diagram
-   * @param {String} title  The title of the node
-   * @param {number} x      X coordinate
-   * @param {number} y      Y Coordinate
-   * @param {number} width  Width
-   * @param {number} height Height
-   * @param {Object} options Optional
-   * @return {DiagramNode} The node created
-   */
-  addNode(title, x, y, width, height, options) {
-    if (options === undefined) {
-      options = {};
+    _model;
+    constructor() {
+        this._model = {
+            nodes: [],
+            links: [],
+        };
     }
-    const newNode = new DiagramNode(this, generateId(), title, x, y, width, height, options);
-    this._model.nodes.push(newNode);
-    return newNode;
-  }
-
-  deleteNode(node) {
-    const index = this._model.nodes.indexOf(node);
-    for (var j = 0; j < this._model.links.length; j++) {
-      const currentLink = this._model.links[j];
-
-      for (var i = 0; i < node.ports.length; i++) {
-        const currentPort = node.ports[i];
-
-        if (currentLink.from === currentPort.id || currentLink.to === currentPort.id) {
-          this.deleteLink(currentLink);
-          j--;
+    /**
+     * Adds a node to the diagram
+     */
+    addNode(title, x, y, width, height, options) {
+        if (options === undefined) {
+            options = {};
         }
-      }
+        const newNode = new DiagramNode(this, generateId(), title, x, y, width, height, options);
+        this._model.nodes.push(newNode);
+        return newNode;
     }
-    this._model.nodes.splice(index, 1);
-  }
-
-  deleteLink(link) {
-    const index = this._model.links.indexOf(link);
-    this._model.links.splice(index, 1);
-  }
-
-  /**
-   * Adds a link between two ports
-   * @param {number} from   Port id. Must be an out port
-   * @param {number} to     Port id. Must be an in port
-   * @param {Array}  points  Optional. Array of points to make the link represented as a segmented line
-   * @param {Object} options Optional
-   */
-  addLink(from, to, points = [], options = {}) {
-    this._model.links.push({
-      id: generateId(),
-      from: from,
-      to: to,
-      positionFrom: {},
-      positionTo: {},
-      points,
-      options,
-    });
-  }
-
-  /**
-   * Serializes the diagram model into a JSON object
-   * @return {Object} The diagram model
-   */
-  serialize() {
-    return JSON.stringify(this._model);
-  }
-
-  /**
-   * Load into the diagram model a serialized diagram
-   * @param  {Object} serializedModel
-   */
-  deserialize(serializedModel) {
-    this._model = JSON.parse(serializedModel);
-  }
+    deleteNode(node) {
+        const index = this._model.nodes.indexOf(node);
+        for (let j = 0; j < this._model.links.length; j++) {
+            const currentLink = this._model.links[j];
+            for (let i = 0; i < node.ports.length; i++) {
+                const currentPort = node.ports[i];
+                if (currentLink.from === currentPort.id || currentLink.to === currentPort.id) {
+                    this.deleteLink(currentLink);
+                    j--;
+                }
+            }
+        }
+        this._model.nodes.splice(index, 1);
+    }
+    deleteLink(link) {
+        const index = this._model.links.indexOf(link);
+        this._model.links.splice(index, 1);
+    }
+    /**
+     * Adds a link between two ports
+     */
+    addLink(from, to, points = [], options = {}) {
+        this._model.links.push({
+            id: generateId(),
+            from: from,
+            to: to,
+            positionFrom: {},
+            positionTo: {},
+            points,
+            options,
+        });
+    }
+    /**
+     * Serializes the diagram model into a JSON object
+     * @return {Object} The diagram model
+     */
+    serialize() {
+        return JSON.stringify(this._model);
+    }
+    /**
+     * Load into the diagram model a serialized diagram
+     * @param  {Object} serializedModel
+     */
+    deserialize(serializedModel) {
+        this._model = JSON.parse(serializedModel);
+    }
 }
-
 export default DiagramModel;

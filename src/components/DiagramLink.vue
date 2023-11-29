@@ -1,4 +1,4 @@
-  <template>
+<template>
   <g class="diagram-link has-menu">
     <g
       v-if="points && points.length"
@@ -63,8 +63,9 @@
     </g>
     <DiagramPoint
       v-for="(point, pointIndex) in points"
-      @mouseenter="mouseEnterPoint(point)"
-      @mouseleave="mouseLeavePoint(point)"
+      :key="pointIndex"
+      @mouseenter="mouseEnterPoint(/*point*/)"
+      @mouseleave="mouseLeavePoint(/*point*/)"
       @mousedown="mouseDownPoint($event, pointIndex)"
       :x="point.x" :y="point.y"
       @delete="points.splice(pointIndex, 1)"
@@ -74,6 +75,11 @@
 <script lang="ts">
 import DiagramPoint from "./DiagramPoint.vue";
 import { defineComponent } from 'vue';
+
+type Point = {
+  x: number,
+  y: number,
+};
 
 export default defineComponent({
   name: 'DiagramLink',
@@ -93,7 +99,7 @@ export default defineComponent({
       menu: [{
         label: 'Delete link',
         handler() {
-          this.deleteLink();
+          //this.deleteLink();
         },
       }],
     };
@@ -122,8 +128,8 @@ export default defineComponent({
           x2 = Math.trunc(this.positionTo.x - 4),
           y2 = Math.trunc(this.positionTo.y - 4);
 
-        var distance = Math.trunc(4 * Math.sqrt(Math.abs(x1 - x2)));
-        var path = `M${x1},${y1} C${x1 + distance},${y1} ${x2 -
+        const distance = Math.trunc(4 * Math.sqrt(Math.abs(x1 - x2)));
+        const path = `M${x1},${y1} C${x1 + distance},${y1} ${x2 -
           distance},${y2} ${x2},${y2}`;
         return path;
       }
@@ -141,23 +147,24 @@ export default defineComponent({
     mouseLeave() {
       this.largeStrokeStyle = "stroke:rgba(255,0,0,0.0);";
     },
-    mouseEnterPoint(point) {},
-    mouseLeavePoint(point) {},
-    mouseDownPoint(pos, pointIndex) {
+    mouseEnterPoint(/*point*/) {},
+    mouseLeavePoint(/*point*/) {},
+    mouseDownPoint($event: Event | Point, pointIndex: number) {
       this.$emit("onStartDrag", {
+        $event,
         type: "points",
         linkIndex: this.index,
         pointIndex
       });
     },
-    mouseDown(pos) {},
-    mouseDownSegment(pos, segmentIndex) {
-      if(!this.$parent.$parent.editable) return;
+    mouseDown(/*pos*/) {},
+    mouseDownSegment(pos: Point, segmentIndex: number) {
+      if(!(this.$parent?.$parent as any).editable) return;
 
       this.createPoint(pos.x, pos.y, segmentIndex);
       this.mouseDownPoint(pos, segmentIndex);
     },
-    createPoint(x, y, pointIndex) {
+    createPoint(x: number, y: number, pointIndex: number) {
       this.$emit("onCreatePoint", x, y, this.index, pointIndex);
     }
   },

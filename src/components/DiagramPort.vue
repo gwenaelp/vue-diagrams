@@ -36,13 +36,17 @@ export default defineComponent({
       fill: '#666666',
       menu: [{
         label: 'Delete port',
-        handler() {
-          this.$parent.nodeModel.deletePort(this.id);
-          this.$parent.$parent.$parent.updateLinksPositions();
+        handler: () => {
+          const parentComponent = this.$parent as any;
+          parentComponent.nodeModel.deletePort(this.id);
+          parentComponent.$parent?.$parent.updateLinksPositions();
         },
       }, {
         label: 'Remove port links',
-        handler() { this.$parent.nodeModel.removePortLinks(this.id); },
+        handler: () => {
+          const parentComponent = this.$parent as any;
+          parentComponent.nodeModel.removePortLinks(this.id);
+        },
       }],
     };
   },

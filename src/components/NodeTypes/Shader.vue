@@ -4,7 +4,7 @@
       :fill="color"
       x="0" y="0"
       rx="3" ry="3"
-      :width="nodeModel.width" :height="nodeModel.height"
+      :width="nodeModel?.width" :height="nodeModel?.height"
       class="node-dark-background"
     />
     <rect
@@ -12,7 +12,7 @@
       :fill-opacity="titleFillOpacity"
       x="2" y="2"
       rx="3" ry="3"
-      :width="nodeModel.width - 4" height="16"
+      :width="nodeModel?.width - 4" height="16"
       class="node-dark-background"
     />
     <text
@@ -83,13 +83,13 @@ export default defineComponent({
   },
   computed: {
     options () {
-      return this.nodeModel.options || {};
+      return this.nodeModel?.options || {};
     },
     color () {
-      return this.nodeModel.color || '#66cc00';
+      return this.nodeModel?.color || '#66cc00';
     },
     parentDiagram() {
-      return this.$parent.$parent.$parent;
+      return this.$parent?.$parent?.$parent;
     },
   },
 });

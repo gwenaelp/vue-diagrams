@@ -77,12 +77,14 @@ export default defineComponent({
     'vue-diagrams-node-shader': ShaderNode,
   },
   mixins: [DiagramElement],
-  data() {
+  data(): any {
     return {
       resizeHandles: undefined,
+      titleFillOpacity: 1,
       menu: [{
         label: 'Delete node',
-        handler() { this.deleteNode(); },
+        handler() { /*this.deleteNode();*/ },
+        classes: [],
       }],
     };
   },
@@ -97,11 +99,11 @@ export default defineComponent({
     'nodeModel.width': 'resizeNode',
     'nodeModel.height': 'resizeNode',
     'options.resizable': {
-      handler(v) {
+      handler(v: Boolean) {
         this.$nextTick(() => {
           if (v) {
             this.resizeHandles = new ResizeHandles(
-              this.$refs.resizeHandles,
+              this.$refs.resizeHandles as HTMLElement,
               this.nodeModel.width,
               this.nodeModel.height,
               this.startDragResizeHandle,
@@ -116,22 +118,24 @@ export default defineComponent({
     },
     'options.type': {
       handler() {
-        this.menu = this.menu.filter(menuItem => menuItem.from !== 'nodeType');
-        console.log('this.$refs.nodeType.menu?', this.$refs.nodeType ? this.$refs.nodeType.menu: this.$refs.nodeType);
+        this.menu = this.menu.filter((menuItem: any) => menuItem.from !== 'nodeType');
         this.$nextTick(() => {
-          if (this.$refs.nodeType && this.$refs.nodeType.menu) {
-            console.log('add elements to menu', this.$refs.nodeType.menu)
-            if(this.$refs.nodeType.menu.length) {
+          const nodeType = this.$refs.nodeType as any;
+          
+          console.log('this.$refs.nodeType.menu?', nodeType ? nodeType.menu: nodeType);
+
+          if (nodeType && nodeType.menu) {
+            if(nodeType.menu.length) {
               this.menu.unshift({ classes:['separator'], from: 'nodeType' });
             }
-            for(let mi of this.$refs.nodeType.menu) {
+            for(let mi of nodeType.menu) {
               this.menu.unshift({ ...mi, from: 'nodeType' });
             }
           }
         });
       },
       immediate: true,
-    }
+    },
   },
   computed: {
     x () {
@@ -151,11 +155,12 @@ export default defineComponent({
       this.$emit('delete');
     },
 
-    mouseDown (event: ClickEvent) {
-      if (!this.$parent.$parent.editable) return;
+    mouseDown (event: any) {
+      const diagramComponent = this?.$parent?.$parent as any;
+      if (!diagramComponent.editable) return;
 
       if (!event.target.classList.contains('title-editable') && event.target.closest('.prevent-node-drag') === null) {
-        const pos = this.$parent.$parent.convertXYtoViewPort(event.x, event.y);
+        const pos = diagramComponent.convertXYtoViewPort(event.x, event.y);
         this.$emit(
           'onStartDrag',
           { type: 'nodes', index: this.index, node: this.nodeModel },
@@ -172,8 +177,8 @@ export default defineComponent({
     mouseleave() {
       this.titleFillOpacity = 0.25;
     },
-    startDragResizeHandle(direction) {
-      if (!this.$parent.$parent.editable) return;
+    startDragResizeHandle(direction: any) {
+      if (!(this?.$parent?.$parent as any).editable) return;
 
       this.$emit(
         'onStartDrag',

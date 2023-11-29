@@ -7,13 +7,6 @@ declare namespace SvgPanZoom {
 }
 
 
-declare interface SVGElement {
-  getCTM: Function,
-  createSVGPoint: Function
-}
-
-declare type SvgInHtml = HTMLElement & SVGElement;
-
 declare interface Point {
   x: number,
   y: number,
