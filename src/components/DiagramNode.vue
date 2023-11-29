@@ -30,6 +30,7 @@
 <script lang="ts">
 import ResizeHandles from '../NodeResizeHandles';
 import TextNode from './NodeTypes/Text.vue';
+import CardNode from './NodeTypes/Card.vue';
 import ImageNode from './NodeTypes/Image.vue';
 import ShaderNode from './NodeTypes/Shader.vue';
 import DiagramElement from '../mixins/DiagramElement';
@@ -75,6 +76,7 @@ export default defineComponent({
     'vue-diagrams-node-text': TextNode,
     'vue-diagrams-node-image': ImageNode,
     'vue-diagrams-node-shader': ShaderNode,
+    'vue-diagrams-node-card': CardNode,
   },
   mixins: [DiagramElement],
   data(): any {

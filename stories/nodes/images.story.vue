@@ -1,5 +1,5 @@
 <template>
-  <Story title="Nodes/Image nodes">
+  <Story title="Custom nodes/Image nodes">
     <diagram :model="model" height="700"/>
   </Story>
 </template>

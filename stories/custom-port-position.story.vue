@@ -16,7 +16,7 @@ export default {
     const inPort = node1.addInPort('in', { y: 80 });
     const outPort = node1.addOutPort('out', { y: 80 });
 
-    const node2 = diagramModel.addNode('test', 10, 300, 144, 80);
+    const node2 = diagramModel.addNode('test', 10, 300, 144, 120);
     const node2OutPort = node2.addOutPort('testOut', { y: 80 });
     node2.color = '#00cc66';
 
