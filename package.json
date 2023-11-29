@@ -29,14 +29,13 @@
     "story:dev": "histoire dev",
     "story:build": "histoire build",
     "doc:build": "cd doc && yarn && yarn generate && rm ./dist -Rf && mkdir ./dist && mv .output/public/* ./dist && touch dist/.nojekyll && cd .. && yarn story:build",
-    "test": "jest --verbose --coverage",
-    "vitest": "vitest",
-    "test:update": "jest --verbose --updateSnapshot",
-    "test:watch": "jest --verbose --watchAll --notify",
-    "type-check": "vue-tsc --noEmit -p tsconfig.json"
+    "test": "vitest",
+    "type-check": "vue-tsc --noEmit -p tsconfig.json",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@histoire/plugin-vue2": "^0.15.8",
+    "@vitest/coverage-istanbul": "^0.34.6",
     "@vue/test-utils": "^2.4.2",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.1.2",
