@@ -38,7 +38,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       _hoisted_1,
       createVNode(_component_diagram, {
         model: $data.model,
-        height: "300",
+        height: "700",
         "show-menu": ""
       }, null, 8, ["model"])
     ]),

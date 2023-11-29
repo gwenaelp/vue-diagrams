@@ -1,7 +1,7 @@
 import { d as defineComponent, u as useCssVars, c as computed, a as useRoute, r as ref, o as openBlock, b as createElementBlock, e as createVNode, w as withCtx, I as Icon, f as unref, n as normalizeClass, t as toDisplayString, g as createBaseVNode, h as createCommentVNode, i as defineStore, j as useStorage, k as watch, l as resolveComponent, m as withKeys, F as Fragment, p as renderList, q as createBlock, s as useEventListener, v as isRef, x as resolveDirective, y as withDirectives, z as createTextVNode, A as pushScopeId, B as popScopeId, C as vShow, D as defineAsyncComponent, E as reactive, G as normalizeStyle, T as Transition, H as useTitle, J as onMounted, K as createApp, L as createPinia, M as plugin } from "./vendor-KOYu6fyN.js";
-import { i as isDark, h as histoireConfig, c as customLogos, t as toggleDark, r as router, _ as __vitePreload, f as files, m as mapFile, a as tree, b as _sfc_main$c } from "./GenericMountStory.vue2-iqauKlO3.js";
+import { i as isDark, h as histoireConfig, c as customLogos, t as toggleDark, r as router, _ as __vitePreload, f as files, m as mapFile, a as tree, b as _sfc_main$c } from "./GenericMountStory.vue2-33IpeD2_.js";
 import { u as useScrollOnActive, B as BaseListItemLink, _ as _export_sfc, a as _sfc_main$b, i as isMobile, b as BaseSplitPane } from "./MobileOverlay.vue2-r8YKSS9b.js";
-import { u as useStoryStore } from "./story-HeqMqT0V.js";
+import { u as useStoryStore } from "./story-jlnT5mx2.js";
 const _hoisted_1$a = { class: "bind-tree-margin htw-flex htw-items-center htw-gap-2 htw-pl-4 htw-min-w-0" };
 const _hoisted_2$6 = { class: "htw-truncate" };
 const _hoisted_3$5 = {
@@ -608,7 +608,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   },
   setup(__props, { emit: __emit }) {
     const SearchPane = defineAsyncComponent({
-      loader: () => __vitePreload(() => import("./SearchPane.vue-8mL0RXrA.js"), true ? __vite__mapDeps([0,1,2,3,4,5]) : void 0, import.meta.url),
+      loader: () => __vitePreload(() => import("./SearchPane.vue-J20F6Bp7.js"), true ? __vite__mapDeps([0,1,2,3,4,5]) : void 0, import.meta.url),
       loadingComponent: _sfc_main$3,
       delay: 0
     });
@@ -822,7 +822,7 @@ export {
 };
 function __vite__mapDeps(indexes) {
   if (!__vite__mapDeps.viteFileDeps) {
-    __vite__mapDeps.viteFileDeps = ["./SearchPane.vue-8mL0RXrA.js","./GenericMountStory.vue2-iqauKlO3.js","./vendor-KOYu6fyN.js","./story-HeqMqT0V.js","./BaseEmpty.vue-jmyt1ZnB.js","./MobileOverlay.vue2-r8YKSS9b.js"]
+    __vite__mapDeps.viteFileDeps = ["./SearchPane.vue-J20F6Bp7.js","./GenericMountStory.vue2-33IpeD2_.js","./vendor-KOYu6fyN.js","./story-jlnT5mx2.js","./BaseEmpty.vue-jmyt1ZnB.js","./MobileOverlay.vue2-r8YKSS9b.js"]
   }
   return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
 }

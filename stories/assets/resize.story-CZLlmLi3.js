@@ -54,7 +54,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
           key: 0,
           model: $data.model,
           width: "500",
-          height: "500",
+          height: "700",
           gridSnap: "10"
         }, null, 8, ["model"])) : createCommentVNode("v-if", true)
       ])

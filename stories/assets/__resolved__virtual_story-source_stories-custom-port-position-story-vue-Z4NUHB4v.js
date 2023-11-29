@@ -1,6 +1,6 @@
 const __resolved__virtual_storySource_storiesCustomPortPositionStoryVue = `<template>
   <Story title="Custom port position">
-    <diagram :model="model" height="300" />
+    <diagram :model="model" height="700" />
   </Story>
 </template>
 <script>

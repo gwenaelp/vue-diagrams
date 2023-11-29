@@ -1,6 +1,6 @@
 const __resolved__virtual_storySource_storiesNodesStylesStoryVue = `<template>
   <Story title="Nodes/Styles">
-    <diagram :model="model" height="300"/>
+    <diagram :model="model" height="700"/>
   </Story>
 </template>
 <script>

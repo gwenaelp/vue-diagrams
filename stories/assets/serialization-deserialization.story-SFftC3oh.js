@@ -30,7 +30,10 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createBlock(_component_Story, { title: "serialization/deserialization" }, {
     default: withCtx(() => [
       createBaseVNode("div", null, [
-        createVNode(_component_diagram, { model: $data.model }, null, 8, ["model"]),
+        createVNode(_component_diagram, {
+          model: $data.model,
+          height: "700"
+        }, null, 8, ["model"]),
         createBaseVNode("button", {
           onClick: _cache[0] || (_cache[0] = ($event) => console.log($data.model.serialize()))
         }, "serialize"),
