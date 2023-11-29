@@ -72,7 +72,8 @@ class DiagramModel {
    * @return {Object} The diagram model
    */
   serialize() {
-    return JSON.stringify(this._model);
+    //FIXME
+    //return JSON.stringify(this._model);
   }
 
   /**
