@@ -194,7 +194,7 @@ export default defineComponent({
   .diagram-node {
     overflow: visible;
   }
-  .diagram-node >>> .title-editable:hover {
+  .diagram-node :deep(.title-editable:hover) {
     fill: blue;
     cursor: pointer;
   }

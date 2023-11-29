@@ -2,8 +2,8 @@
   <g>
     <text
       :class="options.editableTitle ? 'title-editable': ''"
-      :x="nodeModel.width / 2"
-      :y="nodeModel.height / 2"
+      :x="nodeModel?.width || 0 / 2"
+      :y="nodeModel?.height || 0 / 2"
       :width="nodeModel.width"
       ref="title"
       text-anchor="middle"
@@ -29,10 +29,10 @@ export default {
   },
   computed: {
     options () {
-      return this.nodeModel.options || {};
+      return this.nodeModel?.options || {};
     },
     parentDiagram() {
-      return this.$parent.$parent.$parent;
+      return this.$parent?.$parent?.$parent;
     },
   },
 };
