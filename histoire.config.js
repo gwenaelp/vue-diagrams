@@ -9,5 +9,8 @@ export default defineConfig({
   routerMode: 'hash',
   vite: {
     base: "./",
+    build: {
+      minify: false,
+    },
   },
 })
