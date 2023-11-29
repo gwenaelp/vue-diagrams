@@ -7,7 +7,7 @@
       <div style="background: whitesmoke; padding: 20px; margin-bottom: 20px;">
         Try to resize the resizable node
       </div>
-      <diagram v-if="visible" :model="model" width="500" height="500" gridSnap="10" />
+      <diagram v-if="visible" :model="model" width="500" height="700" gridSnap="10" />
     </div>
   </Story>
 </template>

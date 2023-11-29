@@ -1,6 +1,6 @@
 <template>
   <Story title="Editable titles">
-    <diagram :model="model" height="300" />
+    <diagram :model="model" height="700" />
   </Story>
 </template>
 <script>

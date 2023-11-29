@@ -3,7 +3,7 @@
     <div style="background: whitesmoke; padding: 20px; margin-bottom: 20px;">
       Right click on nodes and link to show the edit menu
     </div>
-    <diagram :model="model" height="300" show-menu />
+    <diagram :model="model" height="700" show-menu />
   </Story>
 </template>
 <script>

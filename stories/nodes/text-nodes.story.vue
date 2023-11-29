@@ -1,6 +1,6 @@
 <template>
   <Story title="Nodes/Text nodes">
-    <diagram :model="model" :height="300"/>
+    <diagram :model="model" :height="700"/>
   </Story>
 </template>
 <script lang="ts">
