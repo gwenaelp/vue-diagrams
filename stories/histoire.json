@@ -3,13 +3,10 @@
     {
       "id": "stories-basic-story-vue",
       "title": "Simple",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -18,7 +15,7 @@
         }
       ],
       "relativePath": "stories/basic.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Simple"
       ],
@@ -28,13 +25,10 @@
     {
       "id": "stories-custom-port-position-story-vue",
       "title": "Custom port position",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -43,7 +37,7 @@
         }
       ],
       "relativePath": "stories/custom-port-position.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Custom port position"
       ],
@@ -53,13 +47,10 @@
     {
       "id": "stories-editable-titles-story-vue",
       "title": "Editable titles",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -68,7 +59,7 @@
         }
       ],
       "relativePath": "stories/editable-titles.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Editable titles"
       ],
@@ -78,13 +69,10 @@
     {
       "id": "stories-layouts-story-vue",
       "title": "Layouts",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -93,7 +81,7 @@
         }
       ],
       "relativePath": "stories/layouts.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Layouts"
       ],
@@ -103,13 +91,10 @@
     {
       "id": "stories-menu-story-vue",
       "title": "Basic",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -118,7 +103,7 @@
         }
       ],
       "relativePath": "stories/menu.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Menu",
         "Basic"
@@ -129,13 +114,10 @@
     {
       "id": "stories-resize-story-vue",
       "title": "Resize nodes",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -144,7 +126,7 @@
         }
       ],
       "relativePath": "stories/resize.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Resize nodes"
       ],
@@ -154,13 +136,10 @@
     {
       "id": "stories-serialization-deserialization-story-vue",
       "title": "deserialization",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -169,7 +148,7 @@
         }
       ],
       "relativePath": "stories/serialization-deserialization.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "serialization",
         "deserialization"
@@ -178,15 +157,35 @@
       "markdownFile": null
     },
     {
-      "id": "stories-diagram-settings-custom-nodes-story-vue",
-      "title": "Custom Nodes",
-      "group": null,
+      "id": "stories-api-manipulating-view-story-vue",
+      "title": "Manipulating view",
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/API/manipulating-view.story.vue",
+      "supportPluginId": "vue3",
+      "treePath": [
+        "API",
+        "Manipulating view"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
+      "id": "stories-diagram-settings-custom-nodes-story-vue",
+      "title": "Custom Nodes",
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
       "docsOnly": false,
       "variants": [
         {
@@ -195,7 +194,7 @@
         }
       ],
       "relativePath": "stories/diagram-settings/custom-nodes.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Diagram settings",
         "Custom Nodes"
@@ -206,13 +205,10 @@
     {
       "id": "stories-diagram-settings-diagram-dimensions-story-vue",
       "title": "Assigning dimensions",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -221,7 +217,7 @@
         }
       ],
       "relativePath": "stories/diagram-settings/diagram-dimensions.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Diagram settings",
         "Assigning dimensions"
@@ -232,13 +228,10 @@
     {
       "id": "stories-diagram-settings-dropping-node-story-vue",
       "title": "Drop to create nodes",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -247,7 +240,7 @@
         }
       ],
       "relativePath": "stories/diagram-settings/dropping-node.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Diagram settings",
         "Drop to create nodes"
@@ -258,13 +251,10 @@
     {
       "id": "stories-diagram-settings-edit-locked-story-vue",
       "title": "Edit locked",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -273,7 +263,7 @@
         }
       ],
       "relativePath": "stories/diagram-settings/edit-locked.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Diagram settings",
         "Edit locked"
@@ -284,13 +274,10 @@
     {
       "id": "stories-diagram-settings-grid-snap-story-vue",
       "title": "Grid snap",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -299,7 +286,7 @@
         }
       ],
       "relativePath": "stories/diagram-settings/grid-snap.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Diagram settings",
         "Grid snap"
@@ -310,13 +297,10 @@
     {
       "id": "stories-diagram-settings-modes-story-vue",
       "title": "Edit modes",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -325,7 +309,7 @@
         }
       ],
       "relativePath": "stories/diagram-settings/modes.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Diagram settings",
         "Edit modes"
@@ -336,13 +320,10 @@
     {
       "id": "stories-diagram-settings-thumbnail-story-vue",
       "title": "Thumbnail",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -351,7 +332,7 @@
         }
       ],
       "relativePath": "stories/diagram-settings/thumbnail.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Diagram settings",
         "Thumbnail"
@@ -362,13 +343,10 @@
     {
       "id": "stories-nodes-images-story-vue",
       "title": "Image nodes",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -377,7 +355,7 @@
         }
       ],
       "relativePath": "stories/nodes/images.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Nodes",
         "Image nodes"
@@ -388,13 +366,10 @@
     {
       "id": "stories-nodes-styles-story-vue",
       "title": "Styles",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -403,7 +378,7 @@
         }
       ],
       "relativePath": "stories/nodes/styles.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Nodes",
         "Styles"
@@ -414,13 +389,10 @@
     {
       "id": "stories-nodes-text-nodes-story-vue",
       "title": "Text nodes",
-      "group": null,
       "layout": {
         "type": "single",
         "iframe": true
       },
-      "icon": null,
-      "iconColor": null,
       "docsOnly": false,
       "variants": [
         {
@@ -429,7 +401,7 @@
         }
       ],
       "relativePath": "stories/nodes/text-nodes.story.vue",
-      "supportPluginId": "vue2",
+      "supportPluginId": "vue3",
       "treePath": [
         "Nodes",
         "Text nodes"
