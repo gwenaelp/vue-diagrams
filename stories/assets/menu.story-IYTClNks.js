@@ -1,5 +1,5 @@
-import { _ as _export_sfc, D as Diagram } from "./Diagram-9q_U3Cke.js";
-import { as as resolveComponent, at as openBlock, au as createBlock, av as withCtx, aw as createVNode } from "./vendor-KOYu6fyN.js";
+import { _ as _export_sfc, D as Diagram } from "./Diagram-_SjiVfCl.js";
+import { as as resolveComponent, at as openBlock, au as createBlock, av as withCtx, aw as createVNode, ax as createBaseVNode } from "./vendor-KOYu6fyN.js";
 const _sfc_main = {
   components: {
     Diagram
@@ -23,23 +23,31 @@ const _sfc_main = {
     };
   }
 };
+const _hoisted_1 = /* @__PURE__ */ createBaseVNode(
+  "div",
+  { style: { "background": "whitesmoke", "padding": "20px", "margin-bottom": "20px" } },
+  " Right click on nodes and link to show the edit menu ",
+  -1
+  /* HOISTED */
+);
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_diagram = resolveComponent("diagram");
   const _component_Story = resolveComponent("Story");
-  return openBlock(), createBlock(_component_Story, { title: "Diagram settings/Edit locked" }, {
+  return openBlock(), createBlock(_component_Story, { title: "Menu/Basic" }, {
     default: withCtx(() => [
+      _hoisted_1,
       createVNode(_component_diagram, {
         model: $data.model,
         height: "300",
-        editable: false
+        "show-menu": ""
       }, null, 8, ["model"])
     ]),
     _: 1
     /* STABLE */
   });
 }
-_sfc_main.__file = "stories/diagram-settings/edit-locked.story.vue";
-const editLocked_story = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "/home/runner/work/vue-diagrams/vue-diagrams/stories/diagram-settings/edit-locked.story.vue"]]);
+_sfc_main.__file = "stories/menu.story.vue";
+const menu_story = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "/home/runner/work/vue-diagrams/vue-diagrams/stories/menu.story.vue"]]);
 export {
-  editLocked_story as default
+  menu_story as default
 };

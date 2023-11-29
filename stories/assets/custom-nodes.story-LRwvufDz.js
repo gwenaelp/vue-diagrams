@@ -1,5 +1,5 @@
 import { at as openBlock, aD as createElementBlock, ax as createBaseVNode, aC as toDisplayString, aE as normalizeClass, aF as renderSlot, as as resolveComponent, au as createBlock, av as withCtx, aw as createVNode } from "./vendor-KOYu6fyN.js";
-import { _ as _export_sfc, D as Diagram } from "./Diagram-9q_U3Cke.js";
+import { _ as _export_sfc, D as Diagram } from "./Diagram-_SjiVfCl.js";
 const _sfc_main$1 = {
   props: {
     nodeModel: {

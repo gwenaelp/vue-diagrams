@@ -423,21 +423,24 @@ const _sfc_main$7 = {
 const _hoisted_1$7 = ["x", "y", "width"];
 const _hoisted_2$7 = { class: "prevent-node-drag" };
 function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
-  var _a, _b;
+  var _a, _b, _c, _d;
   return openBlock(), createElementBlock("g", null, [
     createBaseVNode("text", {
       class: normalizeClass($options.options.editableTitle ? "title-editable" : ""),
       x: ((_a = $props.nodeModel) == null ? void 0 : _a.width) || 0 / 2,
       y: ((_b = $props.nodeModel) == null ? void 0 : _b.height) || 0 / 2,
-      width: $props.nodeModel.width,
+      width: (_c = $props.nodeModel) == null ? void 0 : _c.width,
       ref: "title",
       "text-anchor": "middle",
       "font-size": "14",
       "font-weight": "bold",
       fill: "#000000",
       style: normalizeStyle($options.options.titleStyle || ""),
-      onClick: _cache[0] || (_cache[0] = ($event) => $options.options.editableTitle ? $options.parentDiagram.editText($props.nodeModel, "title", _ctx.$refs.title) : void 0)
-    }, toDisplayString($props.nodeModel.title), 15, _hoisted_1$7),
+      onClick: _cache[0] || (_cache[0] = ($event) => {
+        var _a2;
+        return $options.options.editableTitle ? (_a2 = $options.parentDiagram) == null ? void 0 : _a2.editText($props.nodeModel, "title", _ctx.$refs.title) : void 0;
+      })
+    }, toDisplayString((_d = $props.nodeModel) == null ? void 0 : _d.title), 15, _hoisted_1$7),
     createBaseVNode("g", _hoisted_2$7, [
       renderSlot(_ctx.$slots, "default")
     ])
@@ -453,10 +456,12 @@ const _sfc_main$6 = defineComponent({
   },
   computed: {
     options() {
-      return this.nodeModel.options || {};
+      var _a;
+      return ((_a = this.nodeModel) == null ? void 0 : _a.options) || {};
     },
     parentDiagram() {
-      return this.$parent.$parent.$parent;
+      var _a, _b;
+      return (_b = (_a = this.$parent) == null ? void 0 : _a.$parent) == null ? void 0 : _b.$parent;
     }
   }
 });
@@ -464,18 +469,19 @@ const _hoisted_1$6 = ["href", "width", "height"];
 const _hoisted_2$6 = ["x", "y", "width"];
 const _hoisted_3$5 = { class: "prevent-node-drag" };
 function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+  var _a, _b, _c, _d, _e, _f;
   return openBlock(), createElementBlock("g", null, [
     createBaseVNode("image", {
       href: _ctx.options.image,
       x: "5",
-      width: _ctx.nodeModel.width - 10,
-      height: _ctx.nodeModel.height
+      width: ((_a = _ctx.nodeModel) == null ? void 0 : _a.width) - 10,
+      height: (_b = _ctx.nodeModel) == null ? void 0 : _b.height
     }, null, 8, _hoisted_1$6),
     createBaseVNode("text", {
       class: normalizeClass(_ctx.options.editableTitle ? "title-editable" : ""),
-      x: _ctx.nodeModel.width / 2,
-      y: _ctx.nodeModel.height + 14,
-      width: _ctx.nodeModel.width,
+      x: ((_c = _ctx.nodeModel) == null ? void 0 : _c.width) / 2,
+      y: ((_d = _ctx.nodeModel) == null ? void 0 : _d.height) + 14,
+      width: (_e = _ctx.nodeModel) == null ? void 0 : _e.width,
       ref: "title",
       "text-anchor": "middle",
       "font-size": "14",
@@ -483,7 +489,7 @@ function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
       fill: "#000000",
       style: normalizeStyle(_ctx.options.titleStyle || ""),
       onClick: _cache[0] || (_cache[0] = ($event) => _ctx.options.editableTitle ? _ctx.parentDiagram.editText(_ctx.nodeModel, "title", _ctx.$refs.title) : void 0)
-    }, toDisplayString(_ctx.nodeModel.title), 15, _hoisted_2$6),
+    }, toDisplayString((_f = _ctx.nodeModel) == null ? void 0 : _f.title), 15, _hoisted_2$6),
     createBaseVNode("g", _hoisted_3$5, [
       renderSlot(_ctx.$slots, "default")
     ])
@@ -529,7 +535,7 @@ const _hoisted_5$3 = ["x1", "x2"];
 const _hoisted_6$3 = ["width", "height"];
 const _hoisted_7$3 = { class: "prevent-node-drag" };
 function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
-  var _a, _b, _c;
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
   return openBlock(), createElementBlock("g", null, [
     createBaseVNode("rect", {
       fill: _ctx.color,
@@ -565,16 +571,16 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
         style: normalizeStyle(_ctx.options.titleStyle || ""),
         onClick: _cache[0] || (_cache[0] = ($event) => _ctx.options.editableTitle ? _ctx.parentDiagram.editText(_ctx.nodeModel, "title", _ctx.$refs.title) : void 0)
       },
-      toDisplayString(_ctx.nodeModel.title),
+      toDisplayString((_d = _ctx.nodeModel) == null ? void 0 : _d.title),
       7
       /* TEXT, CLASS, STYLE */
     ),
-    _ctx.nodeModel.deletable ? (openBlock(), createElementBlock("g", {
+    ((_e = _ctx.nodeModel) == null ? void 0 : _e.deletable) ? (openBlock(), createElementBlock("g", {
       key: 0,
       onClick: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("deleteNode"))
     }, [
       createBaseVNode("rect", {
-        x: _ctx.nodeModel.width - 12,
+        x: ((_f = _ctx.nodeModel) == null ? void 0 : _f.width) - 12,
         y: "3",
         width: "14",
         height: "14",
@@ -584,17 +590,17 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
         "fill-opacity": 0.25
       }, null, 8, _hoisted_3$4),
       createBaseVNode("line", {
-        x1: _ctx.nodeModel.width,
+        x1: (_g = _ctx.nodeModel) == null ? void 0 : _g.width,
         y1: 5,
-        x2: _ctx.nodeModel.width - 10,
+        x2: ((_h = _ctx.nodeModel) == null ? void 0 : _h.width) - 10,
         y2: 15,
         style: { "stroke": "rgb(0,0,0)" },
         "stroke-width": "2"
       }, null, 8, _hoisted_4$3),
       createBaseVNode("line", {
-        x1: _ctx.nodeModel.width - 10,
+        x1: ((_i = _ctx.nodeModel) == null ? void 0 : _i.width) - 10,
         y1: 5,
-        x2: _ctx.nodeModel.width,
+        x2: (_j = _ctx.nodeModel) == null ? void 0 : _j.width,
         y2: 15,
         style: { "stroke": "rgb(0,0,0)" },
         "stroke-width": "2"
@@ -606,8 +612,8 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
       y: "20",
       rx: "3",
       ry: "3",
-      width: _ctx.nodeModel.width - 4,
-      height: _ctx.nodeModel.height - 22,
+      width: ((_k = _ctx.nodeModel) == null ? void 0 : _k.width) - 4,
+      height: ((_l = _ctx.nodeModel) == null ? void 0 : _l.height) - 22,
       class: "node-light-background"
     }, null, 8, _hoisted_6$3),
     createBaseVNode("g", _hoisted_7$3, [

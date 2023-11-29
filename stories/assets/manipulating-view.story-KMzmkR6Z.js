@@ -1,4 +1,4 @@
-import { _ as _export_sfc, D as Diagram } from "./Diagram-9q_U3Cke.js";
+import { _ as _export_sfc, D as Diagram } from "./Diagram-_SjiVfCl.js";
 import { as as resolveComponent, at as openBlock, au as createBlock, av as withCtx, aw as createVNode, ax as createBaseVNode } from "./vendor-KOYu6fyN.js";
 const _sfc_main = {
   components: {
