@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex;">
     <iframe
-      src="stories/__sandbox.html?storyId=stories-grid-snap-story-vue&variantId=_default"
+      src="stories/__sandbox.html?storyId=stories-websitedemo-story-vue&variantId=_default"
       width="390"
       height="525"
       frameborder="0"
