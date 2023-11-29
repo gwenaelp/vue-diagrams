@@ -3,7 +3,7 @@
     <diagram :model="model" height="300"/>
   </Story>
 </template>
-<script>
+<script lang="ts">
 import Diagram from "../../src/components/Diagram.vue";
 
 export default {

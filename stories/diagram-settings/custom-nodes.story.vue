@@ -1,14 +1,18 @@
 <template>
-  <Story title="Diagram settings/Custom Nodes">
+  <Story title="Diagram settings/Custom Nodes" :setup-app="mySetupApp">
     <diagram :model="model" height="300" />
   </Story>
 </template>
+<script setup>
+import CustomNode from "./CustomNode.vue";
+
+function mySetupApp ({ app, story, variant }) {
+  app.component('vue-diagrams-node-custom', CustomNode)
+}
+
+</script>
 <script>
 import Diagram from "../../src/components/Diagram.vue";
-import CustomNode from "./CustomNode.vue";
-import Vue from 'vue';
-
-Vue.component('vue-diagrams-node-custom', CustomNode);
 
 export default {
   components: {

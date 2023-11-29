@@ -4,7 +4,7 @@
       <rect
         :fill="fill"
         ref="handle"
-        x="-5" y="0"
+        :x="displayedX" y="0"
         rx="3" ry="3"
         width="10" height="10"
         @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
@@ -15,7 +15,7 @@
       <rect
         :fill="fill"
         ref="handle"
-        :x="width - 5" y="0"
+        :x="displayedX" y="0"
         rx="3" ry="3"
         width="10" height="10"
         @mouseenter="enter" @mouseleave="leave" @mousedown="startDragNewLink" @mouseup="mouseup">
@@ -24,25 +24,33 @@
     </svg>
   </g>
 </template>
-<script>
-export default {
+<script lang="ts">
+import DiagramElement from '../mixins/DiagramElement';
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   name: 'DiagramPort',
-  props: ['id', 'y', 'node', 'nodeIndex', 'port'],
+  props: ['id', 'x', 'y', 'node', 'nodeIndex', 'port'],
   data() {
     return {
       fill: '#666666',
       menu: [{
         label: 'Delete port',
-        handler() {
-          this.$parent.nodeModel.deletePort(this.id);
-          this.$parent.$parent.$parent.updateLinksPositions();
+        handler: () => {
+          const parentComponent = this.$parent as any;
+          parentComponent.nodeModel.deletePort(this.id);
+          parentComponent.$parent?.$parent.updateLinksPositions();
         },
       }, {
         label: 'Remove port links',
-        handler() { this.$parent.nodeModel.removePortLinks(this.id); },
+        handler: () => {
+          const parentComponent = this.$parent as any;
+          parentComponent.nodeModel.removePortLinks(this.id);
+        },
       }],
     };
   },
+  mixins: [DiagramElement],
   computed: {
     width () {
       return this.node.width || 72;
@@ -54,6 +62,16 @@ export default {
         return this.y + 40;
       }
     },
+    displayedX () {
+      if(this.port.options && this.port.options.x) {
+        return this.port.options.x;
+      }
+      if(this.port.type === 'out') {
+        return this.width - 5;
+      } else {
+        return -5
+      }
+    }
   },
   methods: {
     mouseup() {
@@ -72,5 +90,5 @@ export default {
       this.$emit("onStartDragNewLink", this.id);
     },
   }
-};
+});
 </script>

@@ -27,13 +27,15 @@
     </g>
   </svg>
 </template>
-<script>
+<script lang="ts">
 import ResizeHandles from '../NodeResizeHandles';
 import TextNode from './NodeTypes/Text.vue';
 import ImageNode from './NodeTypes/Image.vue';
 import ShaderNode from './NodeTypes/Shader.vue';
+import DiagramElement from '../mixins/DiagramElement';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DiagramNode',
   props: {
     index: Number,
@@ -74,16 +76,19 @@ export default {
     'vue-diagrams-node-image': ImageNode,
     'vue-diagrams-node-shader': ShaderNode,
   },
-  data() {
+  mixins: [DiagramElement],
+  data(): any {
     return {
       resizeHandles: undefined,
+      titleFillOpacity: 1,
       menu: [{
         label: 'Delete node',
-        handler() { this.deleteNode(); },
+        handler() { /*this.deleteNode();*/ },
+        classes: [],
       }],
     };
   },
-  beforeDestroy () {
+  beforeUnmount () {
     if (this.resizeHandles) {
       this.resizeHandles.unmount();
     }
@@ -94,11 +99,11 @@ export default {
     'nodeModel.width': 'resizeNode',
     'nodeModel.height': 'resizeNode',
     'options.resizable': {
-      handler(v) {
+      handler(v: Boolean) {
         this.$nextTick(() => {
           if (v) {
             this.resizeHandles = new ResizeHandles(
-              this.$refs.resizeHandles,
+              this.$refs.resizeHandles as HTMLElement,
               this.nodeModel.width,
               this.nodeModel.height,
               this.startDragResizeHandle,
@@ -113,22 +118,24 @@ export default {
     },
     'options.type': {
       handler() {
-        this.menu = this.menu.filter(menuItem => menuItem.from !== 'nodeType');
-        console.log('this.$refs.nodeType.menu?', this.$refs.nodeType ? this.$refs.nodeType.menu: this.$refs.nodeType);
+        this.menu = this.menu.filter((menuItem: any) => menuItem.from !== 'nodeType');
         this.$nextTick(() => {
-          if (this.$refs.nodeType && this.$refs.nodeType.menu) {
-            console.log('add elements to menu', this.$refs.nodeType.menu)
-            if(this.$refs.nodeType.menu.length) {
+          const nodeType = this.$refs.nodeType as any;
+          
+          console.log('this.$refs.nodeType.menu?', nodeType ? nodeType.menu: nodeType);
+
+          if (nodeType && nodeType.menu) {
+            if(nodeType.menu.length) {
               this.menu.unshift({ classes:['separator'], from: 'nodeType' });
             }
-            for(let mi of this.$refs.nodeType.menu) {
+            for(let mi of nodeType.menu) {
               this.menu.unshift({ ...mi, from: 'nodeType' });
             }
           }
         });
       },
       immediate: true,
-    }
+    },
   },
   computed: {
     x () {
@@ -148,11 +155,12 @@ export default {
       this.$emit('delete');
     },
 
-    mouseDown (event) {
-      if (!this.$parent.$parent.editable) return;
+    mouseDown (event: any) {
+      const diagramComponent = this?.$parent?.$parent as any;
+      if (!diagramComponent.editable) return;
 
       if (!event.target.classList.contains('title-editable') && event.target.closest('.prevent-node-drag') === null) {
-        const pos = this.$parent.$parent.convertXYtoViewPort(event.x, event.y);
+        const pos = diagramComponent.convertXYtoViewPort(event.x, event.y);
         this.$emit(
           'onStartDrag',
           { type: 'nodes', index: this.index, node: this.nodeModel },
@@ -169,18 +177,18 @@ export default {
     mouseleave() {
       this.titleFillOpacity = 0.25;
     },
-    startDragResizeHandle(direction) {
-      if (!this.$parent.$parent.editable) return;
+    startDragResizeHandle(direction: any) {
+      if (!(this?.$parent?.$parent as any).editable) return;
 
       this.$emit(
         'onStartDrag',
         { type: "resizeHandle", index: this.index, node: this.nodeModel, direction },
-        event.x - this.nodeModel.x,
-        event.y - this.nodeModel.y
+        0 /*event.x*/ - this.nodeModel.x,
+        0 /*event.y*/ - this.nodeModel.y
       );
     },
   }
-};
+});
 </script>
 <style scoped>
   .diagram-node {

@@ -1,6 +1,6 @@
 <template>
   <div class="vue-diagrams">
-    <Menu v-if="showMenu" />
+    <Menu ref="menu" v-if="showMenu" />
     <TextInput ref="textInput" />
     <SvgPanZoom
       ref="svgpanzoom"
@@ -14,6 +14,7 @@
       viewportSelector="#svgroot2"
       :preventMouseEventsDefault="false"
       :beforePan="beforePan"
+      @created="spzCreated"
     >
       <svg
         id="svgroot2"
@@ -56,6 +57,7 @@
             :positionTo="link.positionTo"
             :points="link.points"
             :id="link.id"
+            :key="link.id"
             :index="index"
             :options="link.options"
             v-for="(link, index) in model._model.links"
@@ -64,8 +66,8 @@
             @delete="model.deleteLink(link)"
           />
           <line
-            :x1="getPortHandlePosition(newLink.startPortId).x"
-            :y1="getPortHandlePosition(newLink.startPortId).y"
+            :x1="getPortHandlePosition(newLink.startPortId)?.x"
+            :y1="getPortHandlePosition(newLink.startPortId)?.y"
             :x2="convertXYtoViewPort(mouseX, 0).x"
             :y2="convertXYtoViewPort(0, mouseY).y"
             style="stroke:rgb(255,0,0);stroke-width:2"
@@ -78,6 +80,7 @@
             :x="node.x"
             :y="node.y"
             :id="node.id"
+            :key="node.id"
             :width="node.width"
             :height="node.height"
             :ports="node.ports"
@@ -90,6 +93,7 @@
           >
             <DiagramPort
               v-for="(port, portIndex) in node.ports"
+              :key="portIndex"
               :ref="'port-' + port.id"
               :id="port.id"
               :nodeIndex="nodeIndex"
@@ -104,49 +108,42 @@
             v-if="mode === 'select' && mouseButtonIsPressed"
             :x="min(viewportMousePos.x, mouseDownViewportPos.x)"
             :y="min(viewportMousePos.y, mouseDownViewportPos.y)"
-            :width="max(viewportMousePos.x, mouseDownViewportPos.x) - min(viewportMousePos.x, mouseDownViewportPos.x)"
-            :height="max(viewportMousePos.y, mouseDownViewportPos.y) - min(viewportMousePos.y, mouseDownViewportPos.y)"
+            :width="(max(viewportMousePos.x, mouseDownViewportPos.x) || 0) - (min(viewportMousePos.x, mouseDownViewportPos.x) || 0)"
+            :height="(max(viewportMousePos.y, mouseDownViewportPos.y) || 0) - (min(viewportMousePos.y, mouseDownViewportPos.y) || 0)"
             fill="#000000"
             :fill-opacity="0.5"
           />
-          <rect
-            v-if="draggedItem && a.show"
-            :x="a.x || '-5000px'"
-            :y="a.y || '-5000px'"
-            :width="a.x ? '1px': '10000px'"
-            :height="a.y ? '1px': '10000px'"
-            fill="#29B6F2"
-            :fill-opacity="1"
-            v-for="(a, i) in magnetismAnchors"
-          />
         </g>
       </svg>
-      <svg v-if="showThumbnail" slot="thumbnail" class="thumbViewClass">
-        <rect
-          v-for="(node, nodeIndex) in model._model.nodes"
-          :x="node.x"
-          :y="node.y"
-          :width="node.width"
-          :height="node.height"
-          :fill="node.color || '#66cc00'"
-          :key="node.id"
-        />
-        <DiagramLink
-          :positionFrom="link.positionFrom"
-          :positionTo="link.positionTo"
-          :points="link.points"
-          :id="link.id"
-          :index="index"
-          :options="link.options"
-          v-for="(link, index) in model._model.links"
-          :key="index"
-        />
-      </svg>
+      <template v-if="showThumbnail" #thumbnail>
+        <svg class="thumbViewClass">
+          <rect
+            v-for="(node) in model._model.nodes"
+            :x="node.x"
+            :y="node.y"
+            :width="node.width"
+            :height="node.height"
+            :fill="node.color || '#66cc00'"
+            :key="node.id"
+          />
+          <DiagramLink
+            :positionFrom="link.positionFrom"
+            :positionTo="link.positionTo"
+            :points="link.points"
+            :id="link.id"
+            :index="index"
+            :options="link.options"
+            v-for="(link, index) in model._model.links"
+            :key="index"
+          />
+        </svg>
+      </template>
     </SvgPanZoom>
   </div>
 </template>
-<script>
-import SvgPanZoom from 'vue-svg-pan-zoom';
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { SvgPanZoom } from 'vue-svg-pan-zoom';
 
 import Menu from './Menu.vue';
 
@@ -158,11 +155,25 @@ import DiagramLink from './DiagramLink.vue';
 import DiagramPort from './DiagramPort.vue';
 import '../style.css';
 
+
+declare interface SVGElement {
+  getCTM: Function,
+  createSVGPoint: Function
+}
+
+declare type SvgInHtml = HTMLElement & SVGElement;
+
+declare interface Point {
+  x: number,
+  y: number,
+}
+
+
 const generateId = () => {
   return Math.trunc(Math.random() * 1000);
 };
 
-const getAbsoluteXY = (element) => {
+const getAbsoluteXY = (element: { getBoundingClientRect: () => any; }) => {
   var viewportElement = document.documentElement;
   var box = element.getBoundingClientRect();
   var x = box.left;
@@ -170,15 +181,16 @@ const getAbsoluteXY = (element) => {
   return { x, y };
 }
 
-const snapToGrip = (val, gridSize) => {
+const snapToGrip = (val: number, gridSize: number) => {
   return gridSize * Math.round(val / gridSize);
 }
 
-export default {
-  name: "Diagram",
+export default defineComponent({
+  name: 'Diagram',
   Model: DiagramModel,
   props: {
     model: {
+      type: Object,
       required: true
     },
     width: {
@@ -202,6 +214,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    controlIconsEnabled: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     this.updateLinksPositions();
@@ -211,20 +227,29 @@ export default {
       document,
       zoomEnabled: true,
       panEnabled: true,
-      draggedItem: undefined,
-      mainSelectedItem: {},
-      secondarySelectedNodes: [],
+      draggedItem: undefined as any,
+      mainSelectedItem: {
+        index: undefined,
+        type: undefined,
+      } as any,
+      secondarySelectedNodes: [] as Array<any>,
       initialDragX: 0,
       initialDragY: 0,
-      initialDragY: 0,
       mouseButtonIsPressed: false,
-      mouseDownViewportPos: {},
-      viewportMousePos: {},
-      newLink: undefined,
+      mouseDownViewportPos: {
+        x: undefined as number | undefined,
+        y: undefined as number | undefined,
+      },
+      viewportMousePos: {
+        x: undefined as number | undefined,
+        y: undefined as number | undefined,
+      },
+      newLink: undefined as any,
       mouseX: 0,
       mouseY: 0,
       viewPosition: undefined,
-      magnetismAnchors: [],
+      magnetismAnchors: [] as Array<any>,
+      spz: undefined as any,
     };
   },
   components: {
@@ -246,42 +271,58 @@ export default {
         this.$nextTick(() => {
           if (v === 'move') {
             if (this.panEnabled) {
-              this.$refs.svgpanzoom.spz.enablePan();
+              this.spz?.enablePan();
             } else {
-              this.$refs.svgpanzoom.spz.disablePan();
+              this.spz?.disablePan();
             }
           } else {
-            this.$refs.svgpanzoom.spz.disablePan();
+            this.spz?.disablePan();
           }
         });
       },
       immediate: true,
     },
-    "model._model": {
+    'model._model': {
       handler () {
         this.$emit('model-updated', this.model._model);
       },
       deep: true,
     },
-    "model._model.links"() {
+    'model._model.links'() {
       this.updateLinksPositions();
     },
   },
   methods: {
-    editText(object, property, element) {
+    spzCreated(spz: any) {
+      this.spz = spz;
+      spz.setBeforePan((...args: any) => { return this.beforePan.apply(this, args); });
+    },
+    editText(object: any, property: any, element: any) {
       if (!this.editable) return;
 
-      this.$refs.textInput.editText(object, property, element);
+      (this.$refs.textInput as any).editText(object, property, element);
     },
-    min (a, b) {
-      return Math.min(a, b);
+    min (a: number | undefined, b: number | undefined) {
+      if(a === undefined) {
+        return b;
+      } else if(b === undefined) {
+        return a;
+      } else {
+        return Math.min(a, b);
+      }
     },
-    max (a, b) {
+    max (a: number | undefined, b: number | undefined) {
+      if (a === undefined) {
+        return b;
+      }
+      if (b === undefined) {
+        return a;
+      }
       return Math.max(a, b);
     },
-    convertXYtoViewPort(x, y) {
-      let rootelt = document.getElementById('svgroot2');
-      let rec = document.getElementById('viewport');
+    convertXYtoViewPort(x: number, y: number) {
+      let rootelt:SvgInHtml = document.getElementById('svgroot2') as SvgInHtml;
+      let rec:SvgInHtml = document.getElementById('viewport') as SvgInHtml;
       let point = rootelt.createSVGPoint();
       let rooteltPosition = getAbsoluteXY(this.$el);
       point.x = x - rooteltPosition.x;
@@ -290,11 +331,12 @@ export default {
       return point.matrixTransform(ctm);
     },
     beforePan() {
-      if (this.mainSelectedItem.type || this.draggedItem || this.newLink)
+      if (this.mainSelectedItem.type || this.draggedItem || this.newLink) {
         return false;
+      }
       else return true;
     },
-    createPoint(x, y, linkIndex, pointIndex) {
+    createPoint(x: any, y: any, linkIndex: string | number, pointIndex: any) {
       let coords = this.convertXYtoViewPort(x, y);
       let links = this.model._model.links;
 
@@ -311,20 +353,20 @@ export default {
     },
 
     updateLinksPositions() {
-      var links = [];
+      var links: string | any[] = [];
 
       if (this.model && this.model._model) links = this.model._model.links;
 
       this.$nextTick(() => {
         setTimeout(() => {
           for (var i = 0; i < links.length; i++) {
-            let coords;
+            let coords: void | Point;
             coords = this.getPortHandlePosition(links[i].from);
-            links[i].positionFrom = { x: coords.x, y: coords.y };
+            links[i].positionFrom = { x: coords?.x, y: coords?.y };
             coords = this.getPortHandlePosition(links[i].to);
-            links[i].positionTo = { x: coords.x, y: coords.y };
+            links[i].positionTo = { x: coords?.x, y: coords?.y };
             if (this.$refs['link-' + links[i].id]) {
-              let linkComponent = this.$refs['link-' + links[i].id];
+              let linkComponent = this.$refs['link-' + links[i].id] as any;
               if(Array.isArray(linkComponent)) {
                 linkComponent = linkComponent[0];
               }
@@ -337,24 +379,24 @@ export default {
       });
     },
 
-    startDragNewLink(startPortId) {
+    startDragNewLink(startPortId: any) {
       if (!this.editable) return;
 
       this.panEnabled = false;
       this.newLink = { startPortId };
     },
 
-    getPortHandlePosition(portId) {
-      if (this.$refs["port-" + portId] && this.$refs["port-" + portId][0]) {
-        const portComponent = this.$refs["port-" + portId][0];
-        const node = this.$refs["node-" + portComponent.nodeIndex][0];
+    getPortHandlePosition(portId: number): Point | void {
+      if (this.$refs["port-" + portId] && (this.$refs['port-' + portId] as any)[0]) {
+        const portComponent = (this.$refs['port-' + portId] as any)[0];
+        const node = (this.$refs['node-' + portComponent.nodeIndex] as any)[0];
         let x;
         let y;
         if (portComponent.port.type === "in") {
-          x = node.x + 5;
+          x = node.x + portComponent.displayedX + 5;
           y = node.y + portComponent.displayedY + 9;
         } else {
-          x = node.x + node.width + 5;
+          x = node.x + portComponent.displayedX + 5;
           y = node.y + portComponent.displayedY + 9;
         }
 
@@ -363,11 +405,11 @@ export default {
         console.warn(
           `port "${portId}" not found. you must call this method after the first render`
         );
-        return 0;
+        return undefined;
       }
     },
 
-    mouseMove(pos) {
+    mouseMove(pos: { clientX: number; clientY: number; x: any; y: any; }) {
       if (!this.editable) return;
 
       const links = this.model._model.links;
@@ -455,12 +497,13 @@ export default {
         }
       }
     },
-    mouseDown (event) {
+    mouseDown (event: MouseEvent) {
       if (!this.editable) return;
 
       this.mouseButtonIsPressed = true;
-      if (!event.target.classList.contains('title-editable')) {
-        this.$refs.textInput.editText();
+      if (!(event.target as HTMLElement).classList.contains('title-editable')) {
+        let textInput: any = this.$refs.textInput;
+        textInput.editText();
       }
     },
     mouseUp() {
@@ -478,10 +521,10 @@ export default {
       if (this.mode === 'select') {
         this.secondarySelectedNodes = [];
         for (let n of this.model._model.nodes) {
-          const x1 = Math.min(this.viewportMousePos.x, this.mouseDownViewportPos.x);
-          const y1 = Math.min(this.viewportMousePos.y, this.mouseDownViewportPos.y);
-          const x2 = Math.max(this.viewportMousePos.x, this.mouseDownViewportPos.x);
-          const y2 = Math.max(this.viewportMousePos.y, this.mouseDownViewportPos.y);
+          const x1 = Math.min(this.viewportMousePos.x as number, this.mouseDownViewportPos.x as number);
+          const y1 = Math.min(this.viewportMousePos.y as number, this.mouseDownViewportPos.y as number);
+          const x2 = Math.max(this.viewportMousePos.x as number, this.mouseDownViewportPos.x as number);
+          const y2 = Math.max(this.viewportMousePos.y as number, this.mouseDownViewportPos.y as number);
           if (n.x < x2 && n.y < y2 && n.x + n.width > x1 && n.y + n.height > y1) {
             this.secondarySelectedNodes.push(n);
           }
@@ -490,7 +533,7 @@ export default {
       }
     },
 
-    mouseUpPort(portId) {
+    mouseUpPort(portId: string) {
       if (!this.editable) return;
 
       var links = this.model._model.links;
@@ -499,7 +542,7 @@ export default {
         const pointIndex = this.draggedItem.pointIndex;
         const linkIndex = this.draggedItem.linkIndex;
 
-        if (this.$refs["port-" + portId][0].type === "in") {
+        if ((this.$refs["port-" + portId] as any)[0].type === "in") {
           const l = links[linkIndex].points.length;
           links[linkIndex].points.splice(pointIndex, l - this.draggedItem.pointIndex);
         } else {
@@ -512,8 +555,8 @@ export default {
         const port1Id = this.newLink.startPortId;
         const port2Id = portId;
 
-        const port1 = this.$refs["port-" + port1Id][0];
-        const port2 = this.$refs["port-" + port2Id][0];
+        const port1 = (this.$refs["port-" + port1Id] as any)[0];
+        const port2 = (this.$refs["port-" + port2Id] as any)[0];
 
         if (port1.type === "in" && port2.type === "out") {
           links.push({
@@ -543,11 +586,11 @@ export default {
       }
     },
 
-    startDragPoint(pointInfo) {
+    startDragPoint(pointInfo: undefined) {
       this.draggedItem = pointInfo;
     },
 
-    startDragItem(item, x, y) {
+    startDragItem(item: { index: undefined; type: undefined; } | undefined, x: number, y: number) {
       this.panEnabled = false;
       this.draggedItem = item;
       this.mainSelectedItem = item;
@@ -571,7 +614,7 @@ export default {
       this.magnetismAnchors = anchors;
     }
   },
-};
+});
 </script>
 <style scoped>
   svg{
@@ -579,7 +622,29 @@ export default {
     font-family: Helvetica;
   }
   .thumbViewClass {
+    position: absolute;
     width: 100px;
     height: 70px;
+    background: white;
+    border: 1px solid black;
+  }
+  .vue-diagrams :deep(.svg-pan-zoom__scope) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 120;
+  }
+  .vue-diagrams :deep(.svg-pan-zoom__thumbnail) {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+  .vue-diagrams :deep(.svg-pan-zoom__scope .scope) {
+    fill: red;
+    fill-opacity: 0.1;
+    stroke: red;
+    stroke-width: 2px;
   }
 </style>

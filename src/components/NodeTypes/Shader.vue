@@ -4,7 +4,7 @@
       :fill="color"
       x="0" y="0"
       rx="3" ry="3"
-      :width="nodeModel.width" :height="nodeModel.height"
+      :width="nodeModel?.width" :height="nodeModel?.height"
       class="node-dark-background"
     />
     <rect
@@ -12,7 +12,7 @@
       :fill-opacity="titleFillOpacity"
       x="2" y="2"
       rx="3" ry="3"
-      :width="nodeModel.width - 4" height="16"
+      :width="nodeModel?.width - 4" height="16"
       class="node-dark-background"
     />
     <text
@@ -23,7 +23,7 @@
       fill="#000000"
       ref="title"
       :style="options.titleStyle || ''"
-      @click="options.editableTitle ? $parent.$parent.$parent.editText(nodeModel, 'title', $refs.title) : undefined"
+      @click="options.editableTitle ? parentDiagram.editText(nodeModel, 'title', $refs.title) : undefined"
     >
       {{nodeModel.title}}
     </text>
@@ -63,8 +63,10 @@
     </g>
   </g>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   props: {
     nodeModel: {
       type: Object,
@@ -81,11 +83,14 @@ export default {
   },
   computed: {
     options () {
-      return this.nodeModel.options || {};
+      return this.nodeModel?.options || {};
     },
     color () {
-      return this.nodeModel.color || '#66cc00';
+      return this.nodeModel?.color || '#66cc00';
+    },
+    parentDiagram() {
+      return this.$parent?.$parent?.$parent;
     },
   },
-};
+});
 </script>

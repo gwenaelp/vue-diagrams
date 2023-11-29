@@ -1,14 +1,16 @@
 <template>
   <input type="text" class="text-input" :style="style" v-model="value" />
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   data () {
     return {
       style: 'display: none;',
-      object: undefined,
-      property: undefined,
-      element: undefined,
+      object: undefined as any,
+      property: '',
+      element: undefined as (HTMLElement & SVGElement) | undefined,
     };
   },
   computed: {
@@ -20,7 +22,7 @@ export default {
           return undefined;
         }
       },
-      set(v) {
+      set(v: string) {
         if (this.object) {
           this.object[this.property] = v;
           this.computeStyle();
@@ -52,7 +54,7 @@ export default {
       }
 
     },
-    editText(object, property, element) {
+    editText(object: any, property: string, element: HTMLElement & SVGElement) {
       this.object = object;
       this.property = property;
       this.element = element;
@@ -60,7 +62,7 @@ export default {
       //this.object[this.property] = this.value;
     }
   },
-}
+});
 </script>
 <style scoped>
 .text-input {

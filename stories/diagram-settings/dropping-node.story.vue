@@ -22,8 +22,8 @@ export default {
   },
   methods: {
     onDrop(event) {
-      const pan = this.$refs.diagram.$refs.svgpanzoom.spz.getPan();
-      const zoom = this.$refs.diagram.$refs.svgpanzoom.spz.getZoom();
+      const pan = this.$refs.diagram.spz.getPan();
+      const zoom = this.$refs.diagram.spz.getZoom();
       const x = pan.x * (1/zoom) * -1;
       const y = pan.y * (1/zoom) * -1;
       const n = this.model.addNode('Node', x, y);

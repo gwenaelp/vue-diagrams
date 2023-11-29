@@ -49,6 +49,5 @@ export default {
 .diagram >>> .thumbViewClass, .diagram >>> .thumbnail {
   width: 150px;
   height: 100px;
-  top: 5px;
 }
 </style>

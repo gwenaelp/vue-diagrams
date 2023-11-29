@@ -1,0 +1,77 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "exclude": ["src/**/__tests__/*"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+  // "compilerOptions": {
+  //   /* Basic Options */
+  //   "target": "es5",                       /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018', 'ES2019', 'ES2020', 'ES2021', or 'ESNEXT'. */
+  //   "module": "commonjs",                  /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
+  //   "lib": [],                             /* Specify library files to be included in the compilation. */
+  //   "allowJs": false,                      /* Allow JavaScript files to be a part of your program. By default, JavaScript files are ignored. */
+  //   "checkJs": false,                      /* Report errors in .js files. */
+  //   "jsx": "preserve",                     /* Specify JSX code generation: 'preserve', 'react-native', 'react', 'react-jsx', 'react-jsxdev', 'react-native-ts', or 'react-jsxdev'. */
+  //   "declaration": false,                  /* Generates corresponding '.d.ts' file. */
+  //   "sourceMap": false,                    /* Generates corresponding '.map' file. */
+  //   "outFile": "./",                       /* Concatenate and emit output to single file. */
+  //   "outDir": "./",                        /* Redirect output structure to the directory. */
+
+  //   /* Strict Type-Checking Options */
+  //   "strict": false,                       /* Enable all strict type-checking options. */
+  //   "noImplicitAny": false,                /* Raise error on expressions and declarations with an implied 'any' type. */
+  //   "strictNullChecks": false,             /* Enable strict null checks. */
+  //   "strictFunctionTypes": false,          /* Enable strict checking of function types. */
+  //   "strictBindCallApply": false,          /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
+  //   "strictPropertyInitialization": false, /* Enable strict checking of property initialization in classes. */
+  //   "noImplicitThis": false,               /* Raise error on 'this' expressions with an implied 'any' type. */
+  //   "alwaysStrict": false,                 /* Parse in strict mode and emit "use strict" for each source file. */
+
+  //   /* Additional Checks */
+  //   "noUnusedLocals": false,               /* Report errors on unused locals. */
+  //   "noUnusedParameters": false,           /* Report errors on unused parameters. */
+  //   "noImplicitReturns": false,            /* Report error when not all code paths in function return a value. */
+  //   "noFallthroughCasesInSwitch": false,   /* Report errors for fallthrough cases in switch statement. */
+  //   "noUncheckedIndexedAccess": false,     /* Include 'undefined' in index signature results. */
+
+  //   /* Module Resolution Options */
+  //   "moduleResolution": "node",            /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+  //   "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
+  //   "paths": {},                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
+
+  //   /* Experimental Options */
+  //   "experimentalDecorators": false,       /* Enables experimental support for ES7 decorators. */
+  //   "emitDecoratorMetadata": false,        /* Enables experimental support for emitting type metadata for decorators. */
+
+  //   /* Advanced Options */
+  //   "skipLibCheck": false,                 /* Skip type checking of declaration files. */
+  //   "forceConsistentCasingInFileNames": false, /* Disallow inconsistently-cased references to the same file. */
+  //   "resolveJsonModule": false,            /* Include modules imported with '.json' extension. */
+  //   "esModuleInterop": false,               /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. */
+  //   "preserveSymlinks": false,             /* Do not resolve the real path of symlinks. */
+  //   "allowSyntheticDefaultImports": false, /* Allow 'import x from y' when a module doesn't have a default export. */
+  //   "declarationMap": false,               /* Creates a sourcemap for each corresponding '.d.ts' file. */
+
+  //   /* Type Root Directories */
+  //   "typeRoots": [],                       /* List of folders to include type definitions from. */
+
+  //   /* Additional Parameters */
+  //   "listFiles": false,                    /* List all files part of the compilation. */
+  //   "downlevelIteration": false,           /* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */
+  //   "composite": false,                    /* Enable Project References. */
+  //   "tsBuildInfoFile": "./",               /* Specify the location where file for caching incremental compilation information should be stored. */
+
+  //   /* Source Map Options */
+  //   "sourceRoot": "",                      /* Specify the location where debugger should locate TypeScript files instead of source locations. */
+  //   "mapRoot": "",                         /* Specify the location where debugger should locate map files instead of generated locations. */
+  //   "inlineSourceMap": false,              /* Emit a single file with source maps instead of having a separate file. */
+  //   "inlineSources": false,                /* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
+
+  //   /* Experimental Flags */
+  //   "useDefineForClassFields": false,      /* Emit ECMAScript-standard-compliant class fields. */
+  // },
+}

@@ -11,8 +11,11 @@
     />
   </g>
 </template>
-<script>
-export default {
+<script lang="ts">
+import DiagramElement from '../mixins/DiagramElement';
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   name: 'DiagramPoint',
   props: {
     x: {
@@ -24,12 +27,13 @@ export default {
       required: true,
     },
   },
+  mixins: [DiagramElement],
   data() {
     return {
       hover: false,
       menu: [{
         label: 'Delete point',
-        handler() { this.$emit('delete'); },
+        handler: () => { this.$emit('delete'); },
       }],
     };
   },
@@ -41,5 +45,5 @@ export default {
       this.hover = false;
     },
   },
-};
+});
 </script>

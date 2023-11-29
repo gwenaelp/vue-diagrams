@@ -18,6 +18,7 @@
         <div v-if="menuItem.children" class="menu-item-children-container">
           <div
             v-for="(childItem, childItemKey) in menuItem.children"
+            :key="childItemKey"
             :class="`menu-item child-menu-item ${childItem.classes ? childItem.classes.join(' ') : ''}`"
             :data-menu-item-key="menuItemKey"
             :data-child-item-key="childItemKey"
@@ -29,56 +30,57 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  data () {
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  data (): any {
     return {
-      onContextMenu: (event) => {
+      onContextMenu: (event: Event) => {
         event.preventDefault();
       },
-      onMouseDown: (event) => {
-        const parentContextMenu = event.target.closest('.diagram-context-menu');
-        const parentDiagramElement = event.target.closest('.has-menu');
+      onMouseDown: (event: any): void => {
+        const component = this as any;
+        const parentContextMenu = event?.target.closest('.diagram-context-menu');
+        const parentDiagramElement = event?.target.closest('.has-menu');
         this.menuX = event.pageX;
         this.menuY = event.pageY;
+
         if (parentContextMenu) {
           event.stopPropagation();
           this.menuItemClick(event, this.showMenuComponent);
-          this.showMenuComponent = undefined;
+          component.showMenuComponent = undefined;
         } else if (parentDiagramElement && event.button === 2) {
-          this.showMenuComponent = parentDiagramElement.__vue__;
+          this.showMenuComponent = parentDiagramElement.vueComponent;
           event.stopPropagation();
         } else {
-          this.showMenuComponent = undefined;
-        }
-        if (!event.defaultPrevented) {
-          this.$parent.$el.dispatchEvent(event);
+          component.showMenuComponent = undefined;
         }
       },
       menuX: 0,
       menuY: 0,
-      showMenuComponent: undefined,
+      showMenuComponent: undefined as Function | undefined,
     };
   },
   mounted () {
-    this.$parent.$el.addEventListener('mousedown', this.onMouseDown, true);
+    this.$parent.$el.addEventListener('mousedown', this.onMouseDown, { capture: true });
     this.$parent.$el.addEventListener('contextmenu', this.onContextMenu);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.$parent.$el.removeEventListener('mousedown', this.onMouseDown);
     this.$parent.$el.addEventListener('contextmenu', this.onContextMenu);
   },
   methods: {
-    menuItemClick(event, component) {
-      const dataset = event.target.dataset
-      if(dataset.childItemKey) {
+    menuItemClick(event: any, component: any) {
+      const dataset = event?.target?.dataset;
+      if (dataset?.childItemKey) {
         component.menu[dataset.menuItemKey].children[dataset.childItemKey].handler.call(component);
       } else {
         component.menu[dataset.menuItemKey].handler.call(component);
       }
     },
   }
-}
+});
 </script>
 <style scoped>
 .menu, .menu-item-children-container {
