@@ -363,6 +363,29 @@
       "markdownFile": null
     },
     {
+      "id": "stories-nodes-card-story-vue",
+      "title": "Card nodes",
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/nodes/card.story.vue",
+      "supportPluginId": "vue3",
+      "treePath": [
+        "Custom nodes",
+        "Card nodes"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
       "id": "stories-nodes-images-story-vue",
       "title": "Image nodes",
       "layout": {
@@ -379,7 +402,7 @@
       "relativePath": "stories/nodes/images.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "Nodes",
+        "Custom nodes",
         "Image nodes"
       ],
       "virtual": false,
@@ -402,7 +425,7 @@
       "relativePath": "stories/nodes/styles.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "Nodes",
+        "Custom nodes",
         "Styles"
       ],
       "virtual": false,
@@ -425,7 +448,7 @@
       "relativePath": "stories/nodes/text-nodes.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "Nodes",
+        "Custom nodes",
         "Text nodes"
       ],
       "virtual": false,
