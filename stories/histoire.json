@@ -157,6 +157,28 @@
       "markdownFile": null
     },
     {
+      "id": "stories-websitedemo-story-vue",
+      "title": "Website Index Demo",
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/websiteDemo.story.vue",
+      "supportPluginId": "vue3",
+      "treePath": [
+        "Website Index Demo"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
       "id": "stories-api-manipulating-view-story-vue",
       "title": "Manipulating view",
       "layout": {
