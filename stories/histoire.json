@@ -2,7 +2,7 @@
   "stories": [
     {
       "id": "stories-basic-story-vue",
-      "title": "Simple",
+      "title": "Basic",
       "layout": {
         "type": "single",
         "iframe": true
@@ -17,7 +17,8 @@
       "relativePath": "stories/basic.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "Simple"
+        "Simple usage",
+        "Basic"
       ],
       "virtual": false,
       "markdownFile": null
@@ -39,6 +40,7 @@
       "relativePath": "stories/custom-port-position.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
+        "Simple usage",
         "Custom port position"
       ],
       "virtual": false,
@@ -61,6 +63,7 @@
       "relativePath": "stories/editable-titles.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
+        "Simple usage",
         "Editable titles"
       ],
       "virtual": false,
@@ -83,6 +86,7 @@
       "relativePath": "stories/layouts.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
+        "Advanced usage",
         "Layouts"
       ],
       "virtual": false,
@@ -90,7 +94,7 @@
     },
     {
       "id": "stories-menu-story-vue",
-      "title": "Basic",
+      "title": "Menus",
       "layout": {
         "type": "single",
         "iframe": true
@@ -105,8 +109,8 @@
       "relativePath": "stories/menu.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "Menu",
-        "Basic"
+        "Advanced usage",
+        "Menus"
       ],
       "virtual": false,
       "markdownFile": null
@@ -128,6 +132,7 @@
       "relativePath": "stories/resize.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
+        "Simple usage",
         "Resize nodes"
       ],
       "virtual": false,
@@ -135,7 +140,7 @@
     },
     {
       "id": "stories-serialization-deserialization-story-vue",
-      "title": "deserialization",
+      "title": "serialization",
       "layout": {
         "type": "single",
         "iframe": true
@@ -150,8 +155,8 @@
       "relativePath": "stories/serialization-deserialization.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "serialization",
-        "deserialization"
+        "Advanced usage",
+        "serialization"
       ],
       "virtual": false,
       "markdownFile": null
@@ -195,7 +200,7 @@
       "relativePath": "stories/API/manipulating-view.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "API",
+        "Advanced usage",
         "Manipulating view"
       ],
       "virtual": false,
@@ -218,7 +223,7 @@
       "relativePath": "stories/diagram-settings/custom-nodes.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "Diagram settings",
+        "Advanced usage",
         "Custom Nodes"
       ],
       "virtual": false,
@@ -226,7 +231,7 @@
     },
     {
       "id": "stories-diagram-settings-diagram-dimensions-story-vue",
-      "title": "Assigning dimensions",
+      "title": "Assigning diagram dimensions",
       "layout": {
         "type": "single",
         "iframe": true
@@ -241,8 +246,8 @@
       "relativePath": "stories/diagram-settings/diagram-dimensions.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "Diagram settings",
-        "Assigning dimensions"
+        "Simple usage",
+        "Assigning diagram dimensions"
       ],
       "virtual": false,
       "markdownFile": null
@@ -264,7 +269,7 @@
       "relativePath": "stories/diagram-settings/dropping-node.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "Diagram settings",
+        "Advanced usage",
         "Drop to create nodes"
       ],
       "virtual": false,
@@ -287,7 +292,7 @@
       "relativePath": "stories/diagram-settings/edit-locked.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "Diagram settings",
+        "Simple usage",
         "Edit locked"
       ],
       "virtual": false,
@@ -310,7 +315,7 @@
       "relativePath": "stories/diagram-settings/grid-snap.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "Diagram settings",
+        "Simple usage",
         "Grid snap"
       ],
       "virtual": false,
@@ -333,7 +338,7 @@
       "relativePath": "stories/diagram-settings/modes.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "Diagram settings",
+        "Advanced usage",
         "Edit modes"
       ],
       "virtual": false,
@@ -356,7 +361,7 @@
       "relativePath": "stories/diagram-settings/thumbnail.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
-        "Diagram settings",
+        "Simple usage",
         "Thumbnail"
       ],
       "virtual": false,
@@ -379,6 +384,7 @@
       "relativePath": "stories/nodes/card.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
+        "Advanced usage",
         "Custom nodes",
         "Card nodes"
       ],
@@ -402,6 +408,7 @@
       "relativePath": "stories/nodes/images.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
+        "Advanced usage",
         "Custom nodes",
         "Image nodes"
       ],
@@ -425,6 +432,7 @@
       "relativePath": "stories/nodes/styles.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
+        "Advanced usage",
         "Custom nodes",
         "Styles"
       ],
@@ -448,6 +456,7 @@
       "relativePath": "stories/nodes/text-nodes.story.vue",
       "supportPluginId": "vue3",
       "treePath": [
+        "Advanced usage",
         "Custom nodes",
         "Text nodes"
       ],
