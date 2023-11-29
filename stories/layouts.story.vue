@@ -1,5 +1,5 @@
 <template>
-  <Story title="Layouts">
+  <Story title="Advanced usage/Layouts">
     <button @click="doLayout">
       Tree layout (naive)
     </button>

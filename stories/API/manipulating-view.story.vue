@@ -1,5 +1,5 @@
 <template>
-  <Story title="API/Manipulating view">
+  <Story title="Advanced usage/Manipulating view">
     <diagram ref="diagram" :model="model" height="300" />
     <button @click="move1">
       Move to pos 1

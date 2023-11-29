@@ -1,5 +1,5 @@
 <template>
-  <Story title="Diagram settings/Assigning dimensions">
+  <Story title="Simple usage/Assigning diagram dimensions">
     <diagram :model="model" width="200" height="200" />
   </Story>
 </template>

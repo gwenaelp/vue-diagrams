@@ -1,5 +1,5 @@
 <template>
-  <Story title="Diagram settings/Edit locked">
+  <Story title="Simple usage/Edit locked">
     <diagram :model="model" height="300" :editable="false" />
   </Story>
 </template>

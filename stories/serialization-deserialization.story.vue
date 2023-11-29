@@ -1,5 +1,5 @@
 <template>
-  <Story title="serialization/deserialization">
+  <Story title="Advanced usage/serialization">
     <div>
       <diagram :model="model" height="700"/>
       <button @click="console.log(model.serialize())">serialize</button>

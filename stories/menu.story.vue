@@ -1,5 +1,5 @@
 <template>
-  <Story title="Menu/Basic">
+  <Story title="Advanced usage/Menus">
     <div style="background: whitesmoke; padding: 20px; margin-bottom: 20px;">
       Right click on nodes and link to show the edit menu
     </div>

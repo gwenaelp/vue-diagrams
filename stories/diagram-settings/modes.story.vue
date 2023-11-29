@@ -1,5 +1,5 @@
 <template>
-  <Story title="Diagram settings/Edit modes">
+  <Story title="Advanced usage/Edit modes">
     <a :class="mode === 'move' ? 'is-active': ''" @click="mode = 'move'">
       Move
     </a>

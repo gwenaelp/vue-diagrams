@@ -1,5 +1,5 @@
 <template>
-  <Story title="Custom port position">
+  <Story title="Simple usage/Custom port position">
     <diagram :model="model" height="700" />
   </Story>
 </template>

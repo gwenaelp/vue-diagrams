@@ -1,5 +1,5 @@
 <template>
-  <Story title="Resize nodes">
+  <Story title="Simple usage/Resize nodes">
     <div>
       <button @click="toggleResizable">
         Toggle resizable ({{resizableNode.options.resizable ? 'On': 'Off'}})

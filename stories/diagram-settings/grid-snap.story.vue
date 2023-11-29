@@ -1,5 +1,5 @@
 <template>
-  <Story title="Diagram settings/Grid snap">
+  <Story title="Simple usage/Grid snap">
     <diagram :model="model" gridSnap="16" />
   </Story>
 </template>

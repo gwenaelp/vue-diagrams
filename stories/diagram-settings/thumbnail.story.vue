@@ -1,5 +1,5 @@
 <template>
-  <Story title="Diagram settings/Thumbnail">
+  <Story title="Simple usage/Thumbnail">
     <diagram class="diagram" :model="model" width="700" height="500" show-thumbnail />
   </Story>
 </template>

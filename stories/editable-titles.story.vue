@@ -1,5 +1,5 @@
 <template>
-  <Story title="Editable titles">
+  <Story title="Simple usage/Editable titles">
     <diagram :model="model" height="700" />
   </Story>
 </template>

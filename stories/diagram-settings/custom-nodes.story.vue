@@ -1,5 +1,5 @@
 <template>
-  <Story title="Diagram settings/Custom Nodes" :setup-app="mySetupApp">
+  <Story title="Advanced usage/Custom Nodes" :setup-app="mySetupApp">
     <diagram :model="model" height="300" />
   </Story>
 </template>
