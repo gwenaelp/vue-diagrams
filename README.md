@@ -3,6 +3,8 @@
 > Diagram component for vue.js, inspired by react-diagrams
 
 ![](./images/example1.png)
+![](./images/example2.png)
+![](./images/example3.png)
 
 [See the website for documentation and demos](https://vue-diagrams.js.org/)
 
