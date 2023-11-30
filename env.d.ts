@@ -15,5 +15,5 @@ declare interface Point {
 declare interface ClickEvent {
   x: number,
   y: number,
-  target: any,
+  target: EventTarget,
 }

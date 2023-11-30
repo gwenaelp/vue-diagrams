@@ -55,7 +55,7 @@ class DiagramModel {
   /**
    * Adds a link between two ports
    */
-  addLink(from: number, to: number, points:Array<any> = [], options = {}) {
+  addLink(from: number, to: number, points:Array<Point> = [], options = {}) {
     this._model.links.push({
       id: generateId(),
       from: from,

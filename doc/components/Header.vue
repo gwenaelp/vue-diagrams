@@ -6,7 +6,9 @@
         <NuxtLink to="/doc">Docs (soon)</NuxtLink>
         <a href="stories">Examples</a>
         <span style="flex-grow: 1" />
-        <a href="https://github.com/gwenaelp/vue-diagrams">
+        <a href="https://github.com/gwenaelp/vue-diagrams" style="display: flex; gap: 14px; align-items: center;">
+          <img src="https://img.shields.io/github/forks/gwenaelp/vue-diagrams" alt="forks" />
+          <img src="https://img.shields.io/github/stars/gwenaelp/vue-diagrams" alt="stars" />
           <i class="mdi mdi-github mdi-24px" />
         </a>
       </div>
