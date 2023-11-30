@@ -163,11 +163,6 @@ declare interface SVGElement {
 
 declare type SvgInHtml = HTMLElement & SVGElement;
 
-declare interface Point {
-  x: number,
-  y: number,
-}
-
 
 const generateId = () => {
   return Math.trunc(Math.random() * 1000);

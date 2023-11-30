@@ -7,11 +7,6 @@ declare namespace SvgPanZoom {
 }
 
 
-declare interface Point {
-  x: number,
-  y: number,
-}
-
 declare interface ClickEvent {
   x: number,
   y: number,
