@@ -6,7 +6,8 @@
   "license": "MIT",
   "main": "dist/vue-diagrams.js",
   "files": [
-    "src"
+    "src",
+    "dist/style.css"
   ],
   "author": "Gwenael Pluchon",
   "repository": {

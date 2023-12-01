@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 //https://github.com/bcakmakoglu/vue-flow/blob/master/docs/components/DocsRepl.vue
-import type { SFCOptions } from '@vue/repl';
+import { watch } from 'vue';
 import { ReplStore, Repl as VueRepl } from '@vue/repl';
 import '@vue/repl/style.css';
 import { exampleImports } from '../examples';
@@ -43,13 +43,47 @@ await store.setFiles(
 )
 
 // pre-set import map
-const diagram =
 store.setImportMap({
   imports: {
     'vue-diagrams': 'https://unpkg.com/vue-diagrams@latest',
     ...additionalImports,
   },
 } as any);
+
+
+watch(() => props.example, async (newExample) => {
+  // Handle the case where the "example" prop changes
+  // You may want to update the REPL environment or take other actions
+
+  // For example, update the files and imports based on the new example
+  let newImports = exampleImports[newExample];
+  const newFiles: Record<string, (typeof imports)[keyof typeof imports]> = {};
+  let newCss = '';
+
+  for (const example of Object.keys(newImports).filter((i) => i !== 'additionalImports')) {
+    if (example.includes('css')) {
+      newCss += `${newImports[example as keyof typeof newImports]}`
+    } else {
+      newFiles[example] = newImports[example as keyof typeof newImports];
+    }
+  }
+
+  await store.setFiles(
+    {
+      ...newFiles,
+      'main.css': newCss,
+    },
+    props.mainFile ?? 'App.vue',
+  );
+
+  const additionalImports: Object = ('additionalImports' in imports ? imports.additionalImports : {}) as Object;
+  store.setImportMap({
+    imports: {
+      'vue-diagrams': 'https://unpkg.com/vue-diagrams@latest',
+      ...additionalImports,
+    },
+  } as any);
+});
 
 </script>
 
@@ -72,7 +106,6 @@ store.setImportMap({
 
 .vue-repl {
   --vh: 100vh;
-  margin-top: 52px;
   height: calc(var(--vh) - 72px);
 }
 </style>

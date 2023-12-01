@@ -54,6 +54,7 @@ import example2 from '../../images/example2.png';
 import example3 from '../../images/example3.png';
 </script>
 <style scoped>
+
 .hero {
   display: block;
   color: white;
