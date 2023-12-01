@@ -5,6 +5,7 @@
         <NuxtLink to="/" class="logo">Vue-diagrams</NuxtLink>
         <NuxtLink to="/guides">Guides</NuxtLink>
         <a href="stories">StoryBook</a>
+        <a href="playground">REPL playground</a>
         <span style="flex-grow: 1" />
         <a href="https://github.com/gwenaelp/vue-diagrams" style="display: flex; gap: 14px; align-items: center;">
           <img src="https://img.shields.io/github/forks/gwenaelp/vue-diagrams" alt="forks" />
@@ -25,7 +26,7 @@
   left: 0;
   right: 0;
   background: white;
-  box-shadow: 0px 0px 29px -8px rgb(0 0 0 / 75%);
+  box-shadow: 0px 0px 15px -8px rgb(0 0 0 / 75%);
   z-index: 10;
 }
 .container {

@@ -22,8 +22,8 @@
     <section>
       <div class="container">
         <h2>Examples</h2>
-        <img :src="example2" style="max-width: 100%;"/>
-        <img :src="example3" style="max-width: 100%;"/>
+        <img :src="example2" style="max-width: 100%;" />
+        <img :src="example3" style="max-width: 100%;" />
       </div>
     </section>
     <section>
