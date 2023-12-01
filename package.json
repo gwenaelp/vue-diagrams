@@ -2,7 +2,7 @@
   "name": "vue-diagrams",
   "description": "Diagram component for vue.js, inspired by react-diagrams",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "main": "dist/vue-diagrams.js",
   "files": [
