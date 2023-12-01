@@ -1,9 +1,10 @@
 {
   "name": "vue-diagrams",
   "description": "Diagram component for vue.js, inspired by react-diagrams",
-  "version": "0.0.1-development",
+  "type": "module",
+  "version": "1.0.0",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "dist/vue-diagrams.js",
   "files": [
     "src"
   ],

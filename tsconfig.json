@@ -1,7 +1,7 @@
 // tsconfig.app.json
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "include": ["global.d.ts", "src/**/*", "src/**/*.vue", "node_modules/vue-svg-pan-zoom/dist/types/index.d.ts"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,

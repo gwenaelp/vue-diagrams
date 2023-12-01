@@ -3,7 +3,7 @@
     <div class="header">
       <div class="container">
         <NuxtLink to="/" class="logo">Vue-diagrams</NuxtLink>
-        <NuxtLink to="/doc">Docs (soon)</NuxtLink>
+        <NuxtLink to="/guides">Guides</NuxtLink>
         <a href="stories">StoryBook</a>
         <span style="flex-grow: 1" />
         <a href="https://github.com/gwenaelp/vue-diagrams" style="display: flex; gap: 14px; align-items: center;">

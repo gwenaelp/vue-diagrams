@@ -20,6 +20,13 @@
       </div>
     </section>
     <section>
+      <div class="container">
+        <h2>Examples</h2>
+        <img :src="example2" style="max-width: 100%;"/>
+        <img :src="example3" style="max-width: 100%;"/>
+      </div>
+    </section>
+    <section>
       <div class="container features-list">
         <h2>Features</h2>
         <div class="feature">
@@ -42,6 +49,10 @@
     </section>
   </div>
 </template>
+<script setup>
+import example2 from '../../images/example2.png';
+import example3 from '../../images/example3.png';
+</script>
 <style scoped>
 .hero {
   display: block;
