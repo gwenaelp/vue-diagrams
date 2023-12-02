@@ -1,13 +1,9 @@
 <template>
-  <div style="background: whitesmoke; padding: 20px; margin-bottom: 20px;">
-    Right click on nodes and link to show the edit menu
-  </div>
-  <diagram :model="model" height="700" show-menu />
+  <diagram :model="model" gridSnap="16" />
 </template>
 
 <script>
 import { Diagram } from "vue-diagrams";
-import "vue-diagrams";
 
 export default {
   components: {
@@ -33,7 +29,7 @@ export default {
     diagramModel.addLink(node3OutPort, inPort);
 
     return {
-      model: diagramModel,
+      model: diagramModel
     };
   },
 };

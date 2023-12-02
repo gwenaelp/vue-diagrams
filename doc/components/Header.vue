@@ -4,8 +4,7 @@
       <div class="container">
         <NuxtLink to="/" class="logo">Vue-diagrams</NuxtLink>
         <NuxtLink to="/guides">Guides</NuxtLink>
-        <a href="stories">StoryBook</a>
-        <a href="playground">REPL playground</a>
+        <a href="/playground">StoryBook</a>
         <span style="flex-grow: 1" />
         <a href="https://github.com/gwenaelp/vue-diagrams" style="display: flex; gap: 14px; align-items: center;">
           <img src="https://img.shields.io/github/forks/gwenaelp/vue-diagrams" alt="forks" />

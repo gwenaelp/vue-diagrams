@@ -22,7 +22,7 @@ const store = new ReplStore({
 
 
 const files: Record<string, (typeof imports)[keyof typeof imports]> = {}
-const imports = exampleImports[props.example]
+const imports = exampleImports[props.example].files
 const additionalImports: Object = ('additionalImports' in imports ? imports.additionalImports : {}) as Object;
 
 for (const example of Object.keys(imports).filter((i) => i !== 'additionalImports')) {
@@ -56,9 +56,9 @@ watch(() => props.example, async (newExample) => {
   // You may want to update the REPL environment or take other actions
 
   // For example, update the files and imports based on the new example
-  let newImports = exampleImports[newExample];
+  let newImports = exampleImports[newExample].files;
   const newFiles: Record<string, (typeof imports)[keyof typeof imports]> = {};
-  let newCss = '';
+  let newCss = `@import url('https://unpkg.com/vue-diagrams@latest/dist/style.css')`;
 
   for (const example of Object.keys(newImports).filter((i) => i !== 'additionalImports')) {
     if (example.includes('css')) {

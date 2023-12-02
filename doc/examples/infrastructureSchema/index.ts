@@ -1,1 +1,8 @@
-export { default as InfrastructureSchemaApp } from './App.vue?raw'
+import InfrastructureSchemaApp from './App.vue?raw'
+
+export default {
+  section: 'Demo',
+  files: {
+    'App.vue': InfrastructureSchemaApp,
+  }
+};

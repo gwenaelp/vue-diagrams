@@ -6,7 +6,7 @@
           <h1 class="title"> An easy to use diagram editor component</h1>
           <p>Diagram component for vue.js, inspired by react-diagrams</p>
           <p class="vue-versions">For Vue <a href="https://github.com/gwenaelp/vue-diagrams/tree/vue2">2</a> & <a href="https://github.com/gwenaelp/vue-diagrams">3</a>!</p>
-          <DiagramDemo />
+          <Repl class="repl" example="playground" />
         </div>
       </div>
     </section>
@@ -52,6 +52,7 @@
 <script setup>
 import example2 from '../../images/example2.png';
 import example3 from '../../images/example3.png';
+import Repl from '../components/Repl.vue';
 </script>
 <style scoped>
 

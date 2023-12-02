@@ -1,13 +1,10 @@
 <template>
-  <div style="background: whitesmoke; padding: 20px; margin-bottom: 20px;">
-    Right click on nodes and link to show the edit menu
-  </div>
-  <diagram :model="model" height="700" show-menu />
+  <diagram :model="model" height="700"/>
+  <button @click="console.log(model.serialize())">serialize</button>
+  <button @click="model.deserialize(serializedModel)">deserialize</button>
 </template>
-
 <script>
 import { Diagram } from "vue-diagrams";
-import "vue-diagrams";
 
 export default {
   components: {
@@ -27,13 +24,14 @@ export default {
     const node3 = diagramModel.addNode("test3", 10, 100, 72, 100);
     const node3OutPort = node3.addOutPort("testOut3");
     node3.color = "#cc6600";
-    node3.deletable = false;
 
     diagramModel.addLink(node2OutPort, inPort);
     diagramModel.addLink(node3OutPort, inPort);
 
     return {
-      model: diagramModel,
+      console,
+      serializedModel: diagramModel.serialize(),
+      model: diagramModel
     };
   },
 };

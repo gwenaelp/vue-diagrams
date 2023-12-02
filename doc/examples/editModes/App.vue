@@ -1,13 +1,15 @@
 <template>
-  <div style="background: whitesmoke; padding: 20px; margin-bottom: 20px;">
-    Right click on nodes and link to show the edit menu
-  </div>
-  <diagram :model="model" height="700" show-menu />
+  <button :class="mode === 'move' ? 'is-active': ''" @click="mode = 'move'">
+    Move
+  </button>
+  <button :class="mode === 'select' ? 'is-active': ''" @click="mode = 'select'">
+    Select
+  </button>
+  <diagram ref="diagram" :model="model" height="400" />
 </template>
 
 <script>
 import { Diagram } from "vue-diagrams";
-import "vue-diagrams";
 
 export default {
   components: {
@@ -34,7 +36,35 @@ export default {
 
     return {
       model: diagramModel,
+      diagram: undefined,
     };
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.diagram = this.$refs.diagram;
+    });
+  },
+  computed: {
+    mode: {
+      get() {
+        return this.diagram ? this.diagram.mode : undefined;
+      },
+      set(v) {
+        if(this.diagram)
+          this.diagram.mode = v;
+      }
+    },
+  },
 };
+
 </script>
+<style scoped>
+  button {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  button.is-active {
+    font-weight: bold;
+  }
+</style>
