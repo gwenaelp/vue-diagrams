@@ -1,7 +1,7 @@
 <template>
-  <diagram :model="model" height="700"/>
   <button @click="console.log(model.serialize())">serialize</button>
   <button @click="model.deserialize(serializedModel)">deserialize</button>
+  <diagram :model="model" height="700"/>
 </template>
 <script>
 import { Diagram } from "vue-diagrams";

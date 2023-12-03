@@ -1,5 +1,6 @@
 {
   "name": "vue-diagrams",
+  "title": "An easy to use diagram editor component",
   "description": "Diagram component for vue.js, inspired by react-diagrams",
   "type": "module",
   "version": "1.0.1",
@@ -17,12 +18,20 @@
   "bugs": {
     "url": "https://github.com/gwenaelp/vue-diagrams/issues"
   },
+  "examples": [
+    "images/example2.png",
+    "images/example3.png"
+  ],
   "homepage": "https://github.com/gwenaelp/vue-diagrams#readme",
   "keywords": [
     "vue",
     "vue-component",
     "vue-library"
   ],
+  "vueVersions": {
+    "2": "https://github.com/gwenaelp/vue-diagrams/tree/vue2",
+    "3": "https://github.com/gwenaelp/vue-diagrams"
+  },
   "engines": {
     "node": ">=8.9.0"
   },

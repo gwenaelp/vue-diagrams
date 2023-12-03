@@ -19,7 +19,6 @@ type ExampleImports = {
   [key: string]: any;
 }
 
-
 export const exampleImports: Record<string, any> = {
   playground,
   shader,
