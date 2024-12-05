@@ -116,6 +116,28 @@
       "markdownFile": null
     },
     {
+      "id": "stories-port-tooltips-story-vue",
+      "title": "Port tooltips",
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/port-tooltips.story.vue",
+      "supportPluginId": "vue3",
+      "treePath": [
+        "Port tooltips"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
       "id": "stories-resize-story-vue",
       "title": "Resize nodes",
       "layout": {
@@ -459,6 +481,28 @@
         "Advanced usage",
         "Custom nodes",
         "Text nodes"
+      ],
+      "virtual": false,
+      "markdownFile": null
+    },
+    {
+      "id": "stories-shaders-shadernodes-story-vue",
+      "title": "Shader nodes",
+      "layout": {
+        "type": "single",
+        "iframe": true
+      },
+      "docsOnly": false,
+      "variants": [
+        {
+          "id": "_default",
+          "title": "default"
+        }
+      ],
+      "relativePath": "stories/shaders/ShaderNodes.story.vue",
+      "supportPluginId": "vue3",
+      "treePath": [
+        "Shader nodes"
       ],
       "virtual": false,
       "markdownFile": null
