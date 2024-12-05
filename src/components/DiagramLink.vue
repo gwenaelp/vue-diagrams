@@ -4,7 +4,6 @@
       v-if="points && points.length"
       @mouseenter="mouseEnter"
       @mouseleave="mouseLeave"
-      @mousedown="mouseDown"
     >
       <g
         v-for="(point, index) in points"
@@ -20,7 +19,7 @@
         <line
           :x1="index === 0 ? x1 : points[index - 1].x" :y1="index === 0 ? y1 : points[index - 1].y"
           :x2="point.x" :y2="point.y"
-          style="stroke:rgb(0,0,0);"
+          class="link-line"
           stroke-width="2"
         />
       </g>
@@ -34,7 +33,7 @@
         <line
           :x1="points[points.length - 1].x" :y1="points[points.length - 1].y"
           :x2="x2" :y2="y2"
-          style="stroke:rgb(0,0,0);"
+          class="link-line"
           stroke-width="2"
         />
       </g>
@@ -43,7 +42,6 @@
       v-else
       @mouseenter="mouseEnter"
       @mouseleave="mouseLeave"
-      @mousedown="mouseDown"
     >
       <g @mousedown="mouseDownSegment($event, 0)">
         <path
@@ -55,7 +53,7 @@
         <path
           :d="curve"
           ref="curvePath"
-          style="stroke:rgb(0,0,0);"
+          class="link-line"
           stroke-width="2"
           fill="none"
         />
@@ -75,6 +73,7 @@
 <script lang="ts">
 import DiagramPoint from "./DiagramPoint.vue";
 import { defineComponent } from 'vue';
+import DiagramElement from '../mixins/DiagramElement';
 
 type Point = {
   x: number,
@@ -83,11 +82,12 @@ type Point = {
 
 export default defineComponent({
   name: 'DiagramLink',
-  props: ['positionFrom', 'positionTo', 'id', 'index', 'points', 'options'],
+  props: ['positionFrom', 'positionTo', 'id', 'index', 'points', 'options', 'linkModel', 'diagram'],
 
   components: {
     DiagramPoint
   },
+  mixins: [DiagramElement],
 
   data() {
     return {
@@ -99,7 +99,7 @@ export default defineComponent({
       menu: [{
         label: 'Delete link',
         handler() {
-          //this.deleteLink();
+          this.deleteLink();
         },
       }],
     };
@@ -110,7 +110,7 @@ export default defineComponent({
     },
 
     y1() {
-      return this.positionFrom.y - 4;
+      return this.positionFrom.y - 8;
     },
 
     x2() {
@@ -118,15 +118,15 @@ export default defineComponent({
     },
 
     y2() {
-      return this.positionTo.y - 4;
+      return this.positionTo.y - 8;
     },
 
     curve() {
-      if(this.positionFrom.x && this.positionFrom.y && this.positionTo.x && this.positionTo.y) {
-        var x1 = Math.trunc(this.positionFrom.x),
-          y1 = Math.trunc(this.positionFrom.y - 4),
-          x2 = Math.trunc(this.positionTo.x - 4),
-          y2 = Math.trunc(this.positionTo.y - 4);
+      if(this.x1 && this.y1 && this.x2 && this.y2) {
+        let x1 = Math.trunc(this.x1),
+          y1 = Math.trunc(this.y1),
+          x2 = Math.trunc(this.x2),
+          y2 = Math.trunc(this.y2);
 
         const distance = Math.trunc(4 * Math.sqrt(Math.abs(x1 - x2)));
         const path = `M${x1},${y1} C${x1 + distance},${y1} ${x2 -
@@ -137,8 +137,8 @@ export default defineComponent({
   },
   methods: {
     refreshLink() {},
-    deleteLink: function() {
-      this.$emit("delete");
+    deleteLink () {
+      this.diagram.deleteLink(this.linkModel);
     },
 
     mouseEnter() {
@@ -157,10 +157,10 @@ export default defineComponent({
         pointIndex
       });
     },
-    mouseDown(/*pos*/) {},
     mouseDownSegment(pos: Point, segmentIndex: number) {
       if(!(this.$parent?.$parent as any).editable) return;
-
+      if(pos.button === 2) return;
+      console.log('pos', pos);
       this.createPoint(pos.x, pos.y, segmentIndex);
       this.mouseDownPoint(pos, segmentIndex);
     },
@@ -170,3 +170,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.link-line {
+  stroke: rgb(0,0,0);
+}
+</style>

@@ -1,21 +1,21 @@
 // @ts-check
 import DiagramNode from "./DiagramNode";
-
-var generateId = function() {
-  return Math.trunc(Math.random() * 1000);
-};
+import Emitter from 'tiny-emitter';
+import generateId from './generateId.ts';
 
 /**
  * @class DiagramModel
  */
 class DiagramModel {
   private _model: any;
+  public emitter: any;
 
   constructor() {
     this._model = {
       nodes: [],
       links: [],
     };
+    this.emitter = new Emitter();
   }
 
   /**
@@ -35,20 +35,24 @@ class DiagramModel {
     for (let j = 0; j < this._model.links.length; j++) {
       const currentLink = this._model.links[j];
 
-      for (let i = 0; i < node.ports.length; i++) {
-        const currentPort = node.ports[i];
+      if (node.ports.length) {
+        for (let i = 0; i < node.ports.length; i++) {
+          const currentPort = node.ports[i];
 
-        if (currentLink.from === currentPort.id || currentLink.to === currentPort.id) {
-          this.deleteLink(currentLink);
-          j--;
+          if (currentLink.from === currentPort.id || currentLink.to === currentPort.id) {
+            this.deleteLink(currentLink);
+            j--;
+          }
         }
       }
     }
+    this.emitter.emit('deleteNode', node);
     this._model.nodes.splice(index, 1);
   }
 
   deleteLink(link: Object) { //FIXME link
     const index = this._model.links.indexOf(link);
+    this.emitter.emit('deleteLink', link);
     this._model.links.splice(index, 1);
   }
 
@@ -65,23 +69,55 @@ class DiagramModel {
       points,
       options,
     });
+    return this._model.links[this._model.links.length - 1];
   }
 
   /**
    * Serializes the diagram model into a JSON object
-   * @return {Object} The diagram model
+   * @return {string} The diagram model as a string
    */
   serialize() {
-    //FIXME
-    //return JSON.stringify(this._model);
+    const res = {
+      nodes: [],
+      links: [],
+    }
+    for (let n of this._model.nodes) {
+      const serializedNode = {};
+      for(let k of Object.keys(n)) {
+        if(k !== 'diagram') {
+          serializedNode[k] = n[k];
+        }
+      }
+      res.nodes.push(serializedNode);
+    }
+    for (let l of this._model.links) {
+      const serializedLink = {};
+      for(let k of Object.keys(l)) {
+        if(k !== 'diagram') {
+          serializedLink[k] = l[k];
+        }
+      }
+      res.links.push(serializedLink);
+    }
+
+    return JSON.stringify(res);
   }
 
   /**
    * Load into the diagram model a serialized diagram
-   * @param  {Object} serializedModel
+   * @param  {string} serializedModel
    */
   deserialize(serializedModel: string) {
     this._model = JSON.parse(serializedModel);
+    for(let i = 0 ; i <= this._model.nodes.length; i++) {
+      const newNode = this._model.nodes[i];
+      if (newNode) {
+        this._model.nodes[i] = new DiagramNode(this, newNode.id, newNode.title);
+        for (let k of Object.keys(newNode)) {
+          this._model.nodes[i][k] = newNode[k];
+        }
+      }
+    }
   }
 }
 

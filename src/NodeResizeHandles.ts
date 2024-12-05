@@ -15,14 +15,14 @@ const directions = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
   constructor(container: HTMLElement, width: number, height: number, startDragHandler?: (event: any) => void) {
     this.container = container;
     container.innerHTML = `
-      <rect class="resize-handle edge" data-direction="nw" x="-2" y="-5" width="5" height="5" />
-      <rect class="resize-handle" data-direction="n" x="0" y="-3" height="3" />
-      <rect class="resize-handle edge" data-direction="ne" y="-5" width="5" height="5" />
-      <rect class="resize-handle" data-direction="e" y="0" width="3" />
-      <rect class="resize-handle edge" data-direction="se" width="5" height="5" />
-      <rect class="resize-handle" data-direction="s" x="0" height="3" />
-      <rect class="resize-handle edge" data-direction="sw" x="-2" width="5" height="5" />
-      <rect class="resize-handle" data-direction="w" x="-2" y="0" width="3" />
+      <rect class="resize-handle edge nw" data-direction="nw" x="-2" y="-5" width="5" height="5" />
+      <rect class="resize-handle horizontal n" data-direction="n" x="0" y="-3" height="3" />
+      <rect class="resize-handle edge ne" data-direction="ne" y="-5" width="5" height="5" />
+      <rect class="resize-handle vertical e" data-direction="e" y="0" width="3" />
+      <rect class="resize-handle edge se" data-direction="se" width="5" height="5" />
+      <rect class="resize-handle horizontal s" data-direction="s" x="0" height="3" />
+      <rect class="resize-handle edge sw" data-direction="sw" x="-2" width="5" height="5" />
+      <rect class="resize-handle vertical w" data-direction="w" x="-2" y="0" width="3" />
     `;
 
     this.startDragHandler = startDragHandler;

@@ -4,11 +4,12 @@
     <TextInput ref="textInput" />
     <SvgPanZoom
       ref="svgpanzoom"
-      :style="{ width: width + 'px', height: height + 'px', border:'1px solid black'}"
+      class="svgpanzoom"
+      :style="{ width: width + 'px', height: height + 'px'}"
       :zoomEnabled="zoomEnabled"
       id="svgroot"
       :panEnabled="panEnabled"
-      :controlIconsEnabled="true"
+      :controlIconsEnabled="false"
       :fit="false"
       :center="true"
       viewportSelector="#svgroot2"
@@ -32,11 +33,11 @@
       >
         <defs>
           <pattern id="smallGrid" width="16" height="16" patternUnits="userSpaceOnUse">
-            <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#ccc" stroke-width="1"/>
+            <path d="M 16 0 L 0 0 0 16" fill="none" stroke-width="1"/>
           </pattern>
           <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
             <rect width="80" height="80" fill="url(#smallGrid)"/>
-            <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1"/>
+            <path d="M 80 0 L 0 0 0 80" fill="none" stroke-width="1"/>
           </pattern>
         </defs>
 
@@ -48,7 +49,7 @@
           width="10000px"
           height="10000px"
           fill="url(#grid)"
-          @mousedown="clearSelection"
+          @mousedown="mode !== 'select' ? detectClickOnBg($event) : undefined"
         />
         <g ref="viewPort" id="viewport" x="50" y="50">
           <DiagramLink
@@ -60,6 +61,8 @@
             :key="link.id"
             :index="index"
             :options="link.options"
+            :linkModel="link"
+            :diagram="model"
             v-for="(link, index) in model._model.links"
             @onStartDrag="startDragPoint"
             @onCreatePoint="createPoint"
@@ -67,7 +70,7 @@
           />
           <line
             :x1="getPortHandlePosition(newLink.startPortId)?.x"
-            :y1="getPortHandlePosition(newLink.startPortId)?.y"
+            :y1="getPortHandlePosition(newLink.startPortId)?.y - 8"
             :x2="convertXYtoViewPort(mouseX, 0).x"
             :y2="convertXYtoViewPort(0, mouseY).y"
             style="stroke:rgb(255,0,0);stroke-width:2"
@@ -77,6 +80,7 @@
             :ref="'node-' + nodeIndex"
             :title="node.title"
             :nodeModel="node"
+            :diagram="model"
             :x="node.x"
             :y="node.y"
             :id="node.id"
@@ -84,6 +88,7 @@
             :width="node.width"
             :height="node.height"
             :ports="node.ports"
+            :mainSelection="mainSelectedItem.type === 'nodes' && mainSelectedItem.node.id === node.id"
             :selected="(mainSelectedItem.type === 'nodes' && mainSelectedItem.index === nodeIndex) || secondarySelectedNodes.indexOf(node) !== -1"
             :options="node.options"
             :index="nodeIndex"
@@ -91,18 +96,24 @@
             @onStartDrag="startDragItem"
             @delete="model.deleteNode(node)"
           >
-            <DiagramPort
-              v-for="(port, portIndex) in node.ports"
-              :key="portIndex"
-              :ref="'port-' + port.id"
-              :id="port.id"
-              :nodeIndex="nodeIndex"
-              :y="portIndex * 20"
-              :node="node"
-              :port="port"
-              @onStartDragNewLink="startDragNewLink"
-              @mouseUpPort="mouseUpPort"
-            />
+            <foreignObject :width="node.width + 30" x="-15" height="3000" y="20">
+              <body xmlns="http://www.w3.org/1999/xhtml" style="margin: 0;">
+                <div class="diagram-node-content-wrapper">
+                  <DiagramPort
+                    v-for="(port, portIndex) in node.ports"
+                    :key="portIndex"
+                    :ref="'port-' + port.id"
+                    :id="port.id"
+                    :nodeIndex="nodeIndex"
+                    :y="portIndex * 20"
+                    :node="node"
+                    :port="port"
+                    @onStartDragNewLink="startDragNewLink"
+                    @mouseUpPort="mouseUpPort"
+                  />
+                </div>
+              </body>
+            </foreignObject>
           </DiagramNode>
           <rect
             v-if="mode === 'select' && mouseButtonIsPressed"
@@ -133,6 +144,8 @@
             :id="link.id"
             :index="index"
             :options="link.options"
+            :linkModel="link"
+            :diagram="model"
             v-for="(link, index) in model._model.links"
             :key="index"
           />
@@ -162,19 +175,13 @@ declare interface SVGElement {
 }
 
 declare type SvgInHtml = HTMLElement & SVGElement;
+//this.$parent?.$parent?.$emit('deleteLink', this.linkModel);
 
 
 const generateId = () => {
   return Math.trunc(Math.random() * 1000);
 };
 
-const getAbsoluteXY = (element: { getBoundingClientRect: () => any; }) => {
-  var viewportElement = document.documentElement;
-  var box = element.getBoundingClientRect();
-  var x = box.left;
-  var y = box.top;
-  return { x, y };
-}
 
 const snapToGrip = (val: number, gridSize: number) => {
   return gridSize * Math.round(val / gridSize);
@@ -184,6 +191,10 @@ export default defineComponent({
   name: 'Diagram',
   Model: DiagramModel,
   props: {
+    defaultNodeType: {
+      type: String,
+      default: 'shader',
+    },
     model: {
       type: Object,
       required: true
@@ -263,6 +274,7 @@ export default defineComponent({
   watch: {
     mode: {
       handler (v) {
+        this.$emit('changeMode', v);
         this.$nextTick(() => {
           if (v === 'move') {
             if (this.panEnabled) {
@@ -273,6 +285,22 @@ export default defineComponent({
           } else {
             this.spz?.disablePan();
           }
+        });
+      },
+      immediate: true,
+    },
+    'model': {
+      handler(newV, oldV) {
+        newV.emitter.on('deleteNode', (n) => {
+          this.notifyDeleteNode(n);
+        });
+        newV.emitter.on('deletePort', (n) => {
+          //this.notifyDeleteNode(n);
+          this.updateLinksPositions();
+        });
+        newV.emitter.on('deleteLink', (l) => {
+          this.notifyDeleteLink(l);
+          this.updateLinksPositions();
         });
       },
       immediate: true,
@@ -288,6 +316,26 @@ export default defineComponent({
     },
   },
   methods: {
+    detectClickOnBg(event) {
+      console.log('detectClickOnBg', event)
+      if (event.target.classList.contains('svg-pan-zoom_viewport')) {
+        this.$emit('clickOnBackground');
+        this.clearSelection();
+      }
+    },
+    getAbsoluteXY (element: { getBoundingClientRect: () => any; }) {
+      var viewportElement = document.documentElement;
+      var box = element.getBoundingClientRect();
+      var x = box.left;
+      var y = box.top;
+      return { x, y };
+    },
+    notifyDeleteNode(n) {
+      this.$emit('deleteNode', n);
+    },
+    notifyDeleteLink(l) {
+      this.$emit('deleteLink', l);
+    },
     spzCreated(spz: any) {
       this.spz = spz;
       spz.setBeforePan((...args: any) => { return this.beforePan.apply(this, args); });
@@ -316,10 +364,10 @@ export default defineComponent({
       return Math.max(a, b);
     },
     convertXYtoViewPort(x: number, y: number) {
-      let rootelt:SvgInHtml = document.getElementById('svgroot2') as SvgInHtml;
-      let rec:SvgInHtml = document.getElementById('viewport') as SvgInHtml;
+      let rootelt:SvgInHtml = this.$refs.dragramRoot as SvgInHtml;
+      let rec:SvgInHtml = this.$refs.viewPort as SvgInHtml;
       let point = rootelt.createSVGPoint();
-      let rooteltPosition = getAbsoluteXY(this.$el);
+      let rooteltPosition = this.getAbsoluteXY(this.$el);
       point.x = x - rooteltPosition.x;
       point.y = y - rooteltPosition.y;
       let ctm = rec.getCTM().inverse();
@@ -343,8 +391,19 @@ export default defineComponent({
       links[linkIndex].points = points;
     },
 
-    clearSelection() {
-      this.mainSelectedItem = {};
+    clearSelection(skipPrimary: boolean, skipSecondary: boolean, skipSendEvent: boolean) {
+      if (!skipPrimary) {
+        this.mainSelectedItem = {};
+        if (!skipSendEvent) {
+          this.$emit('primarySelectionChanged', this.mainSelectedItem);
+        }
+      }
+      if (!skipSecondary) {
+        this.secondarySelectedNodes = [];
+        if (!skipSendEvent) {
+          this.$emit('secondarySelectionChanged', this.secondarySelectedNodes);
+        }
+      }
     },
 
     updateLinksPositions() {
@@ -377,7 +436,7 @@ export default defineComponent({
     startDragNewLink(startPortId: any) {
       if (!this.editable) return;
 
-      this.panEnabled = false;
+      //this.panEnabled = false;
       this.newLink = { startPortId };
     },
 
@@ -500,8 +559,11 @@ export default defineComponent({
         let textInput: any = this.$refs.textInput;
         textInput.editText();
       }
+      if (this.mode === 'select') {
+        this.mouseDownViewportPos = this.convertXYtoViewPort(event.x, event.y);
+      }
     },
-    mouseUp() {
+    mouseUp () {
       if (!this.editable) return;
 
       this.mouseButtonIsPressed = false;
@@ -509,6 +571,7 @@ export default defineComponent({
         if(this.secondarySelectedNodes && this.secondarySelectedNodes.length)
          if(!this.draggedItem || this.draggedItem.type !== 'nodes' || this.secondarySelectedNodes.filter(n => n === this.model._model.nodes[this.draggedItem.index]).length === 0) {
           this.secondarySelectedNodes = [];
+          this.$emit('secondarySelectionChanged', this.secondarySelectedNodes);
          }
       }
       this.draggedItem = undefined;
@@ -525,6 +588,7 @@ export default defineComponent({
           }
           this.mode = 'move';
         }
+        this.$emit('secondarySelectionChanged', this.secondarySelectedNodes);
       }
     },
 
@@ -552,29 +616,32 @@ export default defineComponent({
 
         const port1 = (this.$refs["port-" + port1Id] as any)[0];
         const port2 = (this.$refs["port-" + port2Id] as any)[0];
-
+        let newLink;
         if (port1.type === "in" && port2.type === "out") {
-          links.push({
+          newLink = {
             id: generateId(),
             from: port2.id,
             to: port1.id,
             positionFrom: {},
             positionTo: {},
             points: []
-          });
+          };
         } else if (port2.port.type === "in" && port1.port.type === "out") {
-          links.push({
+          newLink = {
             id: generateId(),
             from: port1.id,
             to: port2.id,
             positionFrom: {},
             positionTo: {},
             points: []
-          });
+          };
         } else {
           console.warn("You must link one out port and one in port");
         }
-
+        if(newLink) {
+          links.push(newLink);
+        }
+        this.$emit('newLink', newLink);
         this.model._model.links = links;
 
         this.updateLinksPositions();
@@ -586,9 +653,10 @@ export default defineComponent({
     },
 
     startDragItem(item: { index: undefined; type: undefined; } | undefined, x: number, y: number) {
-      this.panEnabled = false;
+      //this.panEnabled = false;
       this.draggedItem = item;
       this.mainSelectedItem = item;
+      this.$emit('primarySelectionChanged', this.mainSelectedItem);
       this.initialDragX = x;
       this.initialDragY = y;
       this.listMagnetismAnchors();
@@ -641,5 +709,11 @@ export default defineComponent({
     fill-opacity: 0.1;
     stroke: red;
     stroke-width: 2px;
+  }
+  #smallGrid path {
+    stroke: #ccc;
+  }
+  #grid path {
+    stroke: gray;
   }
 </style>

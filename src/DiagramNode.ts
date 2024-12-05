@@ -1,7 +1,5 @@
 // @ts-check
-var generateId = function() {
-  return Math.trunc(Math.random() * 1000);
-};
+import generateId from './generateId.ts';
 
 const diagramFor: { [key: number]: Object } = {};
 
@@ -47,7 +45,7 @@ class DiagramNode {
 
     this.ports.push(newPort);
 
-    return newPort.id;
+    return newPort;
   }
 
   /**
@@ -63,11 +61,11 @@ class DiagramNode {
 
     this.ports.push(newPort);
 
-    return newPort.id;
+    return newPort;
   }
 
   removePortLinks(id: number) {
-    for (let l of (diagramFor[id] as any)._model.links) {
+    for (let l of (this.diagram as any)._model.links) {
       if (l.from === id || l.to === id) {
         (this.diagram as any).deleteLink(l);
       }
@@ -76,7 +74,17 @@ class DiagramNode {
 
   deletePort(id: number) {
     this.removePortLinks(id);
+    this.diagram._model.nodes = this.diagram._model.nodes.map(n => {
+      if (n.id === this.id) {
+        const oldLength = n.ports.length;
+        n.ports = n.ports.filter(p => p.id !== id);
+        console.log('found node', n, oldLength, n.ports.length);
+
+      }
+      return n;
+    });
     this.ports = this.ports.filter(p => (p as any).id !== id);
+    (this.diagram as any).emitter.emit('deletePort', id);
   }
 
 }

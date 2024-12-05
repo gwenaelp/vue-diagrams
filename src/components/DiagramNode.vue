@@ -1,13 +1,27 @@
 <template>
-  <svg :x="nodeModel.x" :y="nodeModel.y" :class="`diagram-node ${selected ? 'selected': ''} has-menu`" :data-node-id="id">
+  <svg
+    :x="nodeModel.x"
+    :y="nodeModel.y"
+    :class="{
+      'diagram-node': true,
+      selected,
+      'main-selection': mainSelection,
+      'has-menu': true,
+    }"
+    :data-node-id="id"
+    @click="nodeClick"
+  >
     <rect
-      fill="#00000000"
-      stroke="#000000"
       :stroke-width="selected ? 2 : 0"
       x="0" y="0"
       rx="3" ry="3"
       :width="nodeModel.width" :height="nodeModel.height"
-      class="node-dark-background"
+      :class="{
+        'node-rect': true,
+        'node-dark-background': true,
+        selected,
+        'main-selection': mainSelection,
+      }"
     />
     <g ref="resizeHandles" />
     <g
@@ -16,7 +30,7 @@
       @mouseleave="mouseleave"
     >
       <component
-        :is="`vue-diagrams-node-${options.type || 'shader'}`"
+        :is="`vue-diagrams-node-${options.type || this.$parent.$parent.defaultNodeType}`"
         ref="nodeType"
         :nodeModel="nodeModel"
         :selected="selected"
@@ -66,11 +80,19 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
+    mainSelection: {
+      type: Boolean,
+      default: false,
+    },
     selected: Boolean,
     nodeModel: {
       type: Object,
       required: true,
     },
+    diagram: {
+      type: Object,
+      required: true,
+    }
   },
   components: {
     'vue-diagrams-node-text': TextNode,
@@ -85,7 +107,9 @@ export default defineComponent({
       titleFillOpacity: 1,
       menu: [{
         label: 'Delete node',
-        handler() { /*this.deleteNode();*/ },
+        handler() {
+          this.diagram.deleteNode(this.nodeModel);
+        },
         classes: [],
       }],
     };
@@ -124,10 +148,8 @@ export default defineComponent({
         this.$nextTick(() => {
           const nodeType = this.$refs.nodeType as any;
           
-          console.log('this.$refs.nodeType.menu?', nodeType ? nodeType.menu: nodeType);
-
           if (nodeType && nodeType.menu) {
-            if(nodeType.menu.length) {
+            if (nodeType.menu.length) {
               this.menu.unshift({ classes:['separator'], from: 'nodeType' });
             }
             for(let mi of nodeType.menu) {
@@ -189,6 +211,9 @@ export default defineComponent({
         0 /*event.y*/ - this.nodeModel.y
       );
     },
+    nodeClick() {
+      (this?.$parent?.$parent as any).$emit('nodeClick', this.nodeModel);
+    },
   }
 });
 </script>
@@ -199,5 +224,9 @@ export default defineComponent({
   .diagram-node :deep(.title-editable:hover) {
     fill: blue;
     cursor: pointer;
+  }
+  .node-rect {
+    fill: #00000000;
+    stroke: #000000;
   }
 </style>

@@ -1,31 +1,30 @@
 <template>
-  <g>
+  <g class="node">
     <rect
       :fill="color"
       x="0" y="0"
       rx="3" ry="3"
       :width="nodeModel?.width" :height="nodeModel?.height"
-      class="node-dark-background"
+      class="node-rect node-dark-background"
     />
     <rect
-      fill="#000000"
       :fill-opacity="titleFillOpacity"
-      x="2" y="2"
-      rx="3" ry="3"
-      :width="nodeModel?.width - 4" height="16"
-      class="node-dark-background"
+      x="2"
+      y="2"
+      rx="3"
+      ry="3"
+      :width="nodeModel?.width - 4"
+      height="16"
+      class="node-dark-background title-rect"
     />
     <text
       x="5" y="15"
-      :class="options.editableTitle ? 'title-editable': ''"
-      font-size="14"
-      font-weight="bold"
-      fill="#000000"
+      :class="options.editableTitle ? 'title title-editable': 'title'"
       ref="title"
       :style="options.titleStyle || ''"
       @click="options.editableTitle ? parentDiagram.editText(nodeModel, 'title', $refs.title) : undefined"
     >
-      {{nodeModel?.title}}
+      {{nodeModel?.options?.title || nodeModel?.title}}
     </text>
     <g v-if="nodeModel?.deletable" @click="$emit('deleteNode')">
       <rect
@@ -51,20 +50,20 @@
       />
     </g>
     <rect
-      fill="#ffffff"
       x="2" y="20"
       rx="3" ry="3"
       :width="nodeModel?.width - 4"
       :height="nodeModel?.height - 22"
-      class="node-light-background"
+      class="node-content node-light-background"
     />
     <g class="prevent-node-drag">
       <slot />
     </g>
+    <NodePreview v-if="NodePreviewExists" :node="nodeModel" />
   </g>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, resolveDynamicComponent } from 'vue';
 
 export default defineComponent({
   props: {
@@ -82,11 +81,14 @@ export default defineComponent({
     };
   },
   computed: {
+    NodePreviewExists() {
+      return typeof resolveDynamicComponent('NodePreview') !== 'string';
+    },
     options () {
       return this.nodeModel?.options || {};
     },
     color () {
-      return this.nodeModel?.color || '#66cc00';
+      return this.nodeModel?.color;
     },
     parentDiagram () : any {
       return this.$parent?.$parent?.$parent;
@@ -94,3 +96,19 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.title {
+  font-size:14px;
+  font-weight: bold;
+  fill: #000000;
+}
+.title-rect {
+  fill: #000000;
+}
+.node-content {
+  fill: #ffffff;
+}
+.node-rect {
+  fill: #66cc00;
+}
+</style>

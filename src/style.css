@@ -46,3 +46,6 @@ body: {
 .opacity-0 {
   fill: #00000000;
 }
+.code-layout-split-tab-list {
+  overflow: hidden!important;
+}
