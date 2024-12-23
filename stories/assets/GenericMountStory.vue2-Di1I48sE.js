@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./layouts.story-DD-wzI-r.js","./Diagram-rY0whr8k.js","./vendor-N-1kIZ_U.js","./ShaderNodes.story-nIIN4UVP.js","./HomeView.vue-B6zUrQx7.js","./story-BEd4pw6M.js","./StoryView.vue-BbQh518a.js","./MobileOverlay.vue2-CCaf4toF.js","./BaseEmpty.vue-zurbe5Uz.js","./state-SmNEG2C3.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./layouts.story-DvGeMVsb.js","./Diagram-CZ_zrG-c.js","./vendor-N-1kIZ_U.js","./ShaderNodes.story-CC1qcutN.js","./HomeView.vue-CxngNEn4.js","./story-CRS_JjGR.js","./StoryView.vue-CRh6zfIm.js","./MobileOverlay.vue2-CCaf4toF.js","./BaseEmpty.vue-zurbe5Uz.js","./state-D7myeisC.js"])))=>i.map(i=>d[i]);
 import { Q as defineAsyncComponent, R as createRouter, S as createWebHistory, U as createWebHashHistory, V as useDark, W as useToggle, k as watch, X as markRaw, E as reactive, d as defineComponent, r as ref, Y as watchEffect, o as openBlock, q as createBlock, Z as mergeProps, _ as resolveDynamicComponent, h as createCommentVNode } from "./vendor-N-1kIZ_U.js";
 const scriptRel = "modulepreload";
 const assetsURL = function(dep, importerUrl) {
@@ -72,8 +72,8 @@ const __vitePreload = function preload(baseModule, deps, importerUrl) {
     return baseModule().catch(handlePreloadError);
   });
 };
-const Comp0 = defineAsyncComponent(() => __vitePreload(() => import("./layouts.story-DD-wzI-r.js"), true ? __vite__mapDeps([0,1,2]) : void 0, import.meta.url));
-const Comp1 = defineAsyncComponent(() => __vitePreload(() => import("./ShaderNodes.story-nIIN4UVP.js"), true ? __vite__mapDeps([3,1,2]) : void 0, import.meta.url));
+const Comp0 = defineAsyncComponent(() => __vitePreload(() => import("./layouts.story-DvGeMVsb.js"), true ? __vite__mapDeps([0,1,2]) : void 0, import.meta.url));
+const Comp1 = defineAsyncComponent(() => __vitePreload(() => import("./ShaderNodes.story-CC1qcutN.js"), true ? __vite__mapDeps([3,1,2]) : void 0, import.meta.url));
 let files = [
   { "id": "stories-layouts-story-vue", "path": ["Advanced usage", "Layouts"], "filePath": "stories/layouts.story.vue", "story": { "id": "stories-layouts-story-vue", "title": "Layouts", "layout": { "type": "single", "iframe": true }, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue3", "index": 0, component: Comp0, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-layouts-story-vue-BKKReMx2.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-shaders-shadernodes-story-vue", "path": ["Shader nodes"], "filePath": "stories/shaders/ShaderNodes.story.vue", "story": { "id": "stories-shaders-shadernodes-story-vue", "title": "Shader nodes", "layout": { "type": "single", "iframe": true }, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue3", "index": 1, component: Comp1, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-shaders-shadernodes-story-vue-BUaEOIw8.js"), true ? [] : void 0, import.meta.url) }
@@ -99,12 +99,12 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: () => __vitePreload(() => import("./HomeView.vue-B6zUrQx7.js"), true ? __vite__mapDeps([4,5,2]) : void 0, import.meta.url)
+      component: () => __vitePreload(() => import("./HomeView.vue-CxngNEn4.js"), true ? __vite__mapDeps([4,5,2]) : void 0, import.meta.url)
     },
     {
       path: "/story/:storyId",
       name: "story",
-      component: () => __vitePreload(() => import("./StoryView.vue-BbQh518a.js"), true ? __vite__mapDeps([6,2,5,7,8,9]) : void 0, import.meta.url)
+      component: () => __vitePreload(() => import("./StoryView.vue-CRh6zfIm.js"), true ? __vite__mapDeps([6,2,5,7,8,9]) : void 0, import.meta.url)
     }
   ]
 });

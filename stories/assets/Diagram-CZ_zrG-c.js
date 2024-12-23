@@ -221,7 +221,6 @@ let DiagramNode$1 = class DiagramNode {
     diagramFor[id] = diagram;
     this.id = id;
     this.title = title;
-    this.diagram = diagram;
     this.x = x;
     this.y = y;
     this.width = width || 72;
@@ -258,24 +257,10 @@ let DiagramNode$1 = class DiagramNode {
     return newPort;
   }
   removePortLinks(id) {
-    for (let l of this.diagram._model.links) {
-      if (l.from === id || l.to === id) {
-        this.diagram.deleteLink(l);
-      }
-    }
+    throw "FIXME";
   }
   deletePort(id) {
-    this.removePortLinks(id);
-    this.diagram._model.nodes = this.diagram._model.nodes.map((n) => {
-      if (n.id === this.id) {
-        const oldLength = n.ports.length;
-        n.ports = n.ports.filter((p) => p.id !== id);
-        console.log("found node", n, oldLength, n.ports.length);
-      }
-      return n;
-    });
-    this.ports = this.ports.filter((p) => p.id !== id);
-    this.diagram.emitter.emit("deletePort", id);
+    throw "FIXME";
   }
 };
 class DiagramModel {
@@ -308,16 +293,12 @@ class DiagramModel {
     }
     for (let n of this._model.nodes) {
     }
-    console.log("node at index?", index, this._model.nodes[index]);
     if (node.ports.length) {
       for (let i = 0; i < node.ports.length; i++) {
         for (let j = 0; j < this._model.links.length; j++) {
           const currentLink = this._model.links[j];
-          console.log("links iteration???", currentLink, node.ports);
           const currentPort = node.ports[i];
-          console.log("port iteration???", currentPort.id, currentLink.from.id, currentLink.to.id);
-          if (currentLink.from.id === currentPort.id || currentLink.to.id === currentPort.id) {
-            console.log("deleteLink!!!", currentLink);
+          if (currentLink.from === currentPort.id || currentLink.to === currentPort.id) {
             this.deleteLink(currentLink);
             j--;
           }
@@ -335,10 +316,11 @@ class DiagramModel {
    * Adds a link between two ports
    */
   addLink(from, to, points = [], options = {}) {
+    console.log("addLink", from, to);
     this._model.links.push({
       id: generateId$1(),
-      from,
-      to,
+      from: from.id,
+      to: to.id,
       positionFrom: {},
       positionTo: {},
       points,
@@ -1075,16 +1057,20 @@ const _sfc_main$4 = defineComponent({
   },
   computed: {
     x1() {
-      return this.positionFrom.x;
+      var _a;
+      return (_a = this.positionFrom) == null ? void 0 : _a.x;
     },
     y1() {
-      return this.positionFrom.y - 8;
+      var _a;
+      return ((_a = this.positionFrom) == null ? void 0 : _a.y) - 8;
     },
     x2() {
-      return this.positionTo.x - 4;
+      var _a;
+      return ((_a = this.positionTo) == null ? void 0 : _a.x) - 4;
     },
     y2() {
-      return this.positionTo.y - 8;
+      var _a;
+      return ((_a = this.positionTo) == null ? void 0 : _a.y) - 8;
     },
     curve() {
       if (this.x1 && this.y1 && this.x2 && this.y2) {
@@ -1726,9 +1712,9 @@ const _sfc_main = defineComponent({
       if (this.reactiveModel && this.reactiveModel._model) links = this.reactiveModel._model.links;
       for (let i = 0; i < links.length; i++) {
         let coords;
-        coords = this.getPortHandlePosition(links[i].from.id);
+        coords = this.getPortHandlePosition(links[i].from);
         links[i].positionFrom = { x: coords == null ? void 0 : coords.x, y: coords == null ? void 0 : coords.y };
-        coords = this.getPortHandlePosition(links[i].to.id);
+        coords = this.getPortHandlePosition(links[i].to);
         links[i].positionTo = { x: coords == null ? void 0 : coords.x, y: coords == null ? void 0 : coords.y };
         if (this.$refs["link-" + links[i].id]) {
           let linkComponent = this.$refs["link-" + links[i].id];
@@ -1909,15 +1895,15 @@ const _sfc_main = defineComponent({
         if (port1.type === "in" && port2.type === "out") {
           newLink = {
             id: generateId(),
-            from: port2,
-            to: port1,
+            from: port2.id,
+            to: port1.id,
             points: []
           };
         } else if (port2.port.type === "in" && port1.port.type === "out") {
           newLink = {
             id: generateId(),
-            from: port1,
-            to: port2,
+            from: port1.id,
+            to: port2.id,
             points: []
           };
         } else {
