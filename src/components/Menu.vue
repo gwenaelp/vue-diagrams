@@ -75,7 +75,9 @@ export default defineComponent({
   methods: {
     menuItemClick(event: any, component: any) {
       const dataset = event?.target?.dataset;
+      console.log('dataset.menuItemKey', dataset.menuItemKey);
       if (dataset?.childItemKey) {
+        console.log('dataset.childItemKey', dataset.childItemKey, component.menu[dataset.menuItemKey].children[dataset.childItemKey]);
         component.menu[dataset.menuItemKey].children[dataset.childItemKey].handler.call(component);
       } else {
         component.menu[dataset.menuItemKey].handler.call(component);

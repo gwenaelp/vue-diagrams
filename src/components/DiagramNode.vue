@@ -25,6 +25,7 @@
     />
     <g ref="resizeHandles" />
     <g
+      class="diagram-node-content-wrapper mouse-events-wrapper"
       @mousedown="mouseDown"
       @mouseenter="mouseenter"
       @mouseleave="mouseleave"
@@ -109,6 +110,7 @@ export default defineComponent({
         label: 'Delete node',
         handler() {
           this.diagram.deleteNode(this.nodeModel);
+          this.$parent.$parent.updateLinksPositions();
         },
         classes: [],
       }],

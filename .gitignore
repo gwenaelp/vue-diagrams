@@ -78,3 +78,5 @@ dist
 .cache
 .output
 .DS_Store
+
+*storybook.log

@@ -52,6 +52,7 @@
           @mousedown="mode !== 'select' ? detectClickOnBg($event) : undefined"
         />
         <g ref="viewPort" id="viewport" x="50" y="50">
+          <g v-if="displayLinks">
           <DiagramLink
             :ref="'link-' + link.id"
             :positionFrom="link.positionFrom"
@@ -63,7 +64,7 @@
             :options="link.options"
             :linkModel="link"
             :diagram="model"
-            v-for="(link, index) in model._model.links"
+            v-for="(link, index) in reactiveModel._model.links"
             @onStartDrag="startDragPoint"
             @onCreatePoint="createPoint"
             @delete="model.deleteLink(link)"
@@ -76,6 +77,7 @@
             style="stroke:rgb(255,0,0);stroke-width:2"
             v-if="newLink"
           />
+        </g>
           <DiagramNode
             :ref="'node-' + nodeIndex"
             :title="node.title"
@@ -92,27 +94,25 @@
             :selected="(mainSelectedItem.type === 'nodes' && mainSelectedItem.index === nodeIndex) || secondarySelectedNodes.indexOf(node) !== -1"
             :options="node.options"
             :index="nodeIndex"
-            v-for="(node, nodeIndex) in model._model.nodes"
+            v-for="(node, nodeIndex) in reactiveModel._model.nodes"
             @onStartDrag="startDragItem"
             @delete="model.deleteNode(node)"
           >
-            <foreignObject :width="node.width + 30" x="-15" height="3000" y="20">
-              <body xmlns="http://www.w3.org/1999/xhtml" style="margin: 0;">
-                <div class="diagram-node-content-wrapper">
-                  <DiagramPort
-                    v-for="(port, portIndex) in node.ports"
-                    :key="portIndex"
-                    :ref="'port-' + port.id"
-                    :id="port.id"
-                    :nodeIndex="nodeIndex"
-                    :y="portIndex * 20"
-                    :node="node"
-                    :port="port"
-                    @onStartDragNewLink="startDragNewLink"
-                    @mouseUpPort="mouseUpPort"
-                  />
-                </div>
-              </body>
+            <foreignObject :width="node.width + 10" x="-5" :height="node.height - 20" y="20">
+              <div class="diagram-node-content-wrapper">
+                <DiagramPort
+                  v-for="(port, portIndex) in node.ports"
+                  :key="portIndex"
+                  :ref="'port-' + port.id"
+                  :id="port.id"
+                  :nodeIndex="nodeIndex"
+                  :y="portIndex * 20"
+                  :node="node"
+                  :port="port"
+                  @onStartDragNewLink="startDragNewLink"
+                  @mouseUpPort="mouseUpPort"
+                />
+              </div>
             </foreignObject>
           </DiagramNode>
           <rect
@@ -155,9 +155,8 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, } from 'vue';
 import { SvgPanZoom } from 'vue-svg-pan-zoom';
-
 import Menu from './Menu.vue';
 
 import TextInput from './TextInput.vue';
@@ -226,11 +225,18 @@ export default defineComponent({
     },
   },
   data() {
-    this.updateLinksPositions();
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.updateLinksPositions();
+        this.displayLinks = true;
+      }, 100);
+    });
 
     return {
+      reactiveModel: this.model,
       mode: 'move',
       document,
+      displayLinks: false,
       zoomEnabled: true,
       panEnabled: true,
       draggedItem: undefined as any,
@@ -307,7 +313,7 @@ export default defineComponent({
     },
     'model._model': {
       handler () {
-        this.$emit('model-updated', this.model._model);
+        this.$emit('model-updated', this.reactiveModel._model);
       },
       deep: true,
     },
@@ -317,7 +323,6 @@ export default defineComponent({
   },
   methods: {
     detectClickOnBg(event) {
-      console.log('detectClickOnBg', event)
       if (event.target.classList.contains('svg-pan-zoom_viewport')) {
         this.$emit('clickOnBackground');
         this.clearSelection();
@@ -381,7 +386,7 @@ export default defineComponent({
     },
     createPoint(x: any, y: any, linkIndex: string | number, pointIndex: any) {
       let coords = this.convertXYtoViewPort(x, y);
-      let links = this.model._model.links;
+      let links = this.reactiveModel._model.links;
 
       //FIXME works well only on links created at startup
       if (links[linkIndex].points === undefined) links[linkIndex].points = [];
@@ -407,30 +412,26 @@ export default defineComponent({
     },
 
     updateLinksPositions() {
-      var links: string | any[] = [];
+      let links: any[] = [];
 
-      if (this.model && this.model._model) links = this.model._model.links;
+      if (this.reactiveModel && this.reactiveModel._model) links = this.reactiveModel._model.links;
 
-      this.$nextTick(() => {
-        setTimeout(() => {
-          for (var i = 0; i < links.length; i++) {
-            let coords: void | Point;
-            coords = this.getPortHandlePosition(links[i].from);
-            links[i].positionFrom = { x: coords?.x, y: coords?.y };
-            coords = this.getPortHandlePosition(links[i].to);
-            links[i].positionTo = { x: coords?.x, y: coords?.y };
-            if (this.$refs['link-' + links[i].id]) {
-              let linkComponent = this.$refs['link-' + links[i].id] as any;
-              if(Array.isArray(linkComponent)) {
-                linkComponent = linkComponent[0];
-              }
-              if(linkComponent && linkComponent.refreshLink) {
-                linkComponent.refreshLink();
-              }
-            }
+      for (let i = 0; i < links.length; i++) {
+        let coords: void | Point;
+        coords = this.getPortHandlePosition(links[i].from.id);
+        links[i].positionFrom = { x: coords?.x, y: coords?.y };
+        coords = this.getPortHandlePosition(links[i].to.id);
+        links[i].positionTo = { x: coords?.x, y: coords?.y };
+        if (this.$refs['link-' + links[i].id]) {
+          let linkComponent = this.$refs['link-' + links[i].id] as any;
+          if(Array.isArray(linkComponent)) {
+            linkComponent = linkComponent[0];
           }
-        }, 100);
-      });
+          if(linkComponent && linkComponent.refreshLink) {
+            linkComponent.refreshLink();
+          }
+        }
+      }
     },
 
     startDragNewLink(startPortId: any) {
@@ -463,10 +464,35 @@ export default defineComponent({
       }
     },
 
+    mouseMoveMagnetismAnchors(coords) {
+      for (let a of this.magnetismAnchors) {
+        a.show = false;
+        if (a.x && (Math.abs(a.x - (coords.x - this.initialDragX)) < 10)) {
+          coords.x = a.x + this.initialDragX;
+          a.show = true;
+        }
+        if (a.y && (Math.abs(a.y - (coords.y - this.initialDragY)) < 10)) {
+          coords.y = a.y + this.initialDragY;
+          a.show = true;
+        }
+
+        if (this.draggedItem.node) {
+          if(a.x && (Math.abs(a.x - (coords.x - this.initialDragX + this.draggedItem.node.width)) < 10)) {
+            coords.x = a.x + this.initialDragX - this.draggedItem.node.width;
+            a.show = true;
+          }
+          if (a.y && (Math.abs(a.y - (coords.y - this.initialDragY + this.draggedItem.node.height)) < 10)) {
+            coords.y = a.y + this.initialDragY - this.draggedItem.node.height;
+            a.show = true;
+          }
+        }
+      }      
+    },
+
     mouseMove(pos: { clientX: number; clientY: number; x: any; y: any; }) {
       if (!this.editable) return;
 
-      const links = this.model._model.links;
+      const links = this.reactiveModel._model.links;
       const bbox = this.$el.getBoundingClientRect();
       this.mouseX = pos.clientX;
       this.mouseY = pos.clientY;
@@ -480,74 +506,55 @@ export default defineComponent({
           coords.x = snapToGrip(coords.x, this.gridSnap) - this.gridSnap / 2;
           coords.y = snapToGrip(coords.y, this.gridSnap);
 
-          for (let a of this.magnetismAnchors) {
-            a.show = false;
-            if(a.x && (Math.abs(a.x - (coords.x - this.initialDragX)) < 10)) {
-              coords.x = a.x + this.initialDragX;
-              a.show = true;
-            }
-            if(a.y && (Math.abs(a.y - (coords.y - this.initialDragY)) < 10)) {
-              coords.y = a.y + this.initialDragY;
-              a.show = true;
-            }
-
-            if (this.draggedItem.node) {
-              if(a.x && (Math.abs(a.x - (coords.x - this.initialDragX + this.draggedItem.node.width)) < 10)) {
-                coords.x = a.x + this.initialDragX - this.draggedItem.node.width;
-                a.show = true;
-              }
-              if(a.y && (Math.abs(a.y - (coords.y - this.initialDragY + this.draggedItem.node.height)) < 10)) {
-                coords.y = a.y + this.initialDragY - this.draggedItem.node.height;
-                a.show = true;
-              }
-            }
-          }
+          this.mouseMoveMagnetismAnchors(coords);
 
           if (type === 'points') {
             const linkIndex = this.draggedItem.linkIndex;
             const pointIndex = this.draggedItem.pointIndex;
             links[linkIndex].points[pointIndex].x = coords.x;
             links[linkIndex].points[pointIndex].y = coords.y;
-            this.updateLinksPositions();
+            //this.updateLinksPositions();
           }
           if (type === 'resizeHandle') {
             if (this.draggedItem.direction.indexOf('e') !== -1) {
-              this.model._model.nodes[index].width = coords.x - this.model._model.nodes[index].x;
-              this.updateLinksPositions();
+              this.reactiveModel._model.nodes[index].width = coords.x - this.reactiveModel._model.nodes[index].x;
+              //this.updateLinksPositions();
             }
             if(this.draggedItem.direction.indexOf('s') !== -1) {
-              this.model._model.nodes[index].height = coords.y - this.model._model.nodes[index].y;
-              this.updateLinksPositions();
+              this.reactiveModel._model.nodes[index].height = coords.y - this.reactiveModel._model.nodes[index].y;
+              //this.updateLinksPositions();
             }
             if (this.draggedItem.direction.indexOf('n') !== -1) {
-              const bottom = this.model._model.nodes[index].y + this.model._model.nodes[index].height;
-              this.model._model.nodes[index].y = coords.y;
-              this.model._model.nodes[index].height = bottom - coords.y;
-              this.updateLinksPositions();
+              const bottom = this.reactiveModel._model.nodes[index].y + this.reactiveModel._model.nodes[index].height;
+              this.reactiveModel._model.nodes[index].y = coords.y;
+              this.reactiveModel._model.nodes[index].height = bottom - coords.y;
+              //this.updateLinksPositions();
             }
             if (this.draggedItem.direction.indexOf('w') !== -1) {
-              const right = this.model._model.nodes[index].x + this.model._model.nodes[index].width;
-              this.model._model.nodes[index].x = coords.x;
-              this.model._model.nodes[index].width = right - coords.x;
-              this.updateLinksPositions();
+              const right = this.reactiveModel._model.nodes[index].x + this.reactiveModel._model.nodes[index].width;
+              this.reactiveModel._model.nodes[index].x = coords.x;
+              this.reactiveModel._model.nodes[index].width = right - coords.x;
+              //this.updateLinksPositions();
             }
           } else {
-            if(this.model._model[type] && this.model._model[type][index]) {
-              const initialItemX = this.model._model[type][index].x
-              const initialItemY = this.model._model[type][index].y;
-              this.model._model[type][index].x = coords.x - this.initialDragX;
-              this.model._model[type][index].y = coords.y - this.initialDragY;
-              const moveDeltaX = this.model._model[type][index].x - initialItemX;
-              const moveDeltaY = this.model._model[type][index].y - initialItemY;
+            if (this.reactiveModel._model[type] && this.reactiveModel._model[type][index]) {
+              const initialItemX = this.reactiveModel._model[type][index].x
+              const initialItemY = this.reactiveModel._model[type][index].y;
+              this.reactiveModel._model[type][index].x = coords.x - this.initialDragX;
+              this.reactiveModel._model[type][index].y = coords.y - this.initialDragY;
+              const moveDeltaX = this.reactiveModel._model[type][index].x - initialItemX;
+              const moveDeltaY = this.reactiveModel._model[type][index].y - initialItemY;
+
               for (let n of this.secondarySelectedNodes) {
-                if (!(type === 'nodes' && n === this.model._model[type][index])) {
+                if (!(type === 'nodes' && n === this.reactiveModel._model[type][index])) {
                   n.x += moveDeltaX;
                   n.y += moveDeltaY;
                 }
               }
             }
-            this.updateLinksPositions();
+            //this.updateLinksPositions();
           }
+          this.updateLinksPositions();
         }
       }
     },
@@ -569,7 +576,7 @@ export default defineComponent({
       this.mouseButtonIsPressed = false;
       if (this.mode === 'move') {
         if(this.secondarySelectedNodes && this.secondarySelectedNodes.length)
-         if(!this.draggedItem || this.draggedItem.type !== 'nodes' || this.secondarySelectedNodes.filter(n => n === this.model._model.nodes[this.draggedItem.index]).length === 0) {
+         if(!this.draggedItem || this.draggedItem.type !== 'nodes' || this.secondarySelectedNodes.filter(n => n === this.reactiveModel._model.nodes[this.draggedItem.index]).length === 0) {
           this.secondarySelectedNodes = [];
           this.$emit('secondarySelectionChanged', this.secondarySelectedNodes);
          }
@@ -578,7 +585,7 @@ export default defineComponent({
       this.newLink = undefined;
       if (this.mode === 'select') {
         this.secondarySelectedNodes = [];
-        for (let n of this.model._model.nodes) {
+        for (let n of this.reactiveModel._model.nodes) {
           const x1 = Math.min(this.viewportMousePos.x as number, this.mouseDownViewportPos.x as number);
           const y1 = Math.min(this.viewportMousePos.y as number, this.mouseDownViewportPos.y as number);
           const x2 = Math.max(this.viewportMousePos.x as number, this.mouseDownViewportPos.x as number);
@@ -595,7 +602,7 @@ export default defineComponent({
     mouseUpPort(portId: string) {
       if (!this.editable) return;
 
-      var links = this.model._model.links;
+      var links = this.reactiveModel._model.links;
 
       if (this.draggedItem && this.draggedItem.type === "points") {
         const pointIndex = this.draggedItem.pointIndex;
@@ -620,30 +627,27 @@ export default defineComponent({
         if (port1.type === "in" && port2.type === "out") {
           newLink = {
             id: generateId(),
-            from: port2.id,
-            to: port1.id,
-            positionFrom: {},
-            positionTo: {},
+            from: port2,
+            to: port1,
             points: []
           };
         } else if (port2.port.type === "in" && port1.port.type === "out") {
           newLink = {
             id: generateId(),
-            from: port1.id,
-            to: port2.id,
-            positionFrom: {},
-            positionTo: {},
+            from: port1,
+            to: port2,
             points: []
           };
         } else {
           console.warn("You must link one out port and one in port");
         }
         if(newLink) {
+          // newLink.positionFrom = {x: 0, y: 0};
+          // newLink.positionTo = {x: 300, y: 300};
           links.push(newLink);
         }
         this.$emit('newLink', newLink);
-        this.model._model.links = links;
-
+        //this.reactiveModel._model.links = [...links];
         this.updateLinksPositions();
       }
     },
@@ -665,7 +669,7 @@ export default defineComponent({
     listMagnetismAnchors() {
       const anchors = [];
 
-      for (let n of this.model._model.nodes) {
+      for (let n of this.reactiveModel._model.nodes) {
         if (n.id !== this.draggedItem.node.id) {
           anchors.push({ x: n.x || 0, node: n });
           anchors.push({ y: n.y || 0, node: n });

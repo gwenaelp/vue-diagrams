@@ -59,7 +59,6 @@
     <g class="prevent-node-drag">
       <slot />
     </g>
-    <NodePreview v-if="NodePreviewExists" :node="nodeModel" />
   </g>
 </template>
 <script lang="ts">

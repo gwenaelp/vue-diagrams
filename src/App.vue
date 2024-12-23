@@ -9,7 +9,7 @@
   </Story>
 </template>
 <script>
-import Diagram from "../src/components/Diagram.vue";
+import Diagram from "./components/Diagram.vue";
 
 export default {
   components: {

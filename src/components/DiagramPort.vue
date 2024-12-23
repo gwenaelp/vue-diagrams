@@ -21,14 +21,20 @@
       @mouseleave="leave"
       @mousedown="startDragNewLink"
       @mouseup="mouseup"
-      :style="`width: 100%; height: 100%; position: absolute; top: 2px; ${port.type === 'out' ? 'left: calc(100% - 4px);' : 'left: -6px;' }`"
+      :class="{
+        'port-shape-container': true,
+        [`port-type-${port.type}`]: true
+      }"
     >
       <component
         :is="`vue-diagrams-port-shape-${port.display_shape || 'dot'}`"
-        :port="nodeModel"
+        :port="port"
       />
     </svg>
-    <div class="label-wrapper">
+    <div :class="{
+      'label-wrapper': true,
+      [`port-type-${port.type}`]: true,
+      }">
       <component
         v-if="getPortLabelComponent(port.value_type)"
         :is="getPortLabelComponent(port.value_type)"
@@ -44,10 +50,13 @@
         'tooltip-show-on-port-hover': port.options?.tooltip?.trigger === 'hoverPort'
       }"
     >
+    <!--
       <component
         :is="getPortShapeComponent(port.display_shape)"
-        :port="nodeModel"
+        class="label"
+        :port="port"
       />
+    -->
       <!--
       <rect
         :fill="port.options?.tooltip?.fill || '#eeeeee'"
@@ -71,7 +80,7 @@ export default defineComponent({
   name: 'DiagramPort',
   props: ['id', 'x', 'y', 'node', 'nodeIndex', 'port'],
   components: {
-    DotShapePort,
+    'vue-diagrams-port-shape-dot': DotShapePort,
     PortLabel,
   },
   data() {
@@ -127,9 +136,11 @@ export default defineComponent({
       return typeof component !== 'string' ? `vue-diagrams-port-shape-${shape}` : 'DotShapePort';
     },
     getPortLabelComponent(valueType) {
-      const component = resolveComponent(`vue-diagrams-port-label-${valueType}`);
-      console.log('component?', valueType, component, `vue-diagrams-port-label-${valueType}`)
-      return typeof component !== 'string' ? `vue-diagrams-port-label-${valueType}` : undefined;
+      if (valueType) {
+        const component = resolveComponent(`vue-diagrams-port-label-${valueType}`);
+        console.log('component?', valueType, component, `vue-diagrams-port-label-${valueType}`)
+        return typeof component !== 'string' ? `vue-diagrams-port-label-${valueType}` : undefined;
+      }
     },
 
     mouseup() {
@@ -152,7 +163,13 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.diagram-port {
+  position: relative;
+}
 .tooltip {
+  position: absolute;
+  left: -40px;
+  top: 0;
   opacity: 0.8;
   transition: opacity 0.2s;
 }
@@ -167,6 +184,21 @@ export default defineComponent({
   fill: #000000;
 }
 .label-wrapper {
-  padding-right: 40px;
+  padding-right: 14px;
+  padding-left: 4px;
+  padding-top: 2px;
+}
+.label-wrapper.port-type-out {
+  text-align: right;
+}
+.port-shape-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 3px;
+  left: 1px;
+}
+.port-shape-container.port-type-out {
+  left: calc(100% - 11px);
 }
 </style>

@@ -31,23 +31,36 @@ class DiagramModel {
   }
 
   deleteNode(node: { ports: Array<any> }) { //FIXME any
-    const index = this._model.nodes.indexOf(node);
-    for (let j = 0; j < this._model.links.length; j++) {
-      const currentLink = this._model.links[j];
 
-      if (node.ports.length) {
-        for (let i = 0; i < node.ports.length; i++) {
+    let index = -1;
+    for (let k = 0; k < this._model.nodes.length; k++) {
+      if (node.id === this._model.nodes[k].id) {
+        index = k;
+      }
+    }
+    for (let n of this._model.nodes) {
+    }
+    console.log('node at index?', index, this._model.nodes[index]);
+
+    if (node.ports.length) {
+      for (let i = 0; i < node.ports.length; i++) {
+        for (let j = 0; j < this._model.links.length; j++) {
+          const currentLink = this._model.links[j];
+          console.log('links iteration???', currentLink, node.ports);
+
           const currentPort = node.ports[i];
+          console.log('port iteration???', currentPort.id, currentLink.from.id, currentLink.to.id);
 
-          if (currentLink.from === currentPort.id || currentLink.to === currentPort.id) {
+          if (currentLink.from.id === currentPort.id || currentLink.to.id === currentPort.id) {
+            console.log('deleteLink!!!', currentLink);
             this.deleteLink(currentLink);
             j--;
           }
         }
       }
     }
-    this.emitter.emit('deleteNode', node);
     this._model.nodes.splice(index, 1);
+    //this.emitter.emit('deleteNode', node);
   }
 
   deleteLink(link: Object) { //FIXME link
