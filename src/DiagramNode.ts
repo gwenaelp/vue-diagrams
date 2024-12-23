@@ -21,7 +21,7 @@ class DiagramNode {
     diagramFor[id] = diagram;
     this.id = id;
     this.title = title;
-    this.diagram = diagram;
+    //this.diagram = diagram;
     this.x = x;
     this.y = y;
     this.width = width || 72;
@@ -65,14 +65,18 @@ class DiagramNode {
   }
 
   removePortLinks(id: number) {
+    /*
     for (let l of (this.diagram as any)._model.links) {
       if (l.from === id || l.to === id) {
         (this.diagram as any).deleteLink(l);
       }
     }
+    */
+    throw 'FIXME';
   }
 
   deletePort(id: number) {
+    /*
     this.removePortLinks(id);
     this.diagram._model.nodes = this.diagram._model.nodes.map(n => {
       if (n.id === this.id) {
@@ -85,6 +89,8 @@ class DiagramNode {
     });
     this.ports = this.ports.filter(p => (p as any).id !== id);
     (this.diagram as any).emitter.emit('deletePort', id);
+    */
+    throw 'FIXME';
   }
 
 }

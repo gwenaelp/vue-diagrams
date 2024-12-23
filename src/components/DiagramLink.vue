@@ -106,19 +106,19 @@ export default defineComponent({
   },
   computed: {
     x1() {
-      return this.positionFrom.x;
+      return this.positionFrom?.x;
     },
 
     y1() {
-      return this.positionFrom.y - 8;
+      return this.positionFrom?.y - 8;
     },
 
     x2() {
-      return this.positionTo.x - 4;
+      return this.positionTo?.x - 4;
     },
 
     y2() {
-      return this.positionTo.y - 8;
+      return this.positionTo?.y - 8;
     },
 
     curve() {

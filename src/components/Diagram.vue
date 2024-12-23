@@ -418,9 +418,9 @@ export default defineComponent({
 
       for (let i = 0; i < links.length; i++) {
         let coords: void | Point;
-        coords = this.getPortHandlePosition(links[i].from.id);
+        coords = this.getPortHandlePosition(links[i].from);
         links[i].positionFrom = { x: coords?.x, y: coords?.y };
-        coords = this.getPortHandlePosition(links[i].to.id);
+        coords = this.getPortHandlePosition(links[i].to);
         links[i].positionTo = { x: coords?.x, y: coords?.y };
         if (this.$refs['link-' + links[i].id]) {
           let linkComponent = this.$refs['link-' + links[i].id] as any;
@@ -627,15 +627,15 @@ export default defineComponent({
         if (port1.type === "in" && port2.type === "out") {
           newLink = {
             id: generateId(),
-            from: port2,
-            to: port1,
+            from: port2.id,
+            to: port1.id,
             points: []
           };
         } else if (port2.port.type === "in" && port1.port.type === "out") {
           newLink = {
             id: generateId(),
-            from: port1,
-            to: port2,
+            from: port1.id,
+            to: port2.id,
             points: []
           };
         } else {
