@@ -2,13 +2,19 @@
 import DiagramNode from "./DiagramNode";
 import Emitter from 'tiny-emitter';
 import generateId from './generateId.ts';
+import type { Point } from "./types/Point";
 
 type Port = any;
+type DiagramLink = any;
+export type InternalDiagramModel = {
+  nodes: Array<DiagramNode>;
+  links: Array<DiagramLink>;
+}
 /**
  * @class DiagramModel
  */
 class DiagramModel {
-  private _model: any;
+  private _model: InternalDiagramModel;
   public emitter: any;
 
   constructor() {
@@ -16,7 +22,7 @@ class DiagramModel {
       nodes: [],
       links: [],
     };
-    this.emitter = new Emitter();
+    this.emitter = new (Emitter as any)();
   }
 
   /**
@@ -31,14 +37,12 @@ class DiagramModel {
     return newNode;
   }
 
-  deleteNode(node: { ports: Array<any> }) { //FIXME any
+  deleteNode(node: DiagramNode) { //FIXME any
     let index = -1;
     for (let k = 0; k < this._model.nodes.length; k++) {
       if (node.id === this._model.nodes[k].id) {
         index = k;
       }
-    }
-    for (let n of this._model.nodes) {
     }
 
     if (node.ports.length) {
@@ -69,7 +73,6 @@ class DiagramModel {
    * Adds a link between two ports
    */
   addLink(from: Port, to: Port, points:Array<Point> = [], options = {}) {
-    console.log('addLink', from, to);
     this._model.links.push({
       id: generateId(),
       from: from.id,
@@ -88,23 +91,25 @@ class DiagramModel {
    */
   serialize() {
     const res = {
-      nodes: [],
-      links: [],
-    }
+      nodes: [] as any[],
+      links: [] as any[],
+    };
     for (let n of this._model.nodes) {
-      const serializedNode = {};
-      for(let k of Object.keys(n)) {
-        if(k !== 'diagram') {
-          serializedNode[k] = n[k];
+      const serializedNode: Record<string, any> = {};
+      const nodeToProcess = n as any;
+      for (let k of Object.keys(n)) {
+        if (k !== 'diagram') {
+          serializedNode[k] = nodeToProcess[k];
         }
       }
       res.nodes.push(serializedNode);
     }
     for (let l of this._model.links) {
-      const serializedLink = {};
-      for(let k of Object.keys(l)) {
-        if(k !== 'diagram') {
-          serializedLink[k] = l[k];
+      const serializedLink: Record<string, any> = {};
+      const linkToProcess = l as any;
+      for (let k of Object.keys(l)) {
+        if (k !== 'diagram') {
+          serializedLink[k] = linkToProcess[k];
         }
       }
       res.links.push(serializedLink);
@@ -119,7 +124,7 @@ class DiagramModel {
    */
   deserialize(serializedModel: string) {
     this._model = JSON.parse(serializedModel);
-    for(let i = 0 ; i <= this._model.nodes.length; i++) {
+    for (let i = 0 ; i <= this._model.nodes.length; i++) {
       const newNode = this._model.nodes[i];
       if (newNode) {
         this._model.nodes[i] = new DiagramNode(this, newNode.id, newNode.title);
@@ -128,6 +133,7 @@ class DiagramModel {
         }
       }
     }
+    this.emitter.emit('deserialize');
   }
 }
 

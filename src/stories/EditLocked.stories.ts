@@ -46,7 +46,7 @@ export const EditLocked: Story = {
       };
     },
   }),
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement);
 
     await expect(canvas.getByText('testNode1')).toBeInTheDocument();

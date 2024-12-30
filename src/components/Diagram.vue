@@ -71,7 +71,7 @@
           />
           <line
             :x1="getPortHandlePosition(newLink.startPortId)?.x"
-            :y1="getPortHandlePosition(newLink.startPortId)?.y - 8"
+            :y1="(getPortHandlePosition(newLink.startPortId)?.y || 0) - 8"
             :x2="convertXYtoViewPort(mouseX, 0).x"
             :y2="convertXYtoViewPort(0, mouseY).y"
             style="stroke:rgb(255,0,0);stroke-width:2"
@@ -155,18 +155,24 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, } from 'vue';
+import { defineComponent, nextTick } from 'vue';
 import { SvgPanZoom } from 'vue-svg-pan-zoom';
 import Menu from './Menu.vue';
 
 import TextInput from './TextInput.vue';
 
 import DiagramModel from './../DiagramModel';
-import DiagramNode from './DiagramNode.vue';
-import DiagramLink from './DiagramLink.vue';
-import DiagramPort from './DiagramPort.vue';
+import { default as DiagramNodeComponent } from './DiagramNode.vue';
+import { default as DiagramLinkComponent } from './DiagramLink.vue';
+import { default as DiagramPortComponent } from './DiagramPort.vue';
 import '../style.css';
+import type DiagramNode from '../DiagramNode.ts';
+import type { DiagramLink } from '../types/DiagramLink.ts';
 
+type Point = {
+  x?: number;
+  y?: number;
+}
 
 declare interface SVGElement {
   getCTM: Function,
@@ -225,13 +231,6 @@ export default defineComponent({
     },
   },
   data() {
-    this.$nextTick(() => {
-      setTimeout(() => {
-        this.updateLinksPositions();
-        this.displayLinks = true;
-      }, 100);
-    });
-
     return {
       reactiveModel: this.model,
       mode: 'move',
@@ -264,12 +263,20 @@ export default defineComponent({
       spz: undefined as any,
     };
   },
+  mounted() {
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.updateLinksPositions();
+        this.displayLinks = true;
+      }, 100);
+    });
+  },
   components: {
     Menu,
     TextInput,
-    DiagramNode,
-    DiagramLink,
-    DiagramPort,
+    DiagramNode: DiagramNodeComponent,
+    DiagramLink: DiagramLinkComponent,
+    DiagramPort: DiagramPortComponent,
     SvgPanZoom,
   },
   computed: {
@@ -296,15 +303,18 @@ export default defineComponent({
       immediate: true,
     },
     'model': {
-      handler(newV, oldV) {
-        newV.emitter.on('deleteNode', (n) => {
+      handler(newV) {
+        newV.emitter.on('deleteNode', (n: DiagramNode) => {
           this.notifyDeleteNode(n);
         });
-        newV.emitter.on('deletePort', (n) => {
+        newV.emitter.on('deserialize', () => {
+          nextTick(() => this.updateLinksPositions());
+        });
+        newV.emitter.on('deletePort', () => {
           //this.notifyDeleteNode(n);
           this.updateLinksPositions();
         });
-        newV.emitter.on('deleteLink', (l) => {
+        newV.emitter.on('deleteLink', (l: DiagramLink) => {
           this.notifyDeleteLink(l);
           this.updateLinksPositions();
         });
@@ -322,23 +332,23 @@ export default defineComponent({
     },
   },
   methods: {
-    detectClickOnBg(event) {
-      if (event.target.classList.contains('svg-pan-zoom_viewport')) {
+    detectClickOnBg(event: MouseEvent) {
+      if ((event.target as any).classList.contains('svg-pan-zoom_viewport')) {
         this.$emit('clickOnBackground');
         this.clearSelection();
       }
     },
     getAbsoluteXY (element: { getBoundingClientRect: () => any; }) {
-      var viewportElement = document.documentElement;
-      var box = element.getBoundingClientRect();
-      var x = box.left;
-      var y = box.top;
+      //var viewportElement = document.documentElement;
+      const box = element.getBoundingClientRect();
+      const x = box.left;
+      const y = box.top;
       return { x, y };
     },
-    notifyDeleteNode(n) {
+    notifyDeleteNode(n: DiagramNode) {
       this.$emit('deleteNode', n);
     },
-    notifyDeleteLink(l) {
+    notifyDeleteLink(l: DiagramLink) {
       this.$emit('deleteLink', l);
     },
     spzCreated(spz: any) {
@@ -384,7 +394,7 @@ export default defineComponent({
       }
       else return true;
     },
-    createPoint(x: any, y: any, linkIndex: string | number, pointIndex: any) {
+    createPoint(x: number, y: number, linkIndex: string | number, pointIndex: number) {
       let coords = this.convertXYtoViewPort(x, y);
       let links = this.reactiveModel._model.links;
 
@@ -396,7 +406,7 @@ export default defineComponent({
       links[linkIndex].points = points;
     },
 
-    clearSelection(skipPrimary: boolean, skipSecondary: boolean, skipSendEvent: boolean) {
+    clearSelection(skipPrimary?: boolean, skipSecondary?: boolean, skipSendEvent?: boolean) {
       if (!skipPrimary) {
         this.mainSelectedItem = {};
         if (!skipSendEvent) {
@@ -412,7 +422,7 @@ export default defineComponent({
     },
 
     updateLinksPositions() {
-      let links: any[] = [];
+      let links: DiagramLink[] = [];
 
       if (this.reactiveModel && this.reactiveModel._model) links = this.reactiveModel._model.links;
 
@@ -464,7 +474,7 @@ export default defineComponent({
       }
     },
 
-    mouseMoveMagnetismAnchors(coords) {
+    mouseMoveMagnetismAnchors(coords: { x: number; y: number; }) {
       for (let a of this.magnetismAnchors) {
         a.show = false;
         if (a.x && (Math.abs(a.x - (coords.x - this.initialDragX)) < 10)) {
@@ -493,7 +503,7 @@ export default defineComponent({
       if (!this.editable) return;
 
       const links = this.reactiveModel._model.links;
-      const bbox = this.$el.getBoundingClientRect();
+      //const bbox = this.$el.getBoundingClientRect();
       this.mouseX = pos.clientX;
       this.mouseY = pos.clientY;
       this.viewportMousePos = this.convertXYtoViewPort(pos.x, pos.y);
@@ -602,7 +612,7 @@ export default defineComponent({
     mouseUpPort(portId: string) {
       if (!this.editable) return;
 
-      var links = this.reactiveModel._model.links;
+      const links = this.reactiveModel._model.links;
 
       if (this.draggedItem && this.draggedItem.type === "points") {
         const pointIndex = this.draggedItem.pointIndex;
@@ -667,7 +677,7 @@ export default defineComponent({
     },
 
     listMagnetismAnchors() {
-      const anchors = [];
+      const anchors: Array<{ x?: number, y?: number, node: DiagramNode}> = [];
 
       for (let n of this.reactiveModel._model.nodes) {
         if (n.id !== this.draggedItem.node.id) {

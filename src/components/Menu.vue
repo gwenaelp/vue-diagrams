@@ -52,8 +52,7 @@ export default defineComponent({
           component.showMenuComponent = undefined;
         } else if (parentDiagramElement && event.button === 2) {
           this.showMenuComponent = parentDiagramElement.vueComponent;
-          window.elmenu = parentDiagramElement;
-          console.log('menu onMouseDown', this.showMenuComponent, event?.target, parentDiagramElement, parentDiagramElement.vueComponent, window.elmenu);
+          (window as any).elmenu = parentDiagramElement;
           event.stopPropagation();
         } else {
           component.showMenuComponent = undefined;

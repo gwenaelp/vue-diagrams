@@ -1,7 +1,6 @@
 // @ts-check
 //We could have put this in a Vue component, but I try to make the lib framework agnostic over time :)
 
-let startDragHandler = undefined;
 
 const directions = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
 
@@ -68,7 +67,7 @@ const directions = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
     console.log('mouseDownHandler');
     if(event.target) {
       const target = event.target as HTMLElement;
-      const direction = target?.closest('.resize-handle')
+      //const direction = target?.closest('.resize-handle')
       if (this.startDragHandler) {
         this.startDragHandler(target.dataset.direction);
       }

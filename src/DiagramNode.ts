@@ -1,5 +1,6 @@
 // @ts-check
-import generateId from './generateId.ts';
+import generateId from './generateId';
+import type { DiagramPort } from './types/DiagramPort.ts';
 
 const diagramFor: { [key: number]: Object } = {};
 
@@ -12,18 +13,20 @@ class DiagramNode {
   width: number;
   height: number;
   options: Object;
-  ports: Array<Object>;
+  ports: Array<DiagramPort>;
+  type?: string;
   /**
    *  This should not be called directly. Use the "addNode" method from the DiagramModel class
    */
-  constructor(diagram: Object, id: number, title: string, x: number, y: number, width: number, height: number, options: Object) {
+  constructor(diagram: Object, id: number, title: string, x?: number, y?: number, width?: number, height?: number, options?: Object) {
     //This is done like that to avoid circular deps and keep this class to work with stringify :)
     diagramFor[id] = diagram;
+    this.diagram = diagram;
     this.id = id;
     this.title = title;
     //this.diagram = diagram;
-    this.x = x;
-    this.y = y;
+    this.x = x || 0;
+    this.y = y || 0;
     this.width = width || 72;
     this.height = height || 100;
     this.options = options || {};
@@ -35,7 +38,8 @@ class DiagramNode {
    * @param {String} name
    * @return {number} The port id
    */
-  addInPort(name: string, options: Object): number {
+  //FIXME DiagramPort or number as return?
+  addInPort(name: string, options: Object): DiagramPort {
     let newPort = {
       id: generateId(),
       type: "in",
@@ -51,7 +55,8 @@ class DiagramNode {
   /**
    * Adds a new "out" port into the node.
    */
-  addOutPort(name: string, options: Object): number {
+  //FIXME return value is number or port?
+  addOutPort(name: string, options: Object): DiagramPort {
     let newPort = {
       id: generateId(),
       type: "out",
@@ -64,7 +69,7 @@ class DiagramNode {
     return newPort;
   }
 
-  removePortLinks(id: number) {
+  removePortLinks(_id: number) {
     /*
     for (let l of (this.diagram as any)._model.links) {
       if (l.from === id || l.to === id) {
@@ -75,7 +80,7 @@ class DiagramNode {
     throw 'FIXME';
   }
 
-  deletePort(id: number) {
+  deletePort(_id: number) {
     /*
     this.removePortLinks(id);
     this.diagram._model.nodes = this.diagram._model.nodes.map(n => {

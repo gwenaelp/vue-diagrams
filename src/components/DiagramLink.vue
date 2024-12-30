@@ -90,6 +90,7 @@ export default defineComponent({
   mixins: [DiagramElement],
 
   data() {
+    const _this = this;
     return {
       largeStrokeStyle: "stroke:rgba(255,0,0,0.0);",
       pointStyleNormal: "stroke:rgba(255,0,0,0.0); stroke-width: 6",
@@ -99,7 +100,7 @@ export default defineComponent({
       menu: [{
         label: 'Delete link',
         handler() {
-          this.deleteLink();
+          _this.diagram.deleteLink(_this.linkModel);
         },
       }],
     };
@@ -137,10 +138,7 @@ export default defineComponent({
   },
   methods: {
     refreshLink() {},
-    deleteLink () {
-      this.diagram.deleteLink(this.linkModel);
-    },
-
+    
     mouseEnter() {
       this.largeStrokeStyle = "stroke:rgba(255,0,0,0.5);";
     },
@@ -157,12 +155,12 @@ export default defineComponent({
         pointIndex
       });
     },
-    mouseDownSegment(pos: Point, segmentIndex: number) {
+    mouseDownSegment(event: any, segmentIndex: number) {
       if(!(this.$parent?.$parent as any).editable) return;
-      if(pos.button === 2) return;
-      console.log('pos', pos);
-      this.createPoint(pos.x, pos.y, segmentIndex);
-      this.mouseDownPoint(pos, segmentIndex);
+      if(event.button === 2) return;
+
+      this.createPoint(event.x, event.y, segmentIndex);
+      this.mouseDownPoint(event, segmentIndex);
     },
     createPoint(x: number, y: number, pointIndex: number) {
       this.$emit("onCreatePoint", x, y, this.index, pointIndex);

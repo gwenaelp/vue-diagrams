@@ -31,7 +31,7 @@
       @mouseleave="mouseleave"
     >
       <component
-        :is="`vue-diagrams-node-${options.type || this.$parent.$parent.defaultNodeType}`"
+        :is="`vue-diagrams-node-${options.type || $parent.$parent.defaultNodeType}`"
         ref="nodeType"
         :nodeModel="nodeModel"
         :selected="selected"
@@ -103,14 +103,15 @@ export default defineComponent({
   },
   mixins: [DiagramElement],
   data(): any {
+    const _this = this;
     return {
       resizeHandles: undefined,
       titleFillOpacity: 1,
       menu: [{
         label: 'Delete node',
         handler() {
-          this.diagram.deleteNode(this.nodeModel);
-          this.$parent.$parent.updateLinksPositions();
+          _this.diagram.deleteNode(_this.nodeModel);
+          _this.$parent?.$parent?.updateLinksPositions();
         },
         classes: [],
       }],

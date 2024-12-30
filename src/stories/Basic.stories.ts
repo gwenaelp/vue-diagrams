@@ -44,9 +44,8 @@ export const BasicDiagram: Story = {
       };
     },
   }),
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement);
-
     await expect(canvas.getByText('testNode1')).toBeInTheDocument();
     await expect(canvas.getByText('testNode2')).toBeInTheDocument();
     await expect(canvas.getByText('testNode3')).toBeInTheDocument();
@@ -66,6 +65,6 @@ export const BasicDiagram: Story = {
     const updatedPosition = updatedNode1.getBoundingClientRect();
     expect(updatedPosition.left).toBeCloseTo(initialX + 99.5, 1);
 
-    const portHandle = canvas.getByText('testOut2').parentElement.previousSibling;
+    const portHandle = canvas.getByText('testOut2')?.parentElement?.previousSibling;
   },
 };

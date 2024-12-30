@@ -41,25 +41,33 @@ export const ManipulatingView = () => ({
   `,
   setup() {
     const { diagramModel } = createModel();
-    const diagram = ref(null);
+    const diagram = ref<typeof Diagram | null>(null);
     const move1 = () => {
       // Move to position 1 (50, 50)
-      diagram.value.spz.pan({x: 50, y: 50});
+      if (diagram.value) {
+        diagram.value.spz.pan({x: 50, y: 50});
+      }
     };
 
     const move2 = () => {
       // Move to position 2 (200, 200)
-      diagram.value.spz.pan({x: 200, y: 200});
+      if (diagram.value) {
+        diagram.value.spz.pan({x: 200, y: 200});
+      }
     };
 
     const move3 = () => {
       // Move 50px to the left
-      diagram.value.spz.panBy({x: 50, y: 0});
+      if (diagram.value) {
+        diagram.value.spz.panBy({x: 50, y: 0});
+      }
     };
 
     const move4 = () => {
       // Move 50px to the right
-      diagram.value.spz.panBy({x: -50, y: 0});
+      if (diagram.value) {
+        diagram.value.spz.panBy({x: -50, y: 0});
+      }
     };
 
     return {

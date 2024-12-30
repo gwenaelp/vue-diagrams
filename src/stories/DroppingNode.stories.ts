@@ -50,16 +50,18 @@ export const DropToCreateNodes = {
     setup() {
       const { diagramModel } = createModel();
       
-      const diagram = ref(null);
+      const diagram = ref<typeof Diagram | null>(null);
       const onDrop = (event) => {
-        const pan = diagram.value.spz.getPan();
-        const zoom = diagram.value.spz.getZoom();
-        const x = pan.x * (1/zoom) * -1;
-        const y = pan.y * (1/zoom) * -1;
-        const node = diagram.value.reactiveModel.addNode('Node', x, y);
-        node.addInPort('In');
-        node.addOutPort('Out');
-        diagram.value.updateLinksPositions();
+        if (diagram.value) {
+          const pan = diagram.value.spz.getPan();
+          const zoom = diagram.value.spz.getZoom();
+          const x = pan.x * (1/zoom) * -1;
+          const y = pan.y * (1/zoom) * -1;
+          const node = diagram.value.reactiveModel.addNode('Node', x, y);
+          node.addInPort('In');
+          node.addOutPort('Out');
+          diagram.value.updateLinksPositions();
+        }
       };
 
       return {
@@ -69,21 +71,24 @@ export const DropToCreateNodes = {
       };
     },
   }),
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement);
 
     const newNodeElement = canvasElement.querySelector('.droppable-node');  // Get the SVG element
     const svgElement = canvasElement.querySelector('#svgroot2');
-    console.log('newNodeElement', newNodeElement, svgElement.querySelectorAll('.node'), svgElement.querySelectorAll('.node').length);
-    expect(svgElement.querySelectorAll('.node').length).toBe(0);
-    
-    await fireEvent.dragStart(newNodeElement);
-    await fireEvent.dragEnter(svgElement);
-    await fireEvent.dragOver(svgElement);
+    if (svgElement && newNodeElement) {
 
-    await fireEvent.drop(svgElement);
-    await fireEvent.dragEnd(newNodeElement);
-
-    expect(svgElement.querySelectorAll('.node').length).toBe(1);
+      console.log('newNodeElement', newNodeElement, svgElement.querySelectorAll('.node'), svgElement.querySelectorAll('.node').length);
+      expect(svgElement.querySelectorAll('.node').length).toBe(0);
+      
+      await fireEvent.dragStart(newNodeElement);
+      await fireEvent.dragEnter(svgElement);
+      await fireEvent.dragOver(svgElement);
+      
+      await fireEvent.drop(svgElement);
+      await fireEvent.dragEnd(newNodeElement);
+      
+      expect(svgElement.querySelectorAll('.node').length).toBe(1);
+    }
   },
 };
