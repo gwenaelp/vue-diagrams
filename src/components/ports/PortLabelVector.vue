@@ -9,7 +9,7 @@
     <PortLabel v-else :port="port" :width="width" />
   </div>
 </template>
-<script>
+<script lang="ts">
 import PortLabel from './PortLabel.vue';
 import BlenderStyleInput from './BlenderStyleInput.vue';
 

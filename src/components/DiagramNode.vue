@@ -50,6 +50,7 @@ import ImageNode from './NodeTypes/Image.vue';
 import ShaderNode from './NodeTypes/Shader.vue';
 import DiagramElement from '../mixins/DiagramElement';
 import { defineComponent } from 'vue';
+import Diagram from './Diagram.vue';
 
 export default defineComponent({
   name: 'DiagramNode',
@@ -111,7 +112,11 @@ export default defineComponent({
         label: 'Delete node',
         handler() {
           _this.diagram.deleteNode(_this.nodeModel);
-          _this.$parent?.$parent?.updateLinksPositions();
+          if (_this.$parent?.$parent instanceof Diagram) {
+            _this.$parent?.$parent?.updateLinksPositions();
+          } else {
+            throw 'Main diagram component not found';
+          }
         },
         classes: [],
       }],

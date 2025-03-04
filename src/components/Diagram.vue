@@ -80,6 +80,7 @@
         </g>
           <DiagramNode
             :ref="'node-' + nodeIndex"
+            class="node-abstract-wrapper"
             :title="node.title"
             :nodeModel="node"
             :diagram="model"
@@ -98,6 +99,30 @@
             @onStartDrag="startDragItem"
             @delete="model.deleteNode(node)"
           >
+          <g class="tooltips"></g>
+            <template v-for="(port, portIndex) in node.ports">
+              <g
+                v-if="port.options?.tooltip?.text"
+                :class="{
+                  'tooltip': true,
+                  'tooltip-show-on-port-hover': port.options?.tooltip?.trigger === 'hoverPort'
+                }"
+                :style="{
+                  opacity: port.options?.tooltip?.opacity
+                }"
+              >
+                <rect
+                  :fill="port.options?.tooltip?.fill || '#eeeeee'"
+                  :stroke="port.options?.tooltip?.stroke || '#bbbbbb'"
+                  :x="port.type === 'in' ? -50 : node.width + 10" :y="portIndex * 20 + 25"
+                  :rx="3" :ry="3"
+                  :width="40" :height="16"
+                />
+                <text :x="port.type === 'in' ? -42 : node.width + 18" :y="portIndex * 20 + 36" font-size="8pt" fill="#000000">
+                  {{port.options?.tooltip?.text}}
+                </text>
+              </g>
+            </template>
             <foreignObject :width="node.width + 10" x="-5" :height="node.height - 20" y="20">
               <div class="diagram-node-content-wrapper">
                 <DiagramPort
@@ -694,40 +719,45 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-  svg{
-    user-select: none;
-    font-family: Helvetica;
-  }
-  .thumbViewClass {
-    position: absolute;
-    width: 100px;
-    height: 70px;
-    background: white;
-    border: 1px solid black;
-  }
-  .vue-diagrams :deep(.svg-pan-zoom__scope) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 120;
-  }
-  .vue-diagrams :deep(.svg-pan-zoom__thumbnail) {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-  }
-  .vue-diagrams :deep(.svg-pan-zoom__scope .scope) {
-    fill: red;
-    fill-opacity: 0.1;
-    stroke: red;
-    stroke-width: 2px;
-  }
-  #smallGrid path {
-    stroke: #ccc;
-  }
-  #grid path {
-    stroke: gray;
-  }
+svg {
+  user-select: none;
+  font-family: Helvetica;
+}
+.thumbViewClass {
+  position: absolute;
+  width: 100px;
+  height: 70px;
+  background: white;
+  border: 1px solid black;
+}
+.vue-diagrams :deep(.svg-pan-zoom__scope) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 120;
+}
+.vue-diagrams :deep(.svg-pan-zoom__thumbnail) {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.vue-diagrams :deep(.svg-pan-zoom__scope .scope) {
+  fill: red;
+  fill-opacity: 0.1;
+  stroke: red;
+  stroke-width: 2px;
+}
+#smallGrid path {
+  stroke: #ccc;
+}
+#grid path {
+  stroke: gray;
+}
+.tooltip {
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
 </style>

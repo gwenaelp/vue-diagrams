@@ -1,11 +1,14 @@
 <template>
-  <span :class="`port-name port-${props.port.type}`" y="8" :x="width - horizontalPadding" >{{props.port.name}}</span>
+  <span :class="`port-name port-${props.port.type}`" y="8" :x="(width || 0) - horizontalPadding" >{{props.port.name}}</span>
 </template>
-<script setup>
+<script setup lang="ts">
 const horizontalPadding = 10;
 
 const props = defineProps({
-  port: Object,
+  port: {
+    type: Object,
+    required: true
+  },
   width: Number,
 });
 

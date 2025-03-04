@@ -1,7 +1,7 @@
 // @ts-check
 import DiagramNode from "./DiagramNode";
 import Emitter from 'tiny-emitter';
-import generateId from './generateId.ts';
+import generateId from './generateId';
 import type { Point } from "./types/Point";
 
 type Port = any;
@@ -14,7 +14,7 @@ export type InternalDiagramModel = {
  * @class DiagramModel
  */
 class DiagramModel {
-  private _model: InternalDiagramModel;
+  _model: InternalDiagramModel;
   public emitter: any;
 
   constructor() {
@@ -75,8 +75,8 @@ class DiagramModel {
   addLink(from: Port, to: Port, points:Array<Point> = [], options = {}) {
     this._model.links.push({
       id: generateId(),
-      from: from.id,
-      to: to.id,
+      from: from.id || from,
+      to: to.id || to,
       positionFrom: {},
       positionTo: {},
       points,

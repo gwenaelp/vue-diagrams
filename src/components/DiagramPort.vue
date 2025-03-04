@@ -3,7 +3,7 @@
     'diagram-port': true,
     'has-menu': true,
     hover
-  }" :aria-label="port.id" data-cooltipz-dir="bottom-right"
+  }"
   style="overflow: visible; position: relative; padding-left: 10px;"
   >
     <!--<rect
@@ -42,31 +42,6 @@
         :width="width"
       />
       <PortLabel v-else :port="port" :width="width" />
-    </div>
-    <div
-      v-if="port.options?.tooltip?.text"
-      :class="{
-        'tooltip': true,
-        'tooltip-show-on-port-hover': port.options?.tooltip?.trigger === 'hoverPort'
-      }"
-    >
-    <!--
-      <component
-        :is="getPortShapeComponent(port.display_shape)"
-        class="label"
-        :port="port"
-      />
-    -->
-      <!--
-      <rect
-        :fill="port.options?.tooltip?.fill || '#eeeeee'"
-        :stroke="port.options?.tooltip?.stroke || '#bbbbbb'"
-        :x="0" y="0"
-        rx="3" ry="3"
-        width="40" height="18"
-      />
-      -->
-      <span x="10" y="13" font-size="8pt" fill="#000000">{{port.options?.tooltip?.text}}</span>
     </div>
   </div>
 </template>
@@ -128,14 +103,14 @@ export default defineComponent({
     }
   },
   methods: {
-    getPortShapeComponent(shape) {
+    getPortShapeComponent(shape: string) {
       if(shape === undefined) {
         return 'DotShapePort';
       }
       const component = resolveComponent(`vue-diagrams-port-shape-${shape}`);
       return typeof component !== 'string' ? `vue-diagrams-port-shape-${shape}` : 'DotShapePort';
     },
-    getPortLabelComponent(valueType) {
+    getPortLabelComponent(valueType: string) {
       if (valueType) {
         const component = resolveComponent(`vue-diagrams-port-label-${valueType}`);
         console.log('component?', valueType, component, `vue-diagrams-port-label-${valueType}`)
@@ -149,6 +124,7 @@ export default defineComponent({
 
     enter() {
       this.fill = "#999999";
+      console.log('hover port', this.port, this.$parent.$parent?.$parent?.$parent.model._model.links.filter(l => l.from === this.port.id || l.to === this.port.id), this.$parent.$parent?.$parent?.$parent.model);
       this.hover = true;
     },
 
@@ -165,13 +141,7 @@ export default defineComponent({
 <style scoped>
 .diagram-port {
   position: relative;
-}
-.tooltip {
-  position: absolute;
-  left: -40px;
-  top: 0;
-  opacity: 0.8;
-  transition: opacity 0.2s;
+  cursor: unset;
 }
 .tooltip-show-on-port-hover {
   opacity: 0;

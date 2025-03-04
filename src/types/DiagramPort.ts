@@ -3,4 +3,5 @@ export type DiagramPort = {
   type: string;
   name: string;
   options?: Record<string, any>;
+  inGroupNodePortId?: number;
 };

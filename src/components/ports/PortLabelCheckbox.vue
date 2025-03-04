@@ -3,7 +3,7 @@
     <input type="checkbox" />
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {
   props: {
     port: Object,
