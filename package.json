@@ -2,7 +2,7 @@
   "name": "vue-diagrams",
   "title": "An easy to use diagram editor component",
   "description": "Diagram component for vue.js, inspired by react-diagrams",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "license": "MIT",
   "main": "dist/vue-diagrams.mjs",
   "files": [
@@ -63,7 +63,6 @@
     "eslint-plugin-storybook": "^0.11.1",
     "histoire": "^1.0.0-alpha.2",
     "jsdom": "^23.0.0",
-    "storybook": "^8.4.7",
     "vitest": "^3.0.9",
     "vue-loader": "^17.0.1",
     "vue-svg-pan-zoom": "^2.1.0"
@@ -75,6 +74,7 @@
     "@vue/compiler-sfc": "^3.3.4",
     "@vue/tsconfig": "^0.4.0",
     "draggable-vue-directive": "^1.1.0",
+    "storybook": "^8.6.7",
     "svg-pan-zoom": "^3.6.1",
     "tiny-emitter": "^2.1.0",
     "typedoc-plugin-vue": "^1.1.0",
