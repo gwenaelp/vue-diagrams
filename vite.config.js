@@ -1,11 +1,11 @@
 // vite.config.js
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
-//import dts from 'vite-plugin-dts'
+import dts from 'vite-plugin-dts';
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-/*  build: {
+  build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, 'src/index.ts'),
@@ -26,14 +26,12 @@ export default defineConfig({
       },
     },
   },
-  */
   plugins: [
     vue(),
-/*    dts({
+    dts({
       tsconfigPath: './tsconfig.json',
       rollupTypes: true,
       entryRoot: 'src',
     }),
-*/
   ],
 });
