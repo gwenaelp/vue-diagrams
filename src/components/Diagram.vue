@@ -134,6 +134,7 @@
                   :y="portIndex * 20"
                   :node="node"
                   :port="port"
+                  :getPortComponents="getPortComponents"
                   @onStartDragNewLink="startDragNewLink"
                   @mouseUpPort="mouseUpPort"
                 />
@@ -193,6 +194,7 @@ import { default as DiagramPortComponent } from './DiagramPort.vue';
 import '../style.css';
 import type DiagramNode from '../DiagramNode.ts';
 import type { DiagramLink } from '../types/DiagramLink.ts';
+import { debounce } from 'vue-debounce';
 
 type Point = {
   x?: number;
@@ -221,6 +223,10 @@ export default defineComponent({
   name: 'Diagram',
   Model: DiagramModel,
   props: {
+    getPortComponents: {
+      type: Function,
+      default: undefined,
+    },
     defaultNodeType: {
       type: String,
       default: 'shader',
@@ -348,7 +354,9 @@ export default defineComponent({
     },
     'model._model': {
       handler () {
-        this.$emit('model-updated', this.reactiveModel._model);
+        debounce(() => {
+          this.$emit('model-updated', this.reactiveModel._model);
+        }, 500)();
       },
       deep: true,
     },
@@ -521,7 +529,7 @@ export default defineComponent({
             a.show = true;
           }
         }
-      }      
+      }
     },
 
     mouseMove(pos: { clientX: number; clientY: number; x: any; y: any; }) {

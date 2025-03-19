@@ -53,7 +53,7 @@ import PortLabel from './ports/PortLabel.vue';
 
 export default defineComponent({
   name: 'DiagramPort',
-  props: ['id', 'x', 'y', 'node', 'nodeIndex', 'port'],
+  props: ['id'/*number*/, 'x' /*number*/, 'y'/*number*/, 'node', 'nodeIndex'/*number*/, 'port', 'getPortComponents'/*Function*/],
   components: {
     'vue-diagrams-port-shape-dot': DotShapePort,
     PortLabel,
@@ -111,6 +111,12 @@ export default defineComponent({
       return typeof component !== 'string' ? `vue-diagrams-port-shape-${shape}` : 'DotShapePort';
     },
     getPortLabelComponent(valueType: string) {
+      if (this.getPortComponents) {
+        const portComponents = this.getPortComponents(this.port);
+        if (portComponents?.label) {
+          return portComponents.label;
+        }
+      }
       if (valueType) {
         const component = resolveComponent(`vue-diagrams-port-label-${valueType}`);
         console.log('component?', valueType, component, `vue-diagrams-port-label-${valueType}`)
