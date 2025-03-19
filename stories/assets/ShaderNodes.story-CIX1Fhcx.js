@@ -1,5 +1,5 @@
-import { _ as _export_sfc, D as Diagram } from "./Diagram-DTIBghvr.js";
-import { aq as resolveComponent, ar as createBlock, as as openBlock, at as withCtx, au as createBaseVNode, ax as createElementBlock, ay as Fragment, az as renderList, aA as toDisplayString, av as withModifiers, aB as createVNode } from "./vendor-DusQfV5j.js";
+import { _ as _export_sfc, D as Diagram } from "./Diagram-CPNCjZ7L.js";
+import { aq as resolveComponent, ar as createBlock, as as openBlock, at as withCtx, au as createBaseVNode, ax as createElementBlock, ay as Fragment, az as renderList, aA as toDisplayString, av as withModifiers, aB as createVNode } from "./vendor-CVfEhs-R.js";
 const nodes = {
   add: (model, x, y) => {
     const n = model.addNode("add", x, y);

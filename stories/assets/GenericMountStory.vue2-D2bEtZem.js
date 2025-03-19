@@ -1,5 +1,5 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./layouts.story-DhZeZH3c.js","./Diagram-DTIBghvr.js","./vendor-DusQfV5j.js","./ShaderNodes.story-Do7Ku9Dz.js","./HomeView.vue-CRpPXjSI.js","./story-B3AePkfu.js","./StoryView.vue-BU4Rzm93.js","./MobileOverlay.vue2-BGtIFcfJ.js","./BaseEmpty.vue-4EeFBlUB.js","./state-B-x9R_tO.js"])))=>i.map(i=>d[i]);
-import { Q as defineAsyncComponent, R as createRouter, S as createWebHistory, U as createWebHashHistory, V as useDark, W as useToggle, k as watch, X as markRaw, E as reactive, d as defineComponent, r as ref, Y as watchEffect, q as createBlock, g as createCommentVNode, o as openBlock, Z as mergeProps, _ as resolveDynamicComponent } from "./vendor-DusQfV5j.js";
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./layouts.story-D_Azqzab.js","./Diagram-CPNCjZ7L.js","./vendor-CVfEhs-R.js","./ShaderNodes.story-CIX1Fhcx.js","./HomeView.vue-BeTsvyJw.js","./story-XqMTZrU3.js","./StoryView.vue-3Lo4zm0q.js","./MobileOverlay.vue2-CkDhH4bQ.js","./BaseEmpty.vue-Cp0rvHKo.js","./state-ChdkekrY.js"])))=>i.map(i=>d[i]);
+import { Q as defineAsyncComponent, R as createRouter, S as createWebHistory, U as createWebHashHistory, V as useDark, W as useToggle, k as watch, X as markRaw, E as reactive, d as defineComponent, r as ref, Y as watchEffect, q as createBlock, g as createCommentVNode, o as openBlock, Z as mergeProps, _ as resolveDynamicComponent } from "./vendor-CVfEhs-R.js";
 const scriptRel = "modulepreload";
 const assetsURL = function(dep, importerUrl) {
   return new URL(dep, importerUrl).href;
@@ -72,8 +72,8 @@ const __vitePreload = function preload(baseModule, deps, importerUrl) {
     return baseModule().catch(handlePreloadError);
   });
 };
-const Comp0 = defineAsyncComponent(() => __vitePreload(() => import("./layouts.story-DhZeZH3c.js"), true ? __vite__mapDeps([0,1,2]) : void 0, import.meta.url));
-const Comp1 = defineAsyncComponent(() => __vitePreload(() => import("./ShaderNodes.story-Do7Ku9Dz.js"), true ? __vite__mapDeps([3,1,2]) : void 0, import.meta.url));
+const Comp0 = defineAsyncComponent(() => __vitePreload(() => import("./layouts.story-D_Azqzab.js"), true ? __vite__mapDeps([0,1,2]) : void 0, import.meta.url));
+const Comp1 = defineAsyncComponent(() => __vitePreload(() => import("./ShaderNodes.story-CIX1Fhcx.js"), true ? __vite__mapDeps([3,1,2]) : void 0, import.meta.url));
 let files = [
   { "id": "stories-layouts-story-vue", "path": ["Advanced usage", "Layouts"], "filePath": "stories/layouts.story.vue", "story": { "id": "stories-layouts-story-vue", "title": "Layouts", "layout": { "type": "single", "iframe": true }, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue3", "index": 0, component: Comp0, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-layouts-story-vue-BKKReMx2.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-shaders-shadernodes-story-vue", "path": ["Shader nodes"], "filePath": "stories/shaders/ShaderNodes.story.vue", "story": { "id": "stories-shaders-shadernodes-story-vue", "title": "Shader nodes", "layout": { "type": "single", "iframe": true }, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue3", "index": 1, component: Comp1, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-shaders-shadernodes-story-vue-BUaEOIw8.js"), true ? [] : void 0, import.meta.url) }
@@ -99,12 +99,12 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: () => __vitePreload(() => import("./HomeView.vue-CRpPXjSI.js"), true ? __vite__mapDeps([4,5,2]) : void 0, import.meta.url)
+      component: () => __vitePreload(() => import("./HomeView.vue-BeTsvyJw.js"), true ? __vite__mapDeps([4,5,2]) : void 0, import.meta.url)
     },
     {
       path: "/story/:storyId",
       name: "story",
-      component: () => __vitePreload(() => import("./StoryView.vue-BU4Rzm93.js"), true ? __vite__mapDeps([6,2,5,7,8,9]) : void 0, import.meta.url)
+      component: () => __vitePreload(() => import("./StoryView.vue-3Lo4zm0q.js"), true ? __vite__mapDeps([6,2,5,7,8,9]) : void 0, import.meta.url)
     }
   ]
 });
@@ -163,8 +163,8 @@ function mapVariant(variant, existingVariant) {
   return result;
 }
 const clientSupportPlugins = {
-  "vanilla": () => __vitePreload(() => import("./vendor-DusQfV5j.js").then((n) => n.aR), true ? [] : void 0, import.meta.url),
-  "vue3": () => __vitePreload(() => import("./vendor-DusQfV5j.js").then((n) => n.aS), true ? [] : void 0, import.meta.url)
+  "vanilla": () => __vitePreload(() => import("./vendor-CVfEhs-R.js").then((n) => n.aS), true ? [] : void 0, import.meta.url),
+  "vue3": () => __vitePreload(() => import("./vendor-CVfEhs-R.js").then((n) => n.aT), true ? [] : void 0, import.meta.url)
 };
 const __default__ = {
   inheritAttrs: false

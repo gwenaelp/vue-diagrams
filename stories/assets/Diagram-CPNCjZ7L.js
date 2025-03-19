@@ -1,7 +1,7 @@
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-import { aC as defineComponent, ax as createElementBlock, aw as createCommentVNode, aD as normalizeStyle, aE as normalizeClass, ay as Fragment, az as renderList, as as openBlock, aF as createTextVNode, aA as toDisplayString, aG as withDirectives, aH as vModelText, aI as Emitter, au as createBaseVNode, aJ as renderSlot, aK as resolveDynamicComponent, ar as createBlock, at as withCtx, aq as resolveComponent, aL as _sfc_main$d, aM as nextTick, aB as createVNode, aN as createSlots } from "./vendor-DusQfV5j.js";
+import { aC as defineComponent, ax as createElementBlock, aw as createCommentVNode, aD as normalizeStyle, aE as normalizeClass, ay as Fragment, az as renderList, as as openBlock, aF as createTextVNode, aA as toDisplayString, aG as withDirectives, aH as vModelText, aI as Emitter, au as createBaseVNode, aJ as renderSlot, aK as resolveDynamicComponent, ar as createBlock, at as withCtx, aq as resolveComponent, aL as _sfc_main$d, aM as debounce, aN as nextTick, aB as createVNode, aO as createSlots } from "./vendor-CVfEhs-R.js";
 const _export_sfc = (sfc, props) => {
   const target = sfc.__vccOpts || sfc;
   for (const [key, val] of props) {
@@ -1309,7 +1309,16 @@ _sfc_main$2.__file = "src/components/ports/PortLabel.vue";
 const PortLabel = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2], ["__file", "/home/runner/work/vue-diagrams/vue-diagrams/src/components/ports/PortLabel.vue"]]);
 const _sfc_main$1 = defineComponent({
   name: "DiagramPort",
-  props: ["id", "x", "y", "node", "nodeIndex", "port"],
+  props: [
+    "id",
+    "x",
+    "y",
+    "node",
+    "nodeIndex",
+    "port",
+    "getPortComponents"
+    /*Function*/
+  ],
   components: {
     "vue-diagrams-port-shape-dot": DotShapePort,
     PortLabel
@@ -1368,6 +1377,12 @@ const _sfc_main$1 = defineComponent({
       return typeof component !== "string" ? `vue-diagrams-port-shape-${shape}` : "DotShapePort";
     },
     getPortLabelComponent(valueType) {
+      if (this.getPortComponents) {
+        const portComponents = this.getPortComponents(this.port);
+        if (portComponents == null ? void 0 : portComponents.label) {
+          return portComponents.label;
+        }
+      }
       if (valueType) {
         const component = resolveComponent(`vue-diagrams-port-label-${valueType}`);
         console.log("component?", valueType, component, `vue-diagrams-port-label-${valueType}`);
@@ -1464,6 +1479,10 @@ const _sfc_main = defineComponent({
   name: "Diagram",
   Model: DiagramModel,
   props: {
+    getPortComponents: {
+      type: Function,
+      default: void 0
+    },
     defaultNodeType: {
       type: String,
       default: "shader"
@@ -1591,7 +1610,9 @@ const _sfc_main = defineComponent({
     },
     "model._model": {
       handler() {
-        this.$emit("model-updated", this.reactiveModel._model);
+        debounce(() => {
+          this.$emit("model-updated", this.reactiveModel._model);
+        }, 500)();
       },
       deep: true
     },
@@ -2184,9 +2205,10 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                                   y: portIndex * 20,
                                   node,
                                   port,
+                                  getPortComponents: _ctx.getPortComponents,
                                   onOnStartDragNewLink: _ctx.startDragNewLink,
                                   onMouseUpPort: _ctx.mouseUpPort
-                                }, null, 8, ["id", "nodeIndex", "y", "node", "port", "onOnStartDragNewLink", "onMouseUpPort"]);
+                                }, null, 8, ["id", "nodeIndex", "y", "node", "port", "getPortComponents", "onOnStartDragNewLink", "onMouseUpPort"]);
                               }),
                               128
                               /* KEYED_FRAGMENT */

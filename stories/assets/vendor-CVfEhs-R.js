@@ -28268,6 +28268,26 @@ tinyEmitter.exports = E;
 tinyEmitter.exports.TinyEmitter = E;
 var tinyEmitterExports = tinyEmitter.exports;
 const Emitter = /* @__PURE__ */ getDefaultExportFromCjs(tinyEmitterExports);
+function debounce(fn2, wait) {
+  let timeout = null;
+  const timer = wait;
+  const debounced = function(...args) {
+    const later = () => {
+      timeout = null;
+      fn2.apply(this, args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, timer);
+    if (!timeout) {
+      fn2.apply(this, args);
+    }
+  };
+  debounced.cancel = () => {
+    clearTimeout(timeout);
+    timeout = null;
+  };
+  return debounced;
+}
 var define_process_env_default$1 = {};
 const va = {
   name: "HstButton"
@@ -50292,13 +50312,14 @@ export {
   renderSlot as aJ,
   resolveDynamicComponent as aK,
   _sfc_main as aL,
-  nextTick as aM,
-  createSlots as aN,
-  useFocus as aO,
-  refDebounced as aP,
-  flexsearch_bundleExports as aQ,
-  client$1 as aR,
-  client as aS,
+  debounce as aM,
+  nextTick as aN,
+  createSlots as aO,
+  useFocus as aP,
+  refDebounced as aQ,
+  flexsearch_bundleExports as aR,
+  client$1 as aS,
+  client as aT,
   ym as aa,
   wm as ab,
   toRefs as ac,
