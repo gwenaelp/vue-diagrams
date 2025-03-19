@@ -3155,7 +3155,9 @@ svg[data-v-2c52bd4f] {
   opacity: 0.7;
   transition: opacity 0.2s;
 }
-
+[data-v-2c52bd4f] .node-light-background {
+  fill: white;
+}
 
 .node[data-v-037acf99] {
     display: block;
