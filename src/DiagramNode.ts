@@ -97,7 +97,7 @@ class DiagramNode {
     */
     throw 'FIXME';
   }
-
+  [key: string]: any;
 }
 
 export default DiagramNode;

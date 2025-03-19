@@ -1,12 +1,12 @@
 <template>
   <div class="port-label-vector">
-    <template v-if="port.type === 'in'">
+    <template v-if="port?.type === 'in'">
       {{port.name}}:
       <BlenderStyleInput label="X" />
       <BlenderStyleInput label="Y" />
       <BlenderStyleInput label="Z" />
     </template>
-    <PortLabel v-else :port="port" :width="width" />
+    <PortLabel v-else-if="port" :port="port" :width="width" />
   </div>
 </template>
 <script lang="ts">

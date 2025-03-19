@@ -130,7 +130,6 @@ export default defineComponent({
 
     enter() {
       this.fill = "#999999";
-      console.log('hover port', this.port, this.$parent.$parent?.$parent?.$parent.model._model.links.filter(l => l.from === this.port.id || l.to === this.port.id), this.$parent.$parent?.$parent?.$parent.model);
       this.hover = true;
     },
 

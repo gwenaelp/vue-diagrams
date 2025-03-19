@@ -1,15 +1,19 @@
 <template>
   <div class="port-label-select">
     <select>
-      <option v-for="v in port.values">{{v}}</option>
+      <option v-for="v in port?.values">{{v}}</option>
     </select>
   </div>
 </template>
 <script lang="ts">
 export default {
   props: {
-    port: Object,
-    width: Number,
+    port: {
+      type: Object,
+    },
+    width: {
+      type: Number,
+    },
   },
 }
 </script>
