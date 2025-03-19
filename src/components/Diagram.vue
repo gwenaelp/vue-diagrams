@@ -767,5 +767,7 @@ svg {
   opacity: 0.7;
   transition: opacity 0.2s;
 }
-
+:deep(.node-light-background) {
+  fill: white;
+}
 </style>

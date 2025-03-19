@@ -15,10 +15,6 @@ import dropToCreateNodes from './dropToCreateNodes';
 import editModes from './editModes';
 import serializationDeserialization from './serializationDeserialization';
 
-type ExampleImports = {
-  [key: string]: any;
-}
-
 export const exampleImports: Record<string, any> = {
   playground,
   shader,
