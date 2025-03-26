@@ -12,7 +12,7 @@ class DiagramNode {
   y: number;
   width: number;
   height: number;
-  options: Object;
+  options: Record<string, any>;
   ports: Array<DiagramPort>;
   type?: string;
   /**
@@ -39,7 +39,7 @@ class DiagramNode {
    * @return {number} The port id
    */
   //FIXME DiagramPort or number as return?
-  addInPort(name: string, options: Object): DiagramPort {
+  addInPort(name: string, options?: Object): DiagramPort {
     let newPort = {
       id: generateId(),
       type: "in",
@@ -56,7 +56,7 @@ class DiagramNode {
    * Adds a new "out" port into the node.
    */
   //FIXME return value is number or port?
-  addOutPort(name: string, options: Object): DiagramPort {
+  addOutPort(name: string, options?: Object): DiagramPort {
     let newPort = {
       id: generateId(),
       type: "out",

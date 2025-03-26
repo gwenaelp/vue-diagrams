@@ -3,9 +3,9 @@ import DiagramNode from "./DiagramNode";
 import Emitter from 'tiny-emitter';
 import generateId from './generateId';
 import type { Point } from "./types/Point";
+import type { DiagramLink } from "./types/DiagramLink";
 
 type Port = any;
-type DiagramLink = any;
 export type InternalDiagramModel = {
   nodes: Array<DiagramNode>;
   links: Array<DiagramLink>;
@@ -28,7 +28,7 @@ class DiagramModel {
   /**
    * Adds a node to the diagram
    */
-  addNode(title: string, x: number, y: number, width: number, height: number, options: Object): Object /* FIXME: DiagramNode */ {
+  addNode(title: string, x: number, y: number, width?: number, height?: number, options?: Object): DiagramNode {
     if (options === undefined) {
       options = {};
     }
@@ -37,7 +37,7 @@ class DiagramModel {
     return newNode;
   }
 
-  deleteNode(node: DiagramNode) { //FIXME any
+  deleteNode(node: DiagramNode) {
     let index = -1;
     for (let k = 0; k < this._model.nodes.length; k++) {
       if (node.id === this._model.nodes[k].id) {
@@ -60,7 +60,7 @@ class DiagramModel {
       }
     }
     this._model.nodes.splice(index, 1);
-    //this.emitter.emit('deleteNode', node);
+    this.emitter.emit('deleteNode', node);
   }
 
   deleteLink(link: Object) { //FIXME link
