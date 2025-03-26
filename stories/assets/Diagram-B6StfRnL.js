@@ -305,6 +305,7 @@ class DiagramModel {
       }
     }
     this._model.nodes.splice(index, 1);
+    this.emitter.emit("deleteNode", node);
   }
   deleteLink(link) {
     const index = this._model.links.indexOf(link);

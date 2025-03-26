@@ -1,7 +1,7 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./layouts.story-DBaOSyvf.js","./Diagram-CH6wIVIw.js","./vendor-BvBmhImZ.js","./ShaderNodes.story-DxMf-PoN.js","./HomeView.vue-CSwkrwKC.js","./story-CV-Y9gbw.js","./StoryView.vue-Bb2EAUBi.js","./responsive-GqednJVa.js","./BaseEmpty.vue-CbTpKuk0.js","./state-DERn92Ak.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./layouts.story-U9ke829w.js","./Diagram-B6StfRnL.js","./vendor-BvBmhImZ.js","./ShaderNodes.story-fE0GqyK8.js","./HomeView.vue-BKPxM6Vl.js","./story-tCRBhrrh.js","./StoryView.vue-CDu3W0Xt.js","./responsive-GqednJVa.js","./BaseEmpty.vue-CbTpKuk0.js","./state-DptmP4CW.js"])))=>i.map(i=>d[i]);
 import { _ as __vitePreload, O as defineAsyncComponent, P as useDark, Q as useToggle, k as watch, R as createRouter, S as createWebHistory, U as createWebHashHistory, d as defineComponent, n as ref, V as watchEffect, W as markRaw, y as createBlock, g as createCommentVNode, X as mergeProps, Y as resolveDynamicComponent, o as openBlock, A as reactive } from "./vendor-BvBmhImZ.js";
-const Comp0 = defineAsyncComponent(() => __vitePreload(() => import("./layouts.story-DBaOSyvf.js"), true ? __vite__mapDeps([0,1,2]) : void 0, import.meta.url));
-const Comp1 = defineAsyncComponent(() => __vitePreload(() => import("./ShaderNodes.story-DxMf-PoN.js"), true ? __vite__mapDeps([3,1,2]) : void 0, import.meta.url));
+const Comp0 = defineAsyncComponent(() => __vitePreload(() => import("./layouts.story-U9ke829w.js"), true ? __vite__mapDeps([0,1,2]) : void 0, import.meta.url));
+const Comp1 = defineAsyncComponent(() => __vitePreload(() => import("./ShaderNodes.story-fE0GqyK8.js"), true ? __vite__mapDeps([3,1,2]) : void 0, import.meta.url));
 let files = [
   { "id": "stories-layouts-story-vue", "path": ["Advanced usage", "Layouts"], "filePath": "stories/layouts.story.vue", "story": { "id": "stories-layouts-story-vue", "title": "Layouts", "layout": { "type": "single", "iframe": true }, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue3", "index": 0, component: Comp0, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-layouts-story-vue-BKKReMx2.js"), true ? [] : void 0, import.meta.url) },
   { "id": "stories-shaders-shadernodes-story-vue", "path": ["Shader nodes"], "filePath": "stories/shaders/ShaderNodes.story.vue", "story": { "id": "stories-shaders-shadernodes-story-vue", "title": "Shader nodes", "layout": { "type": "single", "iframe": true }, "docsOnly": false, "variants": [{ "id": "_default", "title": "default" }] }, "supportPluginId": "vue3", "index": 1, component: Comp1, source: () => __vitePreload(() => import("./__resolved__virtual_story-source_stories-shaders-shadernodes-story-vue-BUaEOIw8.js"), true ? [] : void 0, import.meta.url) }
@@ -48,12 +48,12 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: () => __vitePreload(() => import("./HomeView.vue-CSwkrwKC.js"), true ? __vite__mapDeps([4,5,2]) : void 0, import.meta.url)
+      component: () => __vitePreload(() => import("./HomeView.vue-BKPxM6Vl.js"), true ? __vite__mapDeps([4,5,2]) : void 0, import.meta.url)
     },
     {
       path: "/story/:storyId",
       name: "story",
-      component: () => __vitePreload(() => import("./StoryView.vue-Bb2EAUBi.js"), true ? __vite__mapDeps([6,2,5,7,8,9]) : void 0, import.meta.url)
+      component: () => __vitePreload(() => import("./StoryView.vue-CDu3W0Xt.js"), true ? __vite__mapDeps([6,2,5,7,8,9]) : void 0, import.meta.url)
     }
   ]
 });

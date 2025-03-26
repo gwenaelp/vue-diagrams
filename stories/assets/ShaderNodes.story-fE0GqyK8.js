@@ -1,4 +1,4 @@
-import { _ as _export_sfc, D as Diagram } from "./Diagram-CH6wIVIw.js";
+import { _ as _export_sfc, D as Diagram } from "./Diagram-B6StfRnL.js";
 import { ap as resolveComponent, aq as createBlock, ar as openBlock, as as withCtx, at as createBaseVNode, aw as createElementBlock, ax as Fragment, ay as renderList, az as toDisplayString, au as withModifiers, aA as createVNode } from "./vendor-BvBmhImZ.js";
 const nodes = {
   add: (model, x, y) => {

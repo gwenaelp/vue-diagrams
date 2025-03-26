@@ -1,9 +1,9 @@
 import { A as reactive, d as defineComponent, Z as toRefs, $ as useRouter, k as watch, n as ref, m as useRoute, c as computed, a as createElementBlock, g as createCommentVNode, y as createBlock, e as unref, p as withCtx, f as createVNode, z as createTextVNode, I as Icon, V as watchEffect, o as openBlock, a0 as nextTick, h as defineStore, a1 as useResizeObserver, s as resolveComponent, a2 as renderSlot, b as createBaseVNode, M as h, a3 as onBeforeUnmount, X as mergeProps, T as Transition, q as normalizeClass, t as toDisplayString, a4 as i0, a5 as jm, a6 as Gm, a7 as Km, r as resolveDirective, w as withDirectives, a8 as withModifiers, Y as resolveDynamicComponent, F as Fragment, x as renderList, a9 as kt, aa as clone, ab as omit, j as useStorage, G as onMounted, ac as useTimeoutFn, ad as onClickOutside, ae as vModelText, v as withKeys, i as isRef, N as applyState, W as markRaw, af as shallowRef, ag as createHighlighter, ah as t0, ai as unindent, l as useCssVars, B as normalizeStyle, aj as onUnmounted, ak as createStaticVNode, al as Ot, u as useEventListener, am as toRaw } from "./vendor-BvBmhImZ.js";
-import { u as useStoryStore } from "./story-CV-Y9gbw.js";
+import { u as useStoryStore } from "./story-tCRBhrrh.js";
 import { _ as _export_sfc, b as BaseSplitPane, u as useScrollOnActive, i as isMobile, B as BaseListItemLink, a as _sfc_main$A } from "./responsive-GqednJVa.js";
 import { B as BaseEmpty } from "./BaseEmpty.vue-CbTpKuk0.js";
-import { h as histoireConfig, b as clientSupportPlugins, i as isDark, d as base } from "./mapping-CKrB2FGN.js";
-import { t as toRawDeep, _ as _sfc_main$z, g as getContrastColor, S as SANDBOX_READY, E as EVENT_SEND, a as STATE_SYNC, P as PREVIEW_SETTINGS_SYNC } from "./state-DERn92Ak.js";
+import { h as histoireConfig, b as clientSupportPlugins, i as isDark, d as base } from "./mapping-y_12s2Vy.js";
+import { t as toRawDeep, _ as _sfc_main$z, g as getContrastColor, S as SANDBOX_READY, E as EVENT_SEND, a as STATE_SYNC, P as PREVIEW_SETTINGS_SYNC } from "./state-DptmP4CW.js";
 const markdownFiles = reactive({});
 const _hoisted_1$t = ["innerHTML"];
 function useStoryDoc(story) {
