@@ -38,7 +38,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "doc:build": "cd doc && yarn && yarn generate && rm ./dist -Rf && mkdir ./dist && mv .output/public/* ./dist && touch dist/.nojekyll && cd .. && yarn story:build",
+    "doc:build": "cd doc && yarn && yarn generate && rm ./dist -Rf && mkdir ./dist && mv .output/public/* ./dist && touch dist/.nojekyll",
     "test": "vitest",
     "type-check": "vue-tsc --noEmit -p tsconfig.json",
     "typedoc": "typedoc --options typedoc.json",
