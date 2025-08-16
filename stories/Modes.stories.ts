@@ -32,13 +32,12 @@ export const EditModes = () => ({
   components: { Diagram },
   template: `
     <div>
-      <a :class="mode.value === 'move' ? 'is-active': ''" @click="setMode('move')" style="mode.value === 'move' ? 'font-weight: bold': ''">
+      <a :class="mode === 'move' ? 'is-active': ''" @click="mode = 'move'">
         Move
       </a>
-      <a :class="mode.value === 'select' ? 'is-active': ''" @click="setMode('select')" style="mode.value === 'select' ? 'font-weight: bold': ''">
+      <a :class="mode === 'select' ? 'is-active': ''" @click="mode = 'select'">
         Select
       </a>
-      mode: {{mode}}
       <diagram ref="diagram" :model="model" height="400" />
     </div>
   `,
@@ -48,7 +47,6 @@ export const EditModes = () => ({
     const diagram = ref(null);
 
     const setMode = (newMode) => {
-      console.log('setMode', newMode)
       mode.value = newMode;
       if (diagram.value) {
         diagram.value.mode = newMode;
