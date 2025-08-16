@@ -5,6 +5,8 @@ import generateId from './generateId';
 import type { Point } from "./types/Point";
 import type { DiagramLink } from "./types/DiagramLink";
 
+console.log('emitter', Emitter);
+
 type Port = any;
 export type InternalDiagramModel = {
   nodes: Array<DiagramNode>;
@@ -72,7 +74,7 @@ class DiagramModel {
   /**
    * Adds a link between two ports
    */
-  addLink(from: Port, to: Port, points:Array<Point> = [], options = {}) {
+  addLink(from: Port, to: Port, points: Array<Point> = [], options = {}) {
     this._model.links.push({
       id: generateId(),
       from: from.id || from,
@@ -124,7 +126,7 @@ class DiagramModel {
    */
   deserialize(serializedModel: string) {
     this._model = JSON.parse(serializedModel);
-    for (let i = 0 ; i <= this._model.nodes.length; i++) {
+    for (let i = 0; i <= this._model.nodes.length; i++) {
       const newNode = this._model.nodes[i];
       if (newNode) {
         this._model.nodes[i] = new DiagramNode(this, newNode.id, newNode.title);

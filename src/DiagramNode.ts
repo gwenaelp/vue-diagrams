@@ -69,15 +69,12 @@ class DiagramNode {
     return newPort;
   }
 
-  removePortLinks(_id: number) {
-    /*
+  removePortLinks(id: number) {
     for (let l of (this.diagram as any)._model.links) {
       if (l.from === id || l.to === id) {
         (this.diagram as any).deleteLink(l);
       }
     }
-    */
-    throw 'FIXME';
   }
 
   deletePort(_id: number) {
